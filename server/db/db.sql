@@ -9,10 +9,10 @@ INSERT INTO restaurants (name, location, price_range) values ('wendys', 'miami',
 
 CREATE TABLE reviews (
     id BIGSERIAL NOT NULL PRIMARY KEY,
-    restauraunt_id BIGINT NOT NULL REFERENCES restaurants(id),
+    restaurant_id BIGINT NOT NULL REFERENCES restaurants(id),
     name VARCHAR(50) NOT NULL,
     review TEXT NOT NULL,
     rating INT check(rating >=1 and rating <=5)
 );
 
-INSERT INTO reviews (restauraunt_id, name, review, rating) values (1, 'carl', 'restauraunt was awesome', 5);
+INSERT INTO reviews (restaurant_id, name, review, rating) values (1, 'carl', 'restauraunt was awesome', 5);
