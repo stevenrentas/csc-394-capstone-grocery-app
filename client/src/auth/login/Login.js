@@ -14,20 +14,21 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../../api/api";
 
 const Login = () => {
-  const baseURL = "http://localhost:3001/api/v1/users";
   const axios = require("axios");
-  const loginAPI = "/auth/api/v1/users";
+  const api = axios.create({
+    baseURL: config,
+  });
   const navigate = useNavigate();
   const submitLoginForm = async () => {
-    axios
-      .post(baseURL, {
+    api
+      .post("/users", {
         username: username,
         password: password,
       })
       .then((response) => {
-        console.log(response);
         if (!response.data.isAuthed) {
           alert("Unable to login. Please try after some time.");
           return;
@@ -35,7 +36,7 @@ const Login = () => {
         localStorage.clear();
         localStorage.setItem("user-token", response.data.token);
         setTimeout(() => {
-          navigate("/");
+          navigate("/admin/portal");
         }, 500);
       })
       .catch((error) => {

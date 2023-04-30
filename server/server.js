@@ -34,6 +34,79 @@ app.post("/api/v1/users", async (req, res) => {
   }
 });
 
+// Retrieve list of all users for admin page
+app.get("/api/v1/users", async (req, res) => {
+  try {
+    const allUsers = await db.query("SELECT * FROM users;");
+    res.status(200).json(allUsers.rows);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Retrieve one user based off an ID
+app.get("/api/v1/user", async (req, res) => {
+  try {
+    const { id } = req.query.id;
+    const allUsers = await db.query(`SELECT * FROM users WHERE id=${id};`);
+    res.status(200).json(allUsers.rows);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Add a user based on given input
+app.post("/api/v1/adduser", async (req, res) => {
+  try {
+    const { username, first_name, last_name, email, pword } = req.body;
+    const checkUserExists = await db.query(
+      `SELECT * FROM users WHERE email='${email}';`
+    );
+    if (checkUserExists.rowCount > 0) {
+      res.status(204).json({
+        status: "Error creating user",
+      });
+    } else {
+      await db.query(
+        `INSERT INTO users (username, first_name, last_name, email, pword) values ('${username}', '${first_name}', '${last_name}', '${email}', '${pword}');`
+      );
+      res.status(200).json({
+        status: "success",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Delete a user based on a given ID
+app.delete("/api/v1/users", async (req, res) => {
+  try {
+    const { id } = req.body;
+    await db.query(`DELETE FROM users WHERE id=${id};`);
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Update a user based on a given ID
+app.put("/api/v1/users", async (req, res) => {
+  try {
+    const { id, username, first_name, last_name, email, pword } = req.body;
+    await db.query(
+      `UPDATE users SET username='${username}', first_name='${first_name}', last_name='${last_name}', email='${email}', pword='${pword}' WHERE id='${id}';`
+    );
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`server is up and listening on port ${port}`);
