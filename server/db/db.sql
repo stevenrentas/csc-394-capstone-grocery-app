@@ -16,3 +16,14 @@ CREATE TABLE reviews (
 );
 
 INSERT INTO reviews (restaurant_id, name, review, rating) values (1, 'carl', 'restauraunt was awesome', 5);
+
+
+CREATE TABLE users (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    pword VARCHAR(50) NOT NULL
+);
+
