@@ -422,6 +422,7 @@ const Home = () => {
           variant="outlined"
           sx={{ maxWidth: "200px", mr: 2 }}
           onChange={(e) => setPrompt(e.target.value)}
+          value={prompt}
         ></TextField>
         <Button variant="contained" onClick={handleChatGptRequest}>
           Ask
