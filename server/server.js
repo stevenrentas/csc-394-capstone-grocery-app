@@ -5,10 +5,32 @@ const db = require("./db");
 
 const morgan = require("morgan");
 
-const app = express();
+const { Configuration, OpenAIApi } = require("openai");
 
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_SECRET_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
+const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Request for chatgpt
+app.post("/api/v1/chat", async (req, res) => {
+  const { prompt } = req.body;
+  try {
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      max_tokens: 100,
+      prompt: prompt,
+    });
+    return res.send(response.data.choices[0].text);
+  } catch (err) {
+    console.log(error);
+  }
+});
 
 // Check if user has an account
 app.post("/api/v1/users", async (req, res) => {

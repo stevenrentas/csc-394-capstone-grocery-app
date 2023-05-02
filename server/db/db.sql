@@ -7,6 +7,4 @@ CREATE TABLE users (
     pword VARCHAR(50) NOT NULL
 );
 
-INSERT INTO users (username, first_name, last_name, email, pword) values ('srentas1', 'Steven', 'Rentas', 'srentas1@depaul.edu', 'supersecretpassword');
-
-SELECT * FROM users WHERE username='srentas1' AND pword='supersecretpassword';
+INSERT INTO users (username, first_name, last_name, email, pword) values ('admin', 'Admin', 'Admin', 'admin@depaul.edu', 'supersecretpassword');

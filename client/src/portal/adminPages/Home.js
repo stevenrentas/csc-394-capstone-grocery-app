@@ -102,18 +102,20 @@ function EditDialog(props) {
       api
         .get(`/user?id=${selectedValue}`)
         .then((response) => {
-          setUsername(response.username);
-          setFirstName(response.first_name);
-          setLastName(response.last_name);
-          setEmail(response.email);
+          setUsername(response.data[0].username);
+          setFirstName(response.data[0].first_name);
+          setLastName(response.data[0].last_name);
+          setEmail(response.data[0].email);
         })
         .catch((error) => {
           console.log(error);
         });
     };
-
-    getUser();
-  }, [open]);
+    console.log(selectedValue);
+    if (selectedValue !== null) {
+      getUser();
+    }
+  }, [selectedValue]);
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -125,6 +127,7 @@ function EditDialog(props) {
           variant="outlined"
           sx={{ mt: 2, maxWidth: "200px" }}
           onChange={(e) => setUsername(e.target.value)}
+          value={username}
         />
         <TextField
           id="first_name"
@@ -132,6 +135,7 @@ function EditDialog(props) {
           variant="outlined"
           sx={{ mt: 2, maxWidth: "200px" }}
           onChange={(e) => setFirstName(e.target.value)}
+          value={firstName}
         />
         <TextField
           id="last_name"
@@ -139,6 +143,7 @@ function EditDialog(props) {
           variant="outlined"
           sx={{ mt: 2, maxWidth: "200px" }}
           onChange={(e) => setLastName(e.target.value)}
+          value={lastName}
         />
         <TextField
           id="email"
@@ -146,6 +151,7 @@ function EditDialog(props) {
           variant="outlined"
           sx={{ mt: 2, maxWidth: "200px" }}
           onChange={(e) => setEmail(e.target.value)}
+          value={email}
         />
         <TextField
           id="password"
@@ -275,6 +281,9 @@ const Home = () => {
   const [addSelectedValue, setAddSelectedValue] = React.useState(null);
   const [editSelectedValue, setEditSelectedValue] = React.useState(null);
   const [deleteSelectedValue, setDeleteSelectedValue] = React.useState(null);
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -288,7 +297,6 @@ const Home = () => {
           console.log(error);
         });
     };
-
     getAllUsers();
   }, []);
 
@@ -321,9 +329,20 @@ const Home = () => {
     setEditSelectedValue(value);
   };
 
+  const handleChatGptRequest = async () => {
+    setLoading(true);
+    await api
+      .post("/chat", { prompt })
+      .then((res) => {
+        setResponse(res.data);
+      })
+      .catch((err) => console.log(err));
+    setLoading(false);
+  };
+
   return (
     <Box>
-      <Box sx={{ display: "flex", mt: 3, pl: 3, pr: 3 }}>
+      <Box sx={{ display: "flex", mt: 3, pl: 4, pr: 3 }}>
         <Typography variant="h5" sx={{ flexGrow: 1 }}>
           Welcome Home Admin! You can manage users below.
         </Typography>
@@ -383,6 +402,32 @@ const Home = () => {
             </TableBody>
           </Table>
         </TableContainer>
+      </Box>
+      <Box
+        sx={{
+          ml: 4,
+          mr: 4,
+          mt: 2,
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Ask ChatGPT Bot
+        </Typography>
+        <TextField
+          placeholder="Ask anything!"
+          id="prompt"
+          variant="outlined"
+          sx={{ maxWidth: "200px", mr: 2 }}
+          onChange={(e) => setPrompt(e.target.value)}
+        ></TextField>
+        <Button variant="contained" onClick={handleChatGptRequest}>
+          Ask
+        </Button>
+        <Typography sx={{ mt: 2 }}>
+          {loading ? "loading..." : response}
+        </Typography>
       </Box>
       <EditDialog
         open={editDialogOpen}
