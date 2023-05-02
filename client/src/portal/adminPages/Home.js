@@ -338,6 +338,7 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
     setLoading(false);
+    setPrompt("");
   };
 
   return (
