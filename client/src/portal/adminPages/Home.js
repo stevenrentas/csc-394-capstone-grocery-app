@@ -100,7 +100,7 @@ function EditDialog(props) {
   useEffect(() => {
     const getUser = async () => {
       api
-        .get(`/user?id=${selectedValue}`)
+        .post("/user", { id: selectedValue })
         .then((response) => {
           setUsername(response.data[0].username);
           setFirstName(response.data[0].first_name);

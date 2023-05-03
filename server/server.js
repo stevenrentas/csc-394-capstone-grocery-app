@@ -67,9 +67,9 @@ app.get("/api/v1/users", async (req, res) => {
 });
 
 // Retrieve one user based off an ID
-app.get("/api/v1/user", async (req, res) => {
+app.post("/api/v1/user", async (req, res) => {
   try {
-    const { id } = req.query.id;
+    const id = req.body.id;
     const allUsers = await db.query(`SELECT * FROM users WHERE id=${id};`);
     res.status(200).json(allUsers.rows);
   } catch (err) {
