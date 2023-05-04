@@ -1,10 +1,10 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import AuthNavbar from "./navbar/AuthNavbar";
+import UnauthedNavbar from "./navbar/UnauthedNavbar";
 const Auth = () => {
   return (
     <React.Fragment>
-      <AuthNavbar />
+      <UnauthedNavbar />
       <Outlet />
     </React.Fragment>
   );

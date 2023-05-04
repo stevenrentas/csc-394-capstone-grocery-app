@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import PortalNavbar from "./portal/navbar/PortalNavbar";
+import PortalNavbar from "./authed/adminPortal/navbar/PortalNavbar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

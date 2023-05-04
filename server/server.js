@@ -28,7 +28,7 @@ app.post("/api/v1/chat", async (req, res) => {
     });
     return res.send(response.data.choices[0].text);
   } catch (err) {
-    console.log(error);
+    console.log(err);
   }
 });
 

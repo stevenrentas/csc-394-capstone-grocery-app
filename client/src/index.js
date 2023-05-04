@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./auth/login/Login";
-import UserHome from "./auth/home/UserHome";
-import Auth from "./auth/Auth";
+import Login from "./unauthed/admin/Login";
+import UserHome from "./unauthed/user/Login";
+import Auth from "./unauthed/Auth";
 import App from "./App";
 import ProtectedRoute from "./util/ProtectedRoute";
-import Home from "./portal/adminPages/Home";
+import Home from "./authed/adminPortal/Home";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
