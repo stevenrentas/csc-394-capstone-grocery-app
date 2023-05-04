@@ -1,6 +1,8 @@
 # Grocery List App
 This app uses Postgres as a database. The script for creating the tables can be found in the server/db directory. Additionally, a .env file must be created in the server directory containing the required info that was used to create the DB locally.
 
+This project uses the Material UI component library which can be found [here](https://mui.com/material-ui/getting-started/overview/).
+
 ```
 PORT=3001
 
