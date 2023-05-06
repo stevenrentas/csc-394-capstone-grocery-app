@@ -1,12 +1,15 @@
-import { Typography, Box } from "@mui/material";
 import React from "react";
+import "../../styles/style.css";
 
-const UserHome = () => {
+const UserLogin = () => {
   return (
-    <Box sx={{ m: 5 }}>
-      <Typography>Welcome to our grocery list app!</Typography>
-    </Box>
+    <div id="login">
+      <input placeholder="Email Address" id="credBox"></input>
+      <input placeholder="Password" id="credBox" type="password" name="password"></input>
+      <button id="authenticate">LOG IN</button>
+      <p id="otherAuthPage"><a id="otherAuthPage" href={"/signup"}>Create an account</a></p>
+    </div>
   );
 };
 
-export default UserHome;
+export default UserLogin;

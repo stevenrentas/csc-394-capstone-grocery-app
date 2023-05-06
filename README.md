@@ -17,7 +17,16 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 
 ## Starting client locally
 1. Start a terminal in client directory
-2. npm start
+2. npm i
+3. npm start
 ## Starting server locally
 1. Start a terminal in server directory
-2. npm run dev
+2. npm i
+3. npm run dev
+
+## Tasks
+### To-Do
+#### Login/Sign Up
+- [ ] Authentication implementation against DB
+- [ ] Redirect "/" to "/login" if user is not logged in
+- [ ] Add icons

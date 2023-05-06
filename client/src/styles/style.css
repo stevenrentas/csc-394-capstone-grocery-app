@@ -1,0 +1,55 @@
+*{
+    font-family: 'Montserrat', sans-serif;
+    background-color: #383838;
+    color: ivory;
+}
+
+.err{
+    color: rgb(194, 47, 47);
+}
+
+#navBar{
+    margin-top: 1.5%;
+    letter-spacing: 5px;
+}
+
+#credBox{
+    color: ivory;
+    margin:0 0 10% 0;
+    padding: 5% 0 5% 5%;
+    border-radius: 5%;
+    border-width: 3px;
+    width:150%;
+    font-size: 20px;
+}
+
+#authenticate{
+    background-color: ivory;
+    color:#383838;
+    border-radius: 5%;
+    border-width: 3px;
+    width: 150%;
+    transition: background-color 150ms;
+    padding: 5%;
+    font-size: 20px;
+}
+
+#authenticate:active{
+    background-color: rgb(68, 111, 163);
+    border-color: rgb(68, 111, 163);
+    transition: background-color 250ms;
+}
+
+#login{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    margin: 10%;
+    padding-right: 10%;
+}
+
+#otherAuthPage{
+    color: ivory;
+    margin: 5% 0 0 0;
+    justify-content: right;   
+}
