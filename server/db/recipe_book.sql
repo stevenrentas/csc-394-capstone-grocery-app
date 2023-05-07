@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS recipe_book
 (
 	description VARCHAR(50) NOT NULL,
 	meal_id 	INTEGER NOT NULL,
-	image_link	VARCHAR(100) NOT NULL,
+	image_link	VARCHAR(100),
 	calories 	INTEGER NOT NULL,
 	is_saved	BOOLEAN,
 
