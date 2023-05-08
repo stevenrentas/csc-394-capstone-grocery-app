@@ -28,5 +28,8 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 ### To-Do
 #### Login/Sign Up
 - [ ] Authentication implementation against DB
-- [ ] Redirect "/" to "/login" if user is not logged in
+- [ ] Redirect "/" to "/login"
+- [ ] Restyle inputs on sign-up page
 - [ ] Add icons
+- [ ] Error detection if username already exists (in sign up process)
+- [ ] Redirect to homepage after signing in/logging in

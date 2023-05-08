@@ -5,13 +5,16 @@ const SignUp = () => {
   const [credentials, setCredentials] = useState({
     emailAddress: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    firstname: '',
+    lastname:'',
+    username:''
   });
 
   const [error, setError] = useState({
     emailAddress: '',
-    password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    username:''
 });
 
 const onInputChange = e => {
@@ -39,13 +42,30 @@ const validateCredentials = () => {
   return true;
 }
  
-const createAccount = () => {
-  if (validateCredentials()){console.log("creating account")}
+async function createAccount () {
+  if (validateCredentials()){
+    const db_columns = {
+      "username": credentials.username,
+      "first_name": credentials.firstname,
+      "last_name": credentials.lastname,
+      "email": credentials.emailAddress,
+      "pword": credentials.password
+    };
+    const response = await fetch("http://localhost:3001/api/v1/adduser", {method: "POST", headers: {'Content-Type':'application/json'}, body:JSON.stringify(db_columns)})
+    .catch(error => console.error(error));
+
+    if (response.statusText === "OK"){
+      console.log("succesfully created an account!");
+    }
+  }
 }
 
 
     return (
       <div id="login">
+        <input placeholder="First Name" id="credBox" name="firstname" onChange={onInputChange}></input>
+        <input placeholder="Last Name" id="credBox" name="lastname" onChange={onInputChange}></input>
+        <input placeholder="Username" id="credBox" name="username" onChange={onInputChange}></input>
         <input placeholder="Email Address" id="credBox" name="emailAddress" onChange={onInputChange}></input>
         {error.emailAddress && <p className='err'>{error.emailAddress}</p>}
         <input placeholder="Password" id="credBox" type="password" name="password" onChange={onInputChange}></input>

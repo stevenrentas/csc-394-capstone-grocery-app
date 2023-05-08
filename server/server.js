@@ -35,9 +35,9 @@ app.post("/api/v1/chat", async (req, res) => {
 // Check if user has an account
 app.post("/api/v1/users", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, pword } = req.body;
     const checkUserExists = await db.query(
-      `SELECT * FROM users WHERE username='${username}' AND pword='${password}';`
+      `SELECT * FROM users WHERE username='${username}' AND pword='${pword}';`
     );
     if (checkUserExists.rowCount == 1) {
       res.status(200).json({
@@ -46,8 +46,8 @@ app.post("/api/v1/users", async (req, res) => {
         token: "isAuthed",
       });
     } else {
-      res.status(200).json({
-        status: "success",
+      res.status(401).json({
+        status: "failure",
         isAuthed: false,
       });
     }
