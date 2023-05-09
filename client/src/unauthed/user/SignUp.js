@@ -51,7 +51,7 @@ async function createAccount () {
       "email": credentials.emailAddress,
       "pword": credentials.password
     };
-    const response = await fetch("http://localhost:3001/api/v1/adduser", {method: "POST", headers: {'Content-Type':'application/json'}, body:JSON.stringify(db_columns)})
+    const response = await fetch("/api/v1/adduser", {method: "POST", headers: {'Content-Type':'application/json'}, body:JSON.stringify(db_columns)})
     .catch(error => console.error(error));
 
     if (response.statusText === "OK"){
