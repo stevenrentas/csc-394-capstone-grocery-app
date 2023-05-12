@@ -1,7 +1,12 @@
 import React, {useState} from "react";
+import config from "../../api/api";
+import axios from "axios";
 import "../../styles/style.css";
 
 const UserLogin = () => {
+  const api = axios.create({
+    baseURL: config,
+  });
 
   const [credentials, setCredentials] = useState({
     username: '',
@@ -21,12 +26,19 @@ const UserLogin = () => {
       "username": credentials.username,
       "pword": credentials.password
     };
-    const response = await fetch("/api/v1/users", {method: "POST", headers: {'Content-Type':'application/json'}, body:JSON.stringify(db_columns)})
-    .catch(error => console.error(error));
 
-    console.log(response);
-    if (response.statusText === "OK"){
-      console.log("succesfully logged in!");
+    await api.post("/users", db_columns)
+    .then(function (response){
+      navigatePage(response);
+    })
+    .catch(function (error){
+      console.log(error);
+    });
+  }
+
+  const navigatePage = (response) => {
+    if (response.statusText === "OK"){  
+      window.location = "/myfood";
     }
   }
 
