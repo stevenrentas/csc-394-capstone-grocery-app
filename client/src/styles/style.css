@@ -55,3 +55,56 @@
     margin: 5% 0 0 0;
     justify-content: right;   
 }
+
+#table{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+#pageAction{
+    background-color: #698669;
+    border-color: #698669;
+    border-radius: 10px;
+}
+
+#modal {
+    position: fixed;
+    width:100%;
+}
+
+#modal *{
+    display: block;
+    position: initial;
+    justify-content: center;
+    align-content: center;
+    background-color: #D9D9D9;
+    color: #383838;
+    z-index: 9999;
+}
+
+#modal input{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #383838 2px;
+    width:100%;
+}
+
+#modal-submit{
+    float: right;
+    background-color: #698669;
+    color:#D9D9D9;
+}
+
+.modalClose{
+    background-color: #D9D9D9;
+    color: #383838;
+    border: none;
+    font-size: 2rem;
+}
+
+.foodModal span{
+    padding: 10%;
+}
+
