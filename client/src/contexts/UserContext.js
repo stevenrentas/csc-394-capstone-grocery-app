@@ -3,12 +3,11 @@ import React, { useContext, useState } from "react";
 export const UserContext = React.createContext();
 
 export const UserProvider = ({children}) => {
-    const [showFoodModal, setShowFoodModal] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     return(
         <UserContext.Provider value = {{
-            showFoodModal, setShowFoodModal, isLoggedIn, setIsLoggedIn
+            showModal, setShowModal
         }}>
             {children}
         </UserContext.Provider>

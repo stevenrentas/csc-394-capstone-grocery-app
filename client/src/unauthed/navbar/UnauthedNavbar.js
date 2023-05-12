@@ -9,7 +9,9 @@ const AuthNavbar = () => {
     <Box sx={{ flexGrow: 1}}>
       <AppBar position="static" id="navBar" elevation={0}>
         <Toolbar>
-          <h2 id="appName">FOOD GPT</h2>
+          <h1 id="appName">FOOD GPT</h1>
+          <h4 className="links"><a href="/myfood">MY FOOD</a></h4>
+          <h4 className="links"><a href="/myrecipes">MY RECIPES</a></h4>
         </Toolbar>
       </AppBar>
     </Box>

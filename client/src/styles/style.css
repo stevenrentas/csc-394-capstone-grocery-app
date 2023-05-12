@@ -11,8 +11,18 @@
 #navBar{
     margin-top: 1.5%;
     letter-spacing: 5px;
+    width:100%;
 }
 
+.links{
+    padding-left: 5%;
+    position: relative;
+    left:50%;
+}
+
+.links a{
+    color:ivory
+}
 #credBox{
     color: ivory;
     margin:0 0 10% 0;

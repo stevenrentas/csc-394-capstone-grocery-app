@@ -3,15 +3,15 @@ import { ModalBody, ModalDialog, ModalHeader, ModalTitle } from 'react-bootstrap
 import { useUser } from "../../../contexts/UserContext";
 
 const MyFoodModal = () => {
-    const {showFoodModal, setShowFoodModal} = useUser();
+    const {showModal, setShowModal} = useUser();
 
     const backgroundColor = "#D9D9D9";
-    if (showFoodModal){
+    if (showModal){
         return (
             <div id="modal">
                 <ModalDialog style={{backgroundColor:backgroundColor}}>
                     <ModalHeader style={{backgroundColor:backgroundColor}}>
-                        <button className="modalClose" onClick={e => setShowFoodModal(false)}>X</button>
+                        <button className="modalClose" onClick={e => setShowModal(false)}>X</button>
                         <ModalTitle style={{backgroundColor:backgroundColor, color: "#383838", display: "grid", justifyContent:"center", alignContent:"center"}}>ADD FOOD</ModalTitle>
                     </ModalHeader>
                     <ModalBody style={{backgroundColor:backgroundColor}}>
