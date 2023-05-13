@@ -13,6 +13,10 @@ const UserLogin = () => {
     password: ''
   });
 
+  const [error, setError] = useState({
+    message: ''
+  });
+
   const onInputChange = e => {
     const { name, value } = e.target;
     setCredentials({
@@ -33,17 +37,21 @@ const UserLogin = () => {
     })
     .catch(function (error){
       console.log(error);
+      setError({message: "Invalid username or password"});
     });
   }
 
   const navigatePage = (response) => {
-    if (response.statusText === "OK"){  
+    if (response.statusText === "OK"){
       window.location = "/myfood";
+    } else {
+      setError({message:"Invalid username or password"});
     }
   }
 
   return (
     <div id="login">
+      {error.message && <p className='err'>{error.message}</p>}
       <input placeholder="Username" id="credBox" name="username" onChange={onInputChange}></input>
       <input placeholder="Password" id="credBox" type="password" name="password" onChange={onInputChange}></input>
       <button id="authenticate" onClick={processLogin}>LOG IN</button>

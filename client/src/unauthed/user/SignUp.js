@@ -20,7 +20,8 @@ const SignUp = () => {
   const [error, setError] = useState({
     emailAddress: '',
     confirmPassword: '',
-    username:''
+    username:'',
+    exist:''
 });
 
 const onInputChange = e => {
@@ -47,7 +48,7 @@ const validateCredentials = () => {
 
   return true;
 }
- 
+
 async function createAccount () {
   if (validateCredentials()){
     const db_columns = {
@@ -72,6 +73,8 @@ async function createAccount () {
 const navigatePage = (response) => {
   if (response.statusText === "OK"){  
     window.location = "/myfood";
+  } else {
+    setError({exist:"Username or email already exist"})
   }
 }
 
@@ -80,6 +83,7 @@ const navigatePage = (response) => {
       <div id="login">
         <input placeholder="First Name" id="credBox" name="firstname" onChange={onInputChange}></input>
         <input placeholder="Last Name" id="credBox" name="lastname" onChange={onInputChange}></input>
+        {error.exist && <p className='err'>{error.exist}</p>}
         <input placeholder="Username" id="credBox" name="username" onChange={onInputChange}></input>
         <input placeholder="Email Address" id="credBox" name="emailAddress" onChange={onInputChange}></input>
         {error.emailAddress && <p className='err'>{error.emailAddress}</p>}
