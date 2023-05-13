@@ -82,7 +82,7 @@ app.post("/api/v1/adduser", async (req, res) => {
   try {
     const { username, first_name, last_name, email, pword } = req.body;
     const checkUserExists = await db.query(
-      `SELECT * FROM users WHERE email='${email}';`
+      `SELECT * FROM users WHERE email='${email}' OR username = '${username}';`
     );
     if (checkUserExists.rowCount > 0) {
       res.status(204).json({
