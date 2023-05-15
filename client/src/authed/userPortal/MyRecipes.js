@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MyFoodModal from "./modals/MyFoodModal";
 import { useUser } from "../../contexts/UserContext";
+import MyRecipesModal from "../../unauthed/user/modals/MyRecipesModal";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   Typography,
@@ -17,7 +17,7 @@ import {
 import { Edit } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
 
-const MyFood = () => {
+const MyRecipes = () => {
   const { setShowModal } = useUser();
 
   const handleEditClick = () => {};
@@ -37,17 +37,9 @@ const MyFood = () => {
       ),
     },
     {
-      field: "amount",
-      headerName: "Amount",
+      field: "missingIngredients",
+      headerName: "Missing Ingredients",
       width: 200,
-      renderCell: (params) => (
-        <div class="amountTableRow">
-          <div>{params.value.split("/")[0]}</div>
-          <div>
-            <span class="amountTag">{params.value.split("/")[1]}</span>
-          </div>
-        </div>
-      ),
     },
     {
       field: "dateAdded",
@@ -55,8 +47,8 @@ const MyFood = () => {
       width: 160,
     },
     {
-      field: "expiryDate",
-      headerName: "Expiry Date",
+      field: "favoriteLevel",
+      headerName: "Favorite Level",
       width: 160,
     },
   ];
@@ -64,39 +56,39 @@ const MyFood = () => {
   const rows = [
     {
       id: 1,
-      name: "Chicken Breast",
-      amount: "4/lb",
+      name: "Chicken Orzo Soup",
+      missingIngredients: "0",
       dateAdded: "4/28/2023",
-      expiryDate: "5/02/2023",
+      favoriteLevel: "1",
     },
     {
       id: 2,
-      name: "Gala Apples",
-      amount: "12/each",
+      name: "Chilaquiles",
+      missingIngredients: "1",
       dateAdded: "4/21/2023",
-      expiryDate: "5/21/2023",
+      favoriteLevel: "2",
     },
     {
       id: 3,
-      name: "Broccoli Rabe",
-      amount: "5/cup",
+      name: "Banana Nutella French Toast",
+      missingIngredients: "3",
       dateAdded: "3/14/2023",
-      expiryDate: "N/A",
+      favoriteLevel: "3",
     },
     {
       id: 4,
-      name: "Goldfish",
-      amount: "2/container",
+      name: "Stuffed Portabella w/ Quinoa",
+      missingIngredients: "4",
       dateAdded: "4/28/2023",
-      expiryDate: "5/14/2025",
+      favoriteLevel: "3",
     },
   ];
 
   return (
     <div id="table">
       <div class="pageActionContainer">
-        <button id="pageAction" onClick={(e) => setShowModal(true)}>
-          Add +
+        <button id="pageActionRecipe" onClick={(e) => setShowModal(true)}>
+          Generate Recipe
         </button>
       </div>
       <Box sx={{ height: 655, width: "100%", pt: 3 }}>
@@ -113,9 +105,9 @@ const MyFood = () => {
           sx={{ width: "1000px", background: "#f0f0f0", color: "#000000" }}
         />
       </Box>
-      <MyFoodModal />
+      <MyRecipesModal />
     </div>
   );
 };
 
-export default MyFood;
+export default MyRecipes;

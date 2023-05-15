@@ -26,7 +26,7 @@ const Login = () => {
     api
       .post("/users", {
         username: username,
-        password: password,
+        pword: password,
       })
       .then((response) => {
         if (!response.data.isAuthed) {

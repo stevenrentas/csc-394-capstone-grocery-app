@@ -11,16 +11,31 @@ const AuthNavbar = () => {
     window.location.reload(false);
   };
 
+  const currPage = window.location.href.split("/")[3];
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" id="navBar" sx={{ boxShadow: "none" }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Grocery List App
-          </Typography>
-          <Button color="inherit" onClick={logout}>
-            Logout
-          </Button>
+          <h1 id="appName">FOOD GPT</h1>
+          {currPage == "myfood" ? (
+            <h4 className="currPage">
+              <a href="/myfood">MY FOOD</a>
+            </h4>
+          ) : (
+            <h4 className="links">
+              <a href="/myfood">MY FOOD</a>
+            </h4>
+          )}
+          {currPage == "myrecipes" ? (
+            <h4 className="currPage">
+              <a href="/myrecipes">MY RECIPES</a>
+            </h4>
+          ) : (
+            <h4 className="links">
+              <a href="/myrecipes">MY RECIPES</a>
+            </h4>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

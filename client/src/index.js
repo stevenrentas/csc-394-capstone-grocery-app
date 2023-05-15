@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./unauthed/admin/Login";
 import UserLogin from "./unauthed/user/Login";
 import SignUp from "./unauthed/user/SignUp";
-import MyFood from "./unauthed/user/MyFood";
-import MyRecipes from "./unauthed/user/MyRecipes";
+import MyFood from "./authed/userPortal/MyFood";
+import MyRecipes from "./authed/userPortal/MyRecipes";
 import Auth from "./unauthed/Auth";
 import App from "./App";
 import ProtectedRoute from "./util/ProtectedRoute";
@@ -18,11 +18,9 @@ root.render(
     <React.StrictMode>
       <BrowserRouter basename={"/"}>
         <Routes>
-          <Route path="/" element={<Auth />} >
+          <Route path="/" element={<Auth />}>
             <Route path="/login" element={<UserLogin />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/myfood" element={<MyFood />}></Route>
-            <Route path="/myrecipes" element={<MyRecipes />}></Route>
             <Route path="admin" element={<Login />} />
           </Route>
           <Route element={<App />}>
@@ -31,6 +29,22 @@ root.render(
               element={
                 <ProtectedRoute>
                   <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/myfood"
+              element={
+                <ProtectedRoute>
+                  <MyFood />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/myrecipes"
+              element={
+                <ProtectedRoute>
+                  <MyRecipes />
                 </ProtectedRoute>
               }
             />
