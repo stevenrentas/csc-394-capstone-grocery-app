@@ -44,7 +44,6 @@ const UserLogin = () => {
 
   const navigatePage = (response) => {
     if (response.statusText === "OK") {
-      localStorage.clear();
       localStorage.setItem("user-token", response.data.token);
       window.location = "/myfood";
     } else {

@@ -33,8 +33,7 @@ const Login = () => {
           alert("Unable to login. Please try after some time.");
           return;
         }
-        localStorage.clear();
-        localStorage.setItem("user-token", response.data.token);
+        localStorage.setItem("admin-token", response.data.token);
         setTimeout(() => {
           navigate("/admin/portal");
         }, 500);

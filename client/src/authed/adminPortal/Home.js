@@ -286,6 +286,10 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log(response);
+  }, [response]);
+
+  useEffect(() => {
     const getAllUsers = async () => {
       api
         .get("/users")
@@ -428,7 +432,7 @@ const Home = () => {
           Ask
         </Button>
         <Typography sx={{ mt: 2 }}>
-          {loading ? "loading..." : response}
+          {loading ? "loading..." : "Response logged to console!"}
         </Typography>
       </Box>
       <EditDialog
