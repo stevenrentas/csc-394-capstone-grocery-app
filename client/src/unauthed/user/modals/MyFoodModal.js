@@ -1,12 +1,19 @@
 import React, {useState} from "react";
 import { ModalBody, ModalDialog, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useUser } from "../../../contexts/UserContext";
+import config from "../../../api/api";
+import axios from "axios";
 
 const MyFoodModal = () => {
-    const {showModal, setShowModal, setFood, food} = useUser();
+    const api = axios.create({
+        baseURL: config
+    });
+    const userID = localStorage.getItem("user-id");
+
+    const {showModal, setShowModal, food, fetchInventory} = useUser();
 
     const [foodToAdd, setFoodToAdd] = useState({
-        id: food.at(-1).id + 1,
+        id: 1,
         name: "", 
         amount: "",
         dateAdded: "",
@@ -34,9 +41,17 @@ const MyFoodModal = () => {
         }
       };
 
-    const addFood = () => {
-        setFood([...food, foodToAdd]);
+    const addFood = async () => {
         console.log(foodToAdd.name + " succesfully added!");
+
+        let db_columns = {...foodToAdd};
+        db_columns.userID = userID;
+        api.post("/addfood", db_columns)
+            .then((resp) => {
+            })
+            .catch((error) => {
+                console.error(error)
+            });
     }
 
     const backgroundColor = "#D9D9D9";

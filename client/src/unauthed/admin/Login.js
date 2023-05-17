@@ -34,6 +34,7 @@ const Login = () => {
           return;
         }
         localStorage.setItem("admin-token", response.data.token);
+        localStorage.setItem("user-id", response.data.uid);
         setTimeout(() => {
           navigate("/admin/portal");
         }, 500);

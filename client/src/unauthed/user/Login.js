@@ -45,6 +45,7 @@ const UserLogin = () => {
   const navigatePage = (response) => {
     if (response.statusText === "OK") {
       localStorage.setItem("user-token", response.data.token);
+      localStorage.setItem("user-id", response.data.uid);
       window.location = "/myfood";
     } else {
       setError({ message: "Invalid username or password" });

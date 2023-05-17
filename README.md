@@ -35,7 +35,8 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [x] Redirect to homepage after signing in/logging in
 
 #### MyFood
-- [ ] API calls to update user's food in DB
+- [x] API calls to update user's food in DB
+- [ ] Incorrect input handling for modal 
 - [ ] Restyle modal to mimic figma
 
 #### MyRecipes

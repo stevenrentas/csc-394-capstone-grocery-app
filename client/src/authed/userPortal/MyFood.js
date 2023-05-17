@@ -16,10 +16,16 @@ import {
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
+import { useEffect } from "react";
+import config from "../../api/api";
+import axios from "axios";
 
 const MyFood = () => {
-  const { setShowModal, food } = useUser();
+  const api = axios.create({
+    baseURL: config
+});
 
+  const { setShowModal, food, setFood} = useUser();
   const handleEditClick = () => {};
 
   const columns = [
@@ -60,6 +66,21 @@ const MyFood = () => {
       width: 160,
     },
   ];
+
+  useEffect(() => {
+    async function fetchInventory() {
+      const userID = localStorage.getItem("user-id");
+      const allFood = await api.get(`/getfood?userID=${userID}`)
+        .then((resp) => {return resp.data.food;})
+        .catch((error) => {console.error(error)});
+      console.log(`data: ${allFood}`);
+      setFood(allFood);
+    };
+    
+    fetchInventory();
+    console.log("food"+ food);
+  }, [food]);
+
 
 
   return (
