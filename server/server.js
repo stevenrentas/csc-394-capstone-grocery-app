@@ -48,7 +48,7 @@ app.post("/api/v1/users", async (req, res) => {
         status: "success",
         isAuthed: true,
         token: "isAuthed",
-        uid: checkUserExists.rows.at(0).id
+        uid: checkUserExists.rows.at(0).id,
       });
     } else {
       res.status(401).json({
@@ -136,11 +136,11 @@ app.put("/api/v1/users", async (req, res) => {
 
 app.post("/api/v1/addfood", async (req, res) => {
   try {
-    const { userID, id, name, amount, dateAdded, expiryDate} = req.body;
+    const { userID, name, amount, dateAdded, expiryDate } = req.body;
     const intAmount = amount.substring(0, amount.indexOf("/"));
     const units = amount.substring(amount.indexOf("/") + 1);
     await db.query(
-      `INSERT INTO inventory (id, product_id, description, date_added, expiry_date, amount, units) values ('${userID}', '${id}', '${name}', '${dateAdded}', '${expiryDate}', '${intAmount}', '${units}');`
+      `INSERT INTO inventory (user_id, description, date_added, expiry_date, amount, units) values ('${userID}', '${name}', '${dateAdded}', '${expiryDate}', '${intAmount}', '${units}');`
     );
     res.status(200).json({
       status: "success",
@@ -154,11 +154,11 @@ app.get("/api/v1/getfood", async (req, res) => {
   try {
     const { userID } = req.query;
     const allFood = await db.query(
-      `SELECT * FROM inventory WHERE id=${userID};`
+      `select user_id, product_id as id, description, amount, date_added, expiry_date, units from inventory WHERE user_id=${userID};`
     );
     res.status(200).json({
       status: "success",
-      food: allFood.rows
+      food: allFood.rows,
     });
   } catch (err) {
     console.log(err);
