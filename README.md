@@ -28,11 +28,14 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 ### To-Do
 #### Login/Sign Up
 - [x] Authentication implementation against DB
-- [ ] Redirect "/" to "/login"
-- [ ] Restyle inputs on sign-up page
-- [ ] Add icons
-- [ ] Error detection if username already exists (in sign up process)
+- [x] Redirect "/" to "/login"
+- [x] Restyle inputs on sign-up page
+- [x] Add icons
+- [x] Error detection if username already exists (in sign up process)
 - [x] Redirect to homepage after signing in/logging in
+
+#### UsersPage
+- [ ] Eric K to update finished requirements
 
 #### MyFood
 - [ ] API calls to update user's food in DB
