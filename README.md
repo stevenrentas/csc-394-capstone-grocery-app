@@ -43,4 +43,4 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [ ] Restyle modal to mimic figma
 
 #### General
-- [ ] Functional Navbar after signing in
+- [ ] Navbar should show "My Food/Recipes" **after** signing in, not before

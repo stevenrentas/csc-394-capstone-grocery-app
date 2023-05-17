@@ -1,9 +1,43 @@
-import React from "react";
+import React, {useState} from "react";
 import { ModalBody, ModalDialog, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useUser } from "../../../contexts/UserContext";
 
 const MyFoodModal = () => {
-    const {showModal, setShowModal} = useUser();
+    const {showModal, setShowModal, setFood, food} = useUser();
+
+    const [foodToAdd, setFoodToAdd] = useState({
+        id: food.at(-1).id + 1,
+        name: "", 
+        amount: "",
+        dateAdded: "",
+        expiryDate: ""
+    });
+
+    const onInputChange = (e) => {
+        var { name, value } = e.target;
+
+        if (name === "unit"){
+            const amount = foodToAdd.amount.indexOf("/") > -1 ? foodToAdd.amount.substring(0, foodToAdd.amount.indexOf("/")): foodToAdd.amount;
+            setFoodToAdd({
+                ...foodToAdd,
+                amount: amount + "/" + value,
+                dateAdded: new Date().toLocaleDateString("en-US")
+            });
+        }
+
+        else{
+            setFoodToAdd({
+            ...foodToAdd,
+            [name]: value,
+            dateAdded: new Date().toLocaleDateString("en-US")
+            });
+        }
+      };
+
+    const addFood = () => {
+        setFood([...food, foodToAdd]);
+        console.log(foodToAdd.name + " succesfully added!");
+    }
 
     const backgroundColor = "#D9D9D9";
     if (showModal){
@@ -18,13 +52,13 @@ const MyFoodModal = () => {
                         <form className="foodModal">
                             <span>
                                 <label>Name
-                                    <input name="foodName"></input>
+                                    <input name="name" onChange={onInputChange}></input>
                                 </label>
                             </span>
                             <span id="quantityInput">
                             <label>Quantity
-                                    <input name="foodQuantity"></input>
-                                    <select>
+                                    <input name="amount" onChange={onInputChange}></input>
+                                    <select name="unit" onChange={onInputChange}>
                                             <option value="lb">lb</option>
                                             <option value="kg">kg</option>
                                             <option value="oz">oz</option>
@@ -38,10 +72,10 @@ const MyFoodModal = () => {
                             </span>
                             <span>
                                 <label>Expiration Date
-                                    <input name="foodExpiration"></input>
+                                    <input name="expiryDate" onChange={onInputChange}></input>
                                 </label>
                             </span>
-                            <button type="button" id="modal-submit" onClick={e => console.log("eheh")}>Add +</button>
+                            <button type="button" id="modal-submit" onClick={addFood}>Add +</button>
                         </form>
                     </ModalBody>
                 </ModalDialog>

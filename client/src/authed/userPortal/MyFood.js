@@ -18,7 +18,7 @@ import { Edit } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
 
 const MyFood = () => {
-  const { setShowModal } = useUser();
+  const { setShowModal, food } = useUser();
 
   const handleEditClick = () => {};
 
@@ -61,36 +61,6 @@ const MyFood = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      name: "Chicken Breast",
-      amount: "4/lb",
-      dateAdded: "4/28/2023",
-      expiryDate: "5/02/2023",
-    },
-    {
-      id: 2,
-      name: "Gala Apples",
-      amount: "12/each",
-      dateAdded: "4/21/2023",
-      expiryDate: "5/21/2023",
-    },
-    {
-      id: 3,
-      name: "Broccoli Rabe",
-      amount: "5/cup",
-      dateAdded: "3/14/2023",
-      expiryDate: "N/A",
-    },
-    {
-      id: 4,
-      name: "Goldfish",
-      amount: "2/container",
-      dateAdded: "4/28/2023",
-      expiryDate: "5/14/2025",
-    },
-  ];
 
   return (
     <div id="table">
@@ -101,7 +71,7 @@ const MyFood = () => {
       </div>
       <Box sx={{ height: 655, width: "100%", pt: 3 }}>
         <DataGrid
-          rows={rows}
+          rows={food}
           columns={columns}
           initialState={{
             pagination: {
