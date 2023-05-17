@@ -30,7 +30,7 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [x] Authentication implementation against DB
 - [x] Redirect "/" to "/login"
 - [x] Restyle inputs on sign-up page
-- [x] Add icons
+- [ ] Add icons
 - [x] Error detection if username already exists (in sign up process)
 - [x] Redirect to homepage after signing in/logging in
 
