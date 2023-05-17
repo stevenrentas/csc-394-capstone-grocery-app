@@ -360,19 +360,19 @@ const Home = () => {
     setPrompt("");
   };
 
+  const onInputChange = (e) => {
+    setPrompt(e.value);
+  };
+
   return (
     <Box>
       <Box sx={{ display: "flex", mt: 3, pl: 4, pr: 3 }}>
         <Typography variant="h5" sx={{ flexGrow: 1 }}>
-          Welcome Home Admin! You can manage users below.
+          Welcome Home! You can manage users below.
         </Typography>
-        <Button
-          variant="contained"
-          onClick={openAddDialog}
-          sx={{ backgroundColor: "#698669" }}
-        >
+        <button id="createAdminAction" onClick={openAddDialog}>
           Create User
-        </Button>
+        </button>
       </Box>
       <Box sx={{ m: 4 }}>
         <TableContainer component={Paper}>
@@ -439,29 +439,15 @@ const Home = () => {
         <Typography variant="h6" sx={{ mb: 1 }}>
           Ask ChatGPT Bot
         </Typography>
-        <ThemeProvider theme={theme}>
-          <TextField
-            id="prompt"
-            variant="filled"
-            label="Ask anything!"
-            color="primary"
-            sx={{
-              mr: 2,
-              maxWidth: "200px",
-              color: theme.palette.secondary,
-              backgroundColor: "#fffff0",
-            }}
-            onChange={(e) => setPrompt(e.target.value)}
-            value={prompt}
-          />
-        </ThemeProvider>
-        <Button
-          variant="contained"
-          onClick={handleChatGptRequest}
-          sx={{ backgroundColor: "#698669" }}
-        >
+        <input
+          placeholder="Ask anything!"
+          id="askGpt"
+          name="username"
+          onChange={onInputChange}
+        ></input>
+        <button id="pageAction" onClick={handleChatGptRequest}>
           Ask
-        </Button>
+        </button>
         <Typography sx={{ mt: 2 }}>
           {loading === "request"
             ? "loading..."

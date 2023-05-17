@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../api/api";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -27,8 +27,8 @@ const Login = () => {
   const submitLoginForm = async () => {
     api
       .post("/users", {
-        username: username,
-        pword: password,
+        username: credentials.username,
+        pword: credentials.password,
       })
       .then((response) => {
         if (!response.data.isAuthed) {
@@ -69,61 +69,67 @@ const Login = () => {
     event.preventDefault();
   };
 
+  /* New */
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [error, setError] = useState({
+    message: "",
+  });
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  async function processLogin() {
+    const db_columns = {
+      username: credentials.username,
+      pword: credentials.password,
+    };
+
+    await api
+      .post("/users", db_columns)
+      .then(function (response) {
+        navigate("/admin/portal");
+      })
+      .catch(function (error) {
+        console.log(error);
+        setError({ message: "Invalid username or password" });
+      });
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ m: 5 }}>
-        <Typography>
-          Welcome to our grocery list app! Please enter your credentials below.
-        </Typography>
-        <Stack>
-          <TextField
-            id="username"
-            color="primary"
-            label="Username"
-            variant="filled"
-            sx={{
-              mt: 2,
-              maxWidth: "200px",
-              color: theme.palette.secondary,
-              backgroundColor: "#fffff0",
-            }}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <FormControl
-            sx={{ m: 1, maxWidth: "200px", ml: 0, backgroundColor: "#fffff0" }}
-            variant="filled"
-          >
-            <InputLabel htmlFor="filled-adornment-password">
-              Password
-            </InputLabel>
-            <FilledInput
-              onChange={(e) => setPassword(e.target.value)}
-              id="filled-adornment-password"
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </Stack>
-        <Button
-          sx={{ mt: 2, backgroundColor: "#698669" }}
-          variant="contained"
-          onClick={submitLoginForm}
-        >
-          Submit
-        </Button>
-      </Box>
-    </ThemeProvider>
+    <div id="login">
+      <p class="adminLoginTitle">Admin Login</p>
+      {error.message && <p className="err">{error.message}</p>}
+      <input
+        placeholder="Username"
+        id="credBox"
+        name="username"
+        onChange={onInputChange}
+      ></input>
+      <input
+        placeholder="Password"
+        id="credBox"
+        type="password"
+        name="password"
+        onChange={onInputChange}
+      ></input>
+      <button id="authenticate" onClick={submitLoginForm}>
+        LOG IN
+      </button>
+      <p id="otherAuthPage">
+        <a id="otherAuthPage" href={"/signup"}>
+          Create an account
+        </a>
+      </p>
+    </div>
   );
 };
 
