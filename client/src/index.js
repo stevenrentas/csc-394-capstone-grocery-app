@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./unauthed/admin/Login";
 import UserLogin from "./unauthed/user/Login";
 import SignUp from "./unauthed/user/SignUp";
@@ -19,6 +19,7 @@ root.render(
       <BrowserRouter basename={"/"}>
         <Routes>
           <Route path="/" element={<Auth />}>
+            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<UserLogin />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="admin" element={<Login />} />
@@ -49,6 +50,7 @@ root.render(
               }
             />
           </Route>
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

@@ -208,6 +208,14 @@ body {
   color: #0a436b !important;
 }
 
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 0px !important;
+}
+
+.css-0943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color: #383838 !important;
+}
+
 .amountTableRow {
   display: flex;
   width: 150px;
