@@ -361,7 +361,7 @@ const Home = () => {
   };
 
   const onInputChange = (e) => {
-    setPrompt(e.value);
+    setPrompt(e.target.value);
   };
 
   return (
