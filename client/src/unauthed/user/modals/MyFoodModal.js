@@ -9,7 +9,7 @@ import { useUser } from "../../../contexts/UserContext";
 import config from "../../../api/api";
 import axios from "axios";
 
-const MyFoodModal = () => {
+const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
   const api = axios.create({
     baseURL: config,
   });
@@ -53,7 +53,10 @@ const MyFoodModal = () => {
     db_columns.userID = userID;
     api
       .post("/addfood", db_columns)
-      .then((resp) => {})
+      .then((resp) => {
+        setConfirmChange(true);
+        setShowModal(false);
+      })
       .catch((error) => {
         console.error(error);
       });

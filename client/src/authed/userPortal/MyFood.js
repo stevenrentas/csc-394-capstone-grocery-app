@@ -24,7 +24,7 @@ const MyFood = () => {
   const api = axios.create({
     baseURL: config,
   });
-
+  const [confirmChange, setConfirmChange] = useState(false);
   const { setShowModal, food, setFood } = useUser();
   const handleEditClick = () => {};
 
@@ -80,9 +80,9 @@ const MyFood = () => {
         });
       setFood(allFood);
     }
-
+    setConfirmChange(false);
     fetchInventory();
-  }, []);
+  }, [confirmChange]);
 
   return (
     <div id="table">
@@ -105,7 +105,10 @@ const MyFood = () => {
           sx={{ width: "1000px", background: "#f0f0f0", color: "#000000" }}
         />
       </Box>
-      <MyFoodModal />
+      <MyFoodModal
+        confirmChange={confirmChange}
+        setConfirmChange={setConfirmChange}
+      />
     </div>
   );
 };
