@@ -30,16 +30,22 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [x] Authentication implementation against DB
 - [x] Redirect "/" to "/login"
 - [x] Restyle inputs on sign-up page
-- [ ] Add icons
 - [x] Error detection if username already exists (in sign up process)
 - [x] Redirect to homepage after signing in/logging in
+- [ ] Add icons
 
 #### UsersPage
-- [ ] Eric K to update finished requirements
+- [ ] Update account information
+- [ ] Add or remove preferences
+- [ ] Logout user
+- [ ] Delete user confirmation
+- [ ] On confirmation, delete user and ALL associated records
 
 #### MyFood
-- [ ] API calls to update user's food in DB
+- [x] API calls to add user's food in DB
 - [ ] Restyle modal to mimic figma
+- [ ] Edit food (should open in modal with fields populated with current state)
+- [ ] Delete food (should remove food with confirmation and update recipe "missing ingredients")
 
 #### MyRecipes
 - [ ] API calls to update user's recipes in DB
