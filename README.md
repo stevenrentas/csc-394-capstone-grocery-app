@@ -50,6 +50,7 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 #### MyRecipes
 - [ ] API calls to update user's recipes in DB
 - [ ] Restyle modal to mimic figma
+- [ ] Implementing the preferences into the prompt
 
 #### General
 - [ ] Navbar should show "My Food/Recipes" **after** signing in, not before
