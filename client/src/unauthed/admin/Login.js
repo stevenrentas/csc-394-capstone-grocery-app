@@ -107,7 +107,7 @@ const Login = () => {
 
   return (
     <div id="login">
-      <p class="adminLoginTitle">Admin Login</p>
+      <p className="adminLoginTitle">Admin Login</p>
       {error.message && <p className="err">{error.message}</p>}
       <input
         placeholder="Username"

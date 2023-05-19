@@ -86,7 +86,7 @@ const MyRecipes = () => {
 
   return (
     <div id="table">
-      <div class="pageActionContainer">
+      <div className="pageActionContainer">
         <button id="pageActionRecipe" onClick={(e) => setShowModal(true)}>
           Generate Recipe
         </button>

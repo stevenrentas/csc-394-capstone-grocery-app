@@ -32,7 +32,7 @@ app.post("/api/v1/chat", async (req, res) => {
     });
     return res.send(response.data.choices[0].text);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -57,7 +57,7 @@ app.post("/api/v1/users", async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -67,7 +67,7 @@ app.get("/api/v1/users", async (req, res) => {
     const allUsers = await db.query("SELECT * FROM users;");
     res.status(200).json(allUsers.rows);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -78,7 +78,7 @@ app.post("/api/v1/user", async (req, res) => {
     const allUsers = await db.query(`SELECT * FROM users WHERE id=${id};`);
     res.status(200).json(allUsers.rows);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -102,7 +102,7 @@ app.post("/api/v1/adduser", async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -115,7 +115,7 @@ app.delete("/api/v1/users", async (req, res) => {
       status: "success",
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -130,7 +130,7 @@ app.put("/api/v1/users", async (req, res) => {
       status: "success",
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -146,7 +146,7 @@ app.post("/api/v1/addfood", async (req, res) => {
       status: "success",
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
@@ -161,7 +161,7 @@ app.get("/api/v1/getfood", async (req, res) => {
       food: allFood.rows,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
 
