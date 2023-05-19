@@ -42,7 +42,7 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [ ] On confirmation, delete user and ALL associated records
 
 #### MyFood
-- [x] API calls to add user's food in DB
+- [x] API calls to update user's food in DB
 - [ ] Restyle modal to mimic figma
 - [ ] Edit food (should open in modal with fields populated with current state)
 - [ ] Delete food (should remove food with confirmation and update recipe "missing ingredients")

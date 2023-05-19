@@ -16,14 +16,20 @@ import {
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
+import { useEffect } from "react";
+import config from "../../api/api";
+import axios from "axios";
 
 const MyFood = () => {
-  const { setShowModal, food } = useUser();
-
+  const api = axios.create({
+    baseURL: config,
+  });
+  const [confirmChange, setConfirmChange] = useState(false);
+  const { setShowModal, food, setFood } = useUser();
   const handleEditClick = () => {};
 
   const columns = [
-    { field: "name", headerName: "Name", width: 300 },
+    { field: "description", headerName: "Name", width: 300 },
     {
       field: "edit",
       headerName: "",
@@ -42,25 +48,41 @@ const MyFood = () => {
       width: 200,
       renderCell: (params) => (
         <div class="amountTableRow">
-          <div>{params.value.split("/")[0]}</div>
+          <div>{params.row.amount}</div>
           <div>
-            <span class="amountTag">{params.value.split("/")[1]}</span>
+            <span class="amountTag">{params.row.units}</span>
           </div>
         </div>
       ),
     },
     {
-      field: "dateAdded",
+      field: "date_added",
       headerName: "Date Added",
       width: 160,
     },
     {
-      field: "expiryDate",
+      field: "expiry_date",
       headerName: "Expiry Date",
       width: 160,
     },
   ];
 
+  useEffect(() => {
+    async function fetchInventory() {
+      const userID = localStorage.getItem("user-id");
+      const allFood = await api
+        .get(`/getfood?userID=${userID}`)
+        .then((resp) => {
+          return resp.data.food;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      setFood(allFood);
+    }
+    setConfirmChange(false);
+    fetchInventory();
+  }, [confirmChange]);
 
   return (
     <div id="table">
@@ -83,7 +105,10 @@ const MyFood = () => {
           sx={{ width: "1000px", background: "#f0f0f0", color: "#000000" }}
         />
       </Box>
-      <MyFoodModal />
+      <MyFoodModal
+        confirmChange={confirmChange}
+        setConfirmChange={setConfirmChange}
+      />
     </div>
   );
 };

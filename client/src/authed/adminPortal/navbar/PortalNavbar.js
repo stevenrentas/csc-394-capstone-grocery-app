@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 const AuthNavbar = () => {
   const logout = () => {
     localStorage.removeItem("user-token");
+    localStorage.removeItem("user-id");
     window.location.reload(false);
   };
 

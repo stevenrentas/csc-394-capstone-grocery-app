@@ -6,12 +6,18 @@ import {
   ModalTitle,
 } from "react-bootstrap";
 import { useUser } from "../../../contexts/UserContext";
+import config from "../../../api/api";
+import axios from "axios";
 
-const MyFoodModal = () => {
-  const { showModal, setShowModal, setFood, food } = useUser();
+const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
+  const api = axios.create({
+    baseURL: config,
+  });
+  const userID = localStorage.getItem("user-id");
+
+  const { showModal, setShowModal} = useUser();
 
   const [foodToAdd, setFoodToAdd] = useState({
-    id: food.at(-1).id + 1,
     name: "",
     amount: "",
     dateAdded: "",
@@ -40,9 +46,18 @@ const MyFoodModal = () => {
     }
   };
 
-  const addFood = () => {
-    setFood([...food, foodToAdd]);
-    console.log(foodToAdd.name + " succesfully added!");
+  const addFood = async () => {
+    let db_columns = { ...foodToAdd };
+    db_columns.userID = userID;
+    api
+      .post("/addfood", db_columns)
+      .then((resp) => {
+        setConfirmChange(true);
+        setShowModal(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const backgroundColor = "#D9D9D9";
