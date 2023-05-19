@@ -22,10 +22,20 @@ import CircularProgress from "@mui/material/CircularProgress";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const axios = require("axios");
 const api = axios.create({
   baseURL: config,
+});
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#698669",
+      hover: "#283593", // Custom hover color for the primary button
+    },
+  },
 });
 
 function DeleteDialog(props) {
@@ -54,7 +64,12 @@ function DeleteDialog(props) {
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Are you sure you want to delete this user?</DialogTitle>
       <Stack direction="row" sx={{ mb: 3, justifyContent: "center" }}>
-        <Button variant="contained" sx={{ mr: 2 }} onClick={handleClose}>
+        <Button
+          variant="contained"
+          sx={{ mr: 2 }}
+          color="primary"
+          onClick={handleClose}
+        >
           No
         </Button>
         <Button variant="contained" onClick={deleteUser}>
@@ -283,7 +298,7 @@ const Home = () => {
   const [deleteSelectedValue, setDeleteSelectedValue] = React.useState(null);
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("noRequest");
 
   useEffect(() => {
     console.log(response);
@@ -334,26 +349,30 @@ const Home = () => {
   };
 
   const handleChatGptRequest = async () => {
-    setLoading(true);
+    setLoading("request");
     await api
       .post("/chat", { prompt })
       .then((res) => {
         setResponse(res.data);
       })
       .catch((err) => console.log(err));
-    setLoading(false);
+    setLoading("logged");
     setPrompt("");
+  };
+
+  const onInputChange = (e) => {
+    setPrompt(e.target.value);
   };
 
   return (
     <Box>
       <Box sx={{ display: "flex", mt: 3, pl: 4, pr: 3 }}>
         <Typography variant="h5" sx={{ flexGrow: 1 }}>
-          Welcome Home Admin! You can manage users below.
+          Welcome Home! You can manage users below.
         </Typography>
-        <Button variant="contained" onClick={openAddDialog}>
+        <button id="createAdminAction" onClick={openAddDialog}>
           Create User
-        </Button>
+        </button>
       </Box>
       <Box sx={{ m: 4 }}>
         <TableContainer component={Paper}>
@@ -420,19 +439,21 @@ const Home = () => {
         <Typography variant="h6" sx={{ mb: 1 }}>
           Ask ChatGPT Bot
         </Typography>
-        <TextField
+        <input
           placeholder="Ask anything!"
-          id="prompt"
-          variant="outlined"
-          sx={{ maxWidth: "200px", mr: 2 }}
-          onChange={(e) => setPrompt(e.target.value)}
-          value={prompt}
-        ></TextField>
-        <Button variant="contained" onClick={handleChatGptRequest}>
+          id="askGpt"
+          name="username"
+          onChange={onInputChange}
+        ></input>
+        <button id="pageAction" onClick={handleChatGptRequest}>
           Ask
-        </Button>
+        </button>
         <Typography sx={{ mt: 2 }}>
-          {loading ? "loading..." : "Response logged to console!"}
+          {loading === "request"
+            ? "loading..."
+            : loading === "noRequest"
+            ? ""
+            : "Response logged to console!"}
         </Typography>
       </Box>
       <EditDialog

@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../../api/api";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import FilledInput from "@mui/material/FilledInput";
 
 const Login = () => {
   const axios = require("axios");
@@ -25,8 +27,8 @@ const Login = () => {
   const submitLoginForm = async () => {
     api
       .post("/users", {
-        username: username,
-        pword: password,
+        username: credentials.username,
+        pword: credentials.password,
       })
       .then((response) => {
         if (!response.data.isAuthed) {
@@ -44,6 +46,19 @@ const Login = () => {
       });
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#698669",
+        hover: "#283593", // Custom hover color for the primary button
+      },
+      secondary: {
+        main: "#fffff0",
+        hover: "#283593", // Custom hover color for the primary button
+      },
+    },
+  });
+
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -55,47 +70,67 @@ const Login = () => {
     event.preventDefault();
   };
 
+  /* New */
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [error, setError] = useState({
+    message: "",
+  });
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  async function processLogin() {
+    const db_columns = {
+      username: credentials.username,
+      pword: credentials.password,
+    };
+
+    await api
+      .post("/users", db_columns)
+      .then(function (response) {
+        navigate("/admin/portal");
+      })
+      .catch(function (error) {
+        console.log(error);
+        setError({ message: "Invalid username or password" });
+      });
+  }
+
   return (
-    <Box sx={{ m: 5 }}>
-      <Typography>
-        Welcome to our grocery list app! Please enter your credentials below.
-      </Typography>
-      <Stack>
-        <TextField
-          id="username"
-          label="Username"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <FormControl sx={{ maxWidth: "200px", mt: 2 }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            onChange={(e) => setPassword(e.target.value)}
-            type={showPassword ? "text" : "password"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-        </FormControl>
-      </Stack>
-      <Button sx={{ mt: 2 }} variant="contained" onClick={submitLoginForm}>
-        Submit
-      </Button>
-    </Box>
+    <div id="login">
+      <p class="adminLoginTitle">Admin Login</p>
+      {error.message && <p className="err">{error.message}</p>}
+      <input
+        placeholder="Username"
+        id="credBox"
+        name="username"
+        onChange={onInputChange}
+      ></input>
+      <input
+        placeholder="Password"
+        id="credBox"
+        type="password"
+        name="password"
+        onChange={onInputChange}
+      ></input>
+      <button id="authenticate" onClick={submitLoginForm}>
+        LOG IN
+      </button>
+      <p id="otherAuthPage">
+        <a id="otherAuthPage" href={"/signup"}>
+          Create an account
+        </a>
+      </p>
+    </div>
   );
 };
 

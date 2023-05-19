@@ -28,20 +28,29 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 ### To-Do
 #### Login/Sign Up
 - [x] Authentication implementation against DB
-- [ ] Redirect "/" to "/login"
-- [ ] Restyle inputs on sign-up page
-- [ ] Add icons
-- [ ] Error detection if username already exists (in sign up process)
+- [x] Redirect "/" to "/login"
+- [x] Restyle inputs on sign-up page
+- [x] Error detection if username already exists (in sign up process)
 - [x] Redirect to homepage after signing in/logging in
+- [ ] Add icons
+
+#### UsersPage
+- [ ] Update account information
+- [ ] Add or remove preferences
+- [ ] Logout user
+- [ ] Delete user confirmation
+- [ ] On confirmation, delete user and ALL associated records
 
 #### MyFood
 - [x] API calls to update user's food in DB
-- [ ] Incorrect input handling for modal 
 - [ ] Restyle modal to mimic figma
+- [ ] Edit food (should open in modal with fields populated with current state)
+- [ ] Delete food (should remove food with confirmation and update recipe "missing ingredients")
 
 #### MyRecipes
 - [ ] API calls to update user's recipes in DB
 - [ ] Restyle modal to mimic figma
+- [ ] Implementing the preferences into the prompt
 
 #### General
 - [ ] Navbar should show "My Food/Recipes" **after** signing in, not before
