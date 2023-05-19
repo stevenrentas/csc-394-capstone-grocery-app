@@ -15,7 +15,7 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
   });
   const userID = localStorage.getItem("user-id");
 
-  const { showModal, setShowModal, food, fetchInventory } = useUser();
+  const { showModal, setShowModal} = useUser();
 
   const [foodToAdd, setFoodToAdd] = useState({
     name: "",
@@ -47,8 +47,6 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
   };
 
   const addFood = async () => {
-    console.log(foodToAdd.name + " succesfully added!");
-
     let db_columns = { ...foodToAdd };
     db_columns.userID = userID;
     api
