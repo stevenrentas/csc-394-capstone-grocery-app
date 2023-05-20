@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import { Outlet } from "react-router-dom";
 import PortalNavbar from "./authed/adminPortal/navbar/PortalNavbar";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import Card from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import SnackbarContext from "./contexts/SnackbarContext";
 
 function App() {
+  const { toggleSnackbar } = useContext(SnackbarContext);
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdminLoggedin, setIsAdminLoggedIn] = useState(false);
@@ -43,16 +51,42 @@ function App() {
     palette: {
       primary: {
         main: "#698669",
-        hover: "#283593", // Custom hover color for the primary button
       },
     },
   });
+
+  const handleClick = () => {
+    toggleSnackbar();
+  };
+
+  const { snackbarOpen } = useContext(SnackbarContext);
 
   return (
     <ThemeProvider theme={theme}>
       <React.Fragment>
         {(isLoggedIn || isAdminLoggedin) && <PortalNavbar />}
         <Outlet />
+        <Snackbar open={snackbarOpen}>
+          <Card
+            sx={{
+              backgroundColor: "rgb(217, 217, 217)",
+              width: "500px",
+              height: "200px",
+            }}
+          >
+            <Stack direction="row" sx={{ justifyContent: "center", mt: 2 }}>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClick}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+              <Typography sx={{ mt: "3px" }}>ChatGPT Response</Typography>
+            </Stack>
+          </Card>
+        </Snackbar>
       </React.Fragment>
     </ThemeProvider>
   );

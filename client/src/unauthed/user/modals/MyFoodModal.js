@@ -15,7 +15,7 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
   });
   const userID = localStorage.getItem("user-id");
 
-  const { showModal, setShowModal} = useUser();
+  const { showModal, setShowModal } = useUser();
 
   const [foodToAdd, setFoodToAdd] = useState({
     name: "",
@@ -45,9 +45,11 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
       });
     }
   };
-
   const addFood = async () => {
     let db_columns = { ...foodToAdd };
+    if (db_columns.amount.split("/" === 0)) {
+      db_columns.amount = db_columns.amount + "/" + "lb";
+    }
     db_columns.userID = userID;
     api
       .post("/addfood", db_columns)
@@ -102,6 +104,7 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
                     <option value="tsp">tsp</option>
                     <option value="each">each</option>
                     <option value="cup">cup</option>
+                    <option value="gram">gram</option>
                   </select>
                 </label>
               </span>
@@ -111,9 +114,14 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
                   <input name="expiryDate" onChange={onInputChange}></input>
                 </label>
               </span>
-              <button type="button" id="modal-submit" onClick={addFood}>
-                Add +
-              </button>
+              <div
+                className="pageActionContainer"
+                style={{ marginRight: "45px" }}
+              >
+                <button id="pageAction" onClick={addFood}>
+                  Add +
+                </button>
+              </div>
             </form>
           </ModalBody>
         </ModalDialog>

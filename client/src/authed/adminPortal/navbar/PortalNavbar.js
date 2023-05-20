@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 const AuthNavbar = () => {
   const logout = () => {
@@ -21,20 +22,20 @@ const AuthNavbar = () => {
           <h1 id="appName">FOOD GPT</h1>
           {currPage == "myfood" ? (
             <h4 className="currPage">
-              <a href="/myfood">MY FOOD</a>
+              <Link to="/myfood">MY FOOD</Link>
             </h4>
           ) : (
             <h4 className="links">
-              <a href="/myfood">MY FOOD</a>
+              <Link to="/myfood">MY FOOD</Link>
             </h4>
           )}
           {currPage == "myrecipes" ? (
             <h4 className="currPage">
-              <a href="/myrecipes">MY RECIPES</a>
+              <Link to="/myrecipes">MY RECIPES</Link>
             </h4>
           ) : (
             <h4 className="links">
-              <a href="/myrecipes">MY RECIPES</a>
+              <Link to="/myrecipes">MY RECIPES</Link>
             </h4>
           )}
         </Toolbar>

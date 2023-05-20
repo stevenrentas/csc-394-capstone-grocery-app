@@ -5,6 +5,23 @@ import { useEffect } from "react";
 import config from "../../api/api";
 import axios from "axios";
 import FoodTable from "../../unauthed/user/assets/FoodTable";
+import {
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  DialogTitle,
+  Dialog,
+  Button,
+  Stack,
+  TextField,
+} from "@mui/material";
 
 const MyFood = () => {
   const api = axios.create({
@@ -37,7 +54,7 @@ const MyFood = () => {
           Add +
         </button>
       </div>
-      <FoodTable food={food} columns={columns}/>
+      <FoodTable food={food} columns={columns} />
       <MyFoodModal
         confirmChange={confirmChange}
         setConfirmChange={setConfirmChange}

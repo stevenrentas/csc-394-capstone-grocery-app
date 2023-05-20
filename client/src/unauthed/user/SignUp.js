@@ -22,6 +22,7 @@ const SignUp = () => {
     confirmPassword: "",
     username: "",
     exist: "",
+    password: "",
   });
 
   const onInputChange = (e) => {
@@ -43,8 +44,11 @@ const SignUp = () => {
     ) {
       setError({ emailAddress: "Enter a valid email address." });
       return false;
+    } else if (credentials.password === "") {
+      setError({ password: "Enter a valid password" });
+      return false;
     }
-
+    setError({ password: "" });
     setError({ confirmPassword: "" });
     setError({ emailAddress: "" });
 
@@ -115,6 +119,7 @@ const SignUp = () => {
         name="password"
         onChange={onInputChange}
       ></input>
+      {error.password && <p className="err">{error.password}</p>}
       <input
         placeholder="Verify Password"
         id="credBox"
