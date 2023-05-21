@@ -2,49 +2,75 @@ import React from "react";
 import config from "../../../api/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { ModalBody, ModalDialog, ModalHeader, ModalTitle } from 'react-bootstrap';
+import {
+  ModalBody,
+  ModalDialog,
+  ModalHeader,
+  ModalTitle,
+} from "react-bootstrap";
 import { useUser } from "../../../contexts/UserContext";
 import IngredientPicker from "../assets/IngredientPicker";
+import {
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  DialogTitle,
+  Dialog,
+  Button,
+  Stack,
+  TextField,
+} from "@mui/material";
+import FoodTable from "../../user/assets/FoodTable";
 
-const MyRecipesModal = () => {
-    const api = axios.create({
-        baseURL: config,
-      });
-    const [confirmChange, setConfirmChange] = useState(false);
-    const {showModal, setShowModal, food, setFood, columns} = useUser();
+const MyRecipesModal = (props) => {
+  const { addDialogOpen, setConfirmChange, onClose } = props;
+  const api = axios.create({
+    baseURL: config,
+  });
+  const { showModal, setShowModal, food, setFood, columns } = useUser();
 
-    useEffect(() => {
-        async function fetchInventory() {
-          const userID = localStorage.getItem("user-id");
-          const allFood = await api
-            .get(`/getfood?userID=${userID}`)
-            .then((resp) => {
-              return resp.data.food;
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          setFood(allFood);
-        }
-        setConfirmChange(false);
-        fetchInventory();
-      }, [confirmChange]);
-
-    const backgroundColor = "#D9D9D9";
-    if (showModal){
-        return (
-            <div id="modal">
-                <ModalDialog style={{backgroundColor:backgroundColor}}>
-                    <ModalHeader style={{backgroundColor:backgroundColor}}>
-                        <button className="modalClose" onClick={e => setShowModal(false)}>X</button>
-                        <ModalTitle style={{backgroundColor:backgroundColor, color: "#383838", display: "grid", justifyContent:"center", alignContent:"center"}}>GENERATE RECIPE</ModalTitle>
-                    </ModalHeader>
-                    <ModalBody style={{backgroundColor:backgroundColor}}>
-                            <IngredientPicker/>
-                    </ModalBody>
-                </ModalDialog>
-            </div>
-        );
+  useEffect(() => {
+    async function fetchInventory() {
+      const userID = localStorage.getItem("user-id");
+      const allFood = await api
+        .get(`/getfood?userID=${userID}`)
+        .then((resp) => {
+          return resp.data.food;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      setFood(allFood);
     }
-}
+    setConfirmChange(false);
+    fetchInventory();
+  }, [addDialogOpen]);
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={addDialogOpen} maxWidth="xl">
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          fontFamily: '"Montserrat", sans-serif',
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        GENERATE RECIPE
+      </DialogTitle>
+      <FoodTable food={food} columns={columns} />
+      <IngredientPicker />
+    </Dialog>
+  );
+};
 export default MyRecipesModal;

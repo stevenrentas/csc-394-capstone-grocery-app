@@ -34,7 +34,13 @@ const UserLogin = () => {
     await api
       .post("/users", db_columns)
       .then(function (response) {
-        navigatePage(response);
+        if (response.data.isadmin === true) {
+          setError({
+            message: "User does not have required access",
+          });
+        } else {
+          navigatePage(response);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -44,6 +50,7 @@ const UserLogin = () => {
 
   const navigatePage = (response) => {
     if (response.statusText === "OK") {
+      localStorage.clear();
       localStorage.setItem("user-token", response.data.token);
       localStorage.setItem("user-id", response.data.uid);
       window.location = "/myfood";
