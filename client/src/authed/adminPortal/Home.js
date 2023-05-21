@@ -87,6 +87,7 @@ function EditDialog(props) {
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [adminPermissions, setAdminPermissions] = React.useState("");
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -121,6 +122,9 @@ function EditDialog(props) {
           setFirstName(response.data[0].first_name);
           setLastName(response.data[0].last_name);
           setEmail(response.data[0].email);
+          setAdminPermissions(
+            response.data[0].isadmin === true ? "admin" : "user"
+          );
         })
         .catch((error) => {
           console.log(error);
@@ -134,55 +138,100 @@ function EditDialog(props) {
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Edit User Details Below</DialogTitle>
-      <Stack sx={{ ml: 3, mb: 3 }}>
-        <TextField
-          id="username"
-          label="Username"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
-        />
-        <TextField
-          id="first_name"
-          label="First Name"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setFirstName(e.target.value)}
-          value={firstName}
-        />
-        <TextField
-          id="last_name"
-          label="Last Name"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setLastName(e.target.value)}
-          value={lastName}
-        />
-        <TextField
-          id="email"
-          label="Email"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
-        <TextField
-          id="password"
-          label="Password"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button
-          variant="contained"
-          onClick={editUser}
-          sx={{ mt: 2, maxWidth: "135px" }}
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          fontFamily: '"Montserrat", sans-serif',
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        Edit User Details Below
+      </DialogTitle>
+      <form className="foodModal" onSubmit={(event) => event.preventDefault()}>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Username
+              <input
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              First name
+              <input
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Last name
+              <input
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Email
+              <input
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Password
+              <input
+                name="name"
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span id="adminInput">
+            <label class="fieldLabel">
+              Permissions
+              <select
+                name="adminPermissions"
+                value={adminPermissions}
+                onChange={(e) => setAdminPermissions(e.target.value)}
+                style={{ width: "85px", marginTop: "5px" }}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
+          </span>
+        </div>
+        <div
+          className="pageActionContainer"
+          style={{ marginRight: "18px", marginTop: "35px" }}
         >
-          Submit
-        </Button>
-      </Stack>
+          <button id="pageAction" onClick={editUser}>
+            Add +
+          </button>
+        </div>
+      </form>
     </Dialog>
   );
 }
@@ -194,6 +243,7 @@ function AddDialog(props) {
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [adminPermissions, setAdminPermissions] = React.useState("");
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -207,6 +257,7 @@ function AddDialog(props) {
         last_name: lastName,
         email: email,
         pword: password,
+        isAdmin: adminPermissions === "admin" ? true : false,
       })
       .then((response) => {
         console.log(response);
@@ -220,51 +271,95 @@ function AddDialog(props) {
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Input User Details Below</DialogTitle>
-      <Stack sx={{ ml: 3, mb: 3 }}>
-        <TextField
-          id="username"
-          label="Username"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          id="first_name"
-          label="First Name"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <TextField
-          id="last_name"
-          label="Last Name"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <TextField
-          id="email"
-          label="Email"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          id="password"
-          label="Password"
-          variant="outlined"
-          sx={{ mt: 2, maxWidth: "200px" }}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button
-          variant="contained"
-          onClick={addUser}
-          sx={{ mt: 2, maxWidth: "135px" }}
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          fontFamily: '"Montserrat", sans-serif',
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        Input User Details Below
+      </DialogTitle>
+      <form className="foodModal" onSubmit={(event) => event.preventDefault()}>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Username
+              <input
+                name="name"
+                onChange={(e) => setUsername(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              First name
+              <input
+                name="name"
+                onChange={(e) => setFirstName(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Last name
+              <input
+                name="name"
+                onChange={(e) => setLastName(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Email
+              <input
+                name="name"
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Password
+              <input
+                name="name"
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span id="quantityInput">
+            <label class="fieldLabel">
+              Permissions
+              <select
+                name="unit"
+                onChange={(e) => setAdminPermissions(e.target.value)}
+                style={{ width: "85px", marginTop: "5px" }}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
+          </span>
+        </div>
+        <div
+          className="pageActionContainer"
+          style={{ marginRight: "18px", marginTop: "35px" }}
         >
-          Submit
-        </Button>
-      </Stack>
+          <button id="pageAction" onClick={addUser}>
+            Add +
+          </button>
+        </div>
+      </form>
     </Dialog>
   );
 }
@@ -366,7 +461,7 @@ const Home = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", mt: 3, pl: 4, pr: 3 }}>
+      <Box sx={{ display: "flex", mt: 3, pl: 4, paddingRight: "30px" }}>
         <Typography variant="h5" sx={{ flexGrow: 1 }}>
           Welcome Home! You can manage users below.
         </Typography>
@@ -375,7 +470,13 @@ const Home = () => {
         </button>
       </Box>
       <Box sx={{ m: 4 }}>
-        <TableContainer component={Paper}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            background: "#f0f0f0",
+            color: "#000000",
+          }}
+        >
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -384,6 +485,7 @@ const Home = () => {
                 <TableCell>Last Name</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Password</TableCell>
+                <TableCell>Permissions</TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableRow>
@@ -400,6 +502,7 @@ const Home = () => {
                     <TableCell>{row.last_name}</TableCell>
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{"********"}</TableCell>
+                    <TableCell>{row.isadmin ? "Admin" : "User"}</TableCell>
                     <TableCell>
                       <IconButton onClick={() => openEditDialog(row.id)}>
                         <EditIcon />

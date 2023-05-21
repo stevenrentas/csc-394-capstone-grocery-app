@@ -49,6 +49,7 @@ app.post("/api/v1/users", async (req, res) => {
         isAuthed: true,
         token: "isAuthed",
         uid: checkUserExists.rows.at(0).id,
+        isadmin: checkUserExists.rows.at(0).isadmin,
       });
     } else {
       res.status(401).json({
@@ -85,7 +86,7 @@ app.post("/api/v1/user", async (req, res) => {
 // Add a user based on given input
 app.post("/api/v1/adduser", async (req, res) => {
   try {
-    const { username, first_name, last_name, email, pword } = req.body;
+    const { username, first_name, last_name, email, pword, isAdmin } = req.body;
     const checkUserExists = await db.query(
       `SELECT * FROM users WHERE email='${email}' OR username = '${username}';`
     );
@@ -95,7 +96,7 @@ app.post("/api/v1/adduser", async (req, res) => {
       });
     } else {
       await db.query(
-        `INSERT INTO users (username, first_name, last_name, email, pword) values ('${username}', '${first_name}', '${last_name}', '${email}', '${pword}');`
+        `INSERT INTO users (username, first_name, last_name, email, pword, isAdmin) values ('${username}', '${first_name}', '${last_name}', '${email}', '${pword}', '${isAdmin}');`
       );
       res.status(200).json({
         status: "success",
@@ -122,9 +123,10 @@ app.delete("/api/v1/users", async (req, res) => {
 // Update a user based on a given ID
 app.put("/api/v1/users", async (req, res) => {
   try {
-    const { id, username, first_name, last_name, email, pword } = req.body;
+    const { id, username, first_name, last_name, email, pword, isAdmin } =
+      req.body;
     await db.query(
-      `UPDATE users SET username='${username}', first_name='${first_name}', last_name='${last_name}', email='${email}', pword='${pword}' WHERE id='${id}';`
+      `UPDATE users SET username='${username}', first_name='${first_name}', last_name='${last_name}', email='${email}', pword='${pword}', isAdmin='${isAdmin}' WHERE id='${id}';`
     );
     res.status(200).json({
       status: "success",

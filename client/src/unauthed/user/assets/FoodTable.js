@@ -7,7 +7,7 @@ const FoodTable = (props) => {
   const columns = props.columns;
 
   return (
-    <Box sx={{ height: 655, width: "100%", pt: 3 }}>
+    <Box sx={{ height: 655, width: "100%" }}>
       <DataGrid
         rows={food}
         columns={columns}

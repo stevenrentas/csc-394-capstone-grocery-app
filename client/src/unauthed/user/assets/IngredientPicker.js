@@ -37,8 +37,7 @@ const IngredientPicker = (props) => {
   };
 
   return (
-    <div>
-      <h2>{response === {} ? "sdfsdf" : "Generate recipe..."}</h2>
+    <div class="ingredientModal">
       <div className="pageActionContainer" style={{ marginRight: "45px" }}>
         <button id="pageActionWider" onClick={generateRecipe}>
           Generate &gt;

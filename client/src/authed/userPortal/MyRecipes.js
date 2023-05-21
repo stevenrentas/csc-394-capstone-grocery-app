@@ -84,10 +84,17 @@ const MyRecipes = () => {
     },
   ];
 
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [confirmChange, setConfirmChange] = useState(false);
+
+  const handleAddClose = () => {
+    setAddDialogOpen(false);
+  };
+
   return (
     <div id="table">
       <div className="pageActionContainer">
-        <button id="pageActionRecipe" onClick={(e) => setShowModal(true)}>
+        <button id="pageActionRecipe" onClick={(e) => setAddDialogOpen(true)}>
           Generate Recipe
         </button>
       </div>
@@ -105,7 +112,11 @@ const MyRecipes = () => {
           sx={{ width: "1000px", background: "#f0f0f0", color: "#000000" }}
         />
       </Box>
-      <MyRecipesModal />
+      <MyRecipesModal
+        addDialogOpen={addDialogOpen}
+        setConfirmChange={setConfirmChange}
+        onClose={handleAddClose}
+      />
     </div>
   );
 };
