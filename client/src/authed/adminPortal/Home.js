@@ -118,7 +118,6 @@ function EditDialog(props) {
       api
         .post("/user", { id: selectedValue })
         .then((response) => {
-          console.log(response);
           setUsername(response.data[0].username);
           setFirstName(response.data[0].first_name);
           setLastName(response.data[0].last_name);
