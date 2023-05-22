@@ -68,8 +68,7 @@ const MyRecipesModal = (props) => {
       >
         GENERATE RECIPE
       </DialogTitle>
-      <FoodTable food={food} columns={columns} />
-      <IngredientPicker />
+      <IngredientPicker food={food} columns={columns}/>
     </Dialog>
   );
 };

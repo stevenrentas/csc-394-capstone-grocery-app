@@ -5,8 +5,12 @@ import config from "../../../api/api";
 import axios from "axios";
 import { useUser } from "../../../contexts/UserContext";
 import SnackbarContext from "../../../contexts/SnackbarContext";
+import FoodTable from "./FoodTable";
 
 const IngredientPicker = (props) => {
+  const food = props.food;
+  const columns = props.columns;
+
   const api = axios.create({
     baseURL: config,
   });
@@ -76,6 +80,7 @@ const IngredientPicker = (props) => {
 
   return (
     <div class="ingredientModal">
+      <FoodTable food={food} columns={columns} />
       <div className="pageActionContainer" style={{ marginRight: "45px" }}>
         <button id="pageActionWider" onClick={generateRecipe}>
           Generate &gt;

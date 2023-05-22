@@ -18,6 +18,7 @@ const FoodTable = (props) => {
         }}
         pageSizeOptions={[10, 20, 30]}
         checkboxSelection
+        onRowSelectionModelChange={item => console.log(item)}
         sx={{
           width: "1000px",
           background: "#f0f0f0",
