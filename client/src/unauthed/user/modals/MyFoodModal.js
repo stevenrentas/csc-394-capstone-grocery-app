@@ -96,7 +96,7 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
                   Quantity
                   <input name="amount" onChange={onInputChange}></input>
                   <select name="unit" onChange={onInputChange}>
-                    <option value="lb">lb</option>
+                    <option value="lb" selected>lb</option>
                     <option value="kg">kg</option>
                     <option value="oz">oz</option>
                     <option value="fl oz">fl oz</option>

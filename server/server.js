@@ -20,6 +20,7 @@ app.use(express.json());
 // Request for chatgpt
 app.post("/api/v1/chat", async (req, res) => {
   const { prompt } = req.body;
+  console.log(prompt);
   try {
     const response = await openai.createCompletion({
       model: "text-davinci-003",

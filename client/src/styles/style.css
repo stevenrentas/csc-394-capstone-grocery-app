@@ -1,3 +1,7 @@
+:root{
+  --button-roundness: 15px;
+}
+
 * {
   font-family: "Montserrat", sans-serif;
 }
@@ -156,6 +160,7 @@ body {
   padding: 7px 18px;
   box-shadow: none;
   margin-left: auto;
+  border-radius: var(--button-roundness);
 }
 
 #pageAction:hover {
@@ -173,6 +178,7 @@ body {
   padding: 7px 18px;
   box-shadow: none;
   margin-left: auto;
+  border-radius: var(--button-roundness);
 }
 
 #pageActionWider:hover {
@@ -189,6 +195,7 @@ body {
   text-align: center;
   padding: 7px 18px;
   box-shadow: none;
+  border-radius: var(--button-roundness);
 }
 
 #pageActionRecipe:hover {
@@ -268,7 +275,7 @@ body {
 .amountTag {
   color: #fffff0;
   background-color: #698669;
-  border-radius: 2px;
+  border-radius: var(--button-roundness);
   padding: 2px 10px;
   font-weight: 500;
 }
