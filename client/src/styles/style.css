@@ -243,10 +243,8 @@ body {
 
 .foodModal {
   padding-bottom: 45px;
-}
-
-.foodModal span {
-  padding: 10%;
+  width: 350px;
+  background-color: #f0f0f0;
 }
 
 .foodModal span label {
@@ -298,4 +296,23 @@ body {
   background-color: #5f795f;
   border-color: #5f795f;
   color: rgba(255, 255, 240, 0.89);
+}
+
+.inputField {
+  margin: 5%;
+}
+
+.fieldLabel {
+  display: flex;
+  margin-bottom: 0.5rem;
+  flex-direction: column;
+}
+
+.fieldLabel input {
+  margin-top: 5px;
+}
+
+.ingredientModal {
+  padding: 20px;
+  background-color: #f0f0f0;
 }

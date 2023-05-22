@@ -31,15 +31,17 @@ const Login = () => {
         pword: credentials.password,
       })
       .then((response) => {
-        if (!response.data.isAuthed) {
+        if (response.data.isadmin !== true) {
           alert("Unable to login. Please try after some time.");
           return;
+        } else {
+          localStorage.clear();
+          localStorage.setItem("admin-token", response.data.token);
+          localStorage.setItem("user-id", response.data.uid);
+          setTimeout(() => {
+            navigate("/admin/portal");
+          }, 500);
         }
-        localStorage.setItem("admin-token", response.data.token);
-        localStorage.setItem("user-id", response.data.uid);
-        setTimeout(() => {
-          navigate("/admin/portal");
-        }, 500);
       })
       .catch((error) => {
         console.log(error);

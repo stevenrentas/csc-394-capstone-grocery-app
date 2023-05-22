@@ -10,12 +10,15 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import SnackbarContext from "./contexts/SnackbarContext";
+import { useLocation } from "react-router-dom";
 
 function App() {
   const { toggleSnackbar } = useContext(SnackbarContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdminLoggedin, setIsAdminLoggedIn] = useState(false);
+
   const checkUserToken = () => {
     const adminPortalPage =
       window.location.href.split("/")[3] +
@@ -31,6 +34,14 @@ function App() {
       window.location.href = "/admin";
     } else if (adminToken == "isAuthed") {
       setIsAdminLoggedIn(true);
+      if (
+        (adminPortalPage !== "admin/portal" ||
+          window.location.href.split("/")[3] !== "admin") &&
+        window.location.href.split("/")[3] !== "login"
+      ) {
+        navigate("/admin/portal");
+        setIsLoggedIn(false);
+      }
     } else if (!userToken || userToken === "undefined") {
       setIsLoggedIn(false);
       window.location.href = "/login";
@@ -41,7 +52,7 @@ function App() {
 
   useEffect(() => {
     checkUserToken();
-  }, [isLoggedIn, isAdminLoggedin]);
+  }, [isLoggedIn, isAdminLoggedin, location]);
 
   useEffect(() => {
     checkUserToken();

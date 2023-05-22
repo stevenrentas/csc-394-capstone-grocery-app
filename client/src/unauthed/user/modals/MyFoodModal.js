@@ -1,21 +1,31 @@
 import React, { useState } from "react";
-import {
-  ModalBody,
-  ModalDialog,
-  ModalHeader,
-  ModalTitle,
-} from "react-bootstrap";
 import { useUser } from "../../../contexts/UserContext";
 import config from "../../../api/api";
 import axios from "axios";
+import {
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  DialogTitle,
+  Dialog,
+  Button,
+  Stack,
+  TextField,
+} from "@mui/material";
 
-const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
+const MyFoodModal = (props) => {
+  const { addDialogOpen, setConfirmChange, onClose } = props;
   const api = axios.create({
     baseURL: config,
   });
   const userID = localStorage.getItem("user-id");
-
-  const { showModal, setShowModal } = useUser();
 
   const [foodToAdd, setFoodToAdd] = useState({
     name: "",
@@ -45,6 +55,7 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
       });
     }
   };
+
   const addFood = async () => {
     let db_columns = { ...foodToAdd };
     if (db_columns.amount.split("/" === 0)) {
@@ -55,78 +66,78 @@ const MyFoodModal = ({ confirmChange, setConfirmChange }) => {
       .post("/addfood", db_columns)
       .then((resp) => {
         setConfirmChange(true);
-        setShowModal(false);
+        handleClose();
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  const backgroundColor = "#D9D9D9";
-  if (showModal) {
-    return (
-      <div id="modal">
-        <ModalDialog style={{ backgroundColor: backgroundColor }}>
-          <ModalHeader style={{ backgroundColor: backgroundColor }}>
-            <button className="modalClose" onClick={(e) => setShowModal(false)}>
-              X
-            </button>
-            <ModalTitle
-              style={{
-                backgroundColor: backgroundColor,
-                color: "#383838",
-                display: "grid",
-                justifyContent: "center",
-                alignContent: "center",
-              }}
-            >
-              ADD FOOD
-            </ModalTitle>
-          </ModalHeader>
-          <ModalBody style={{ backgroundColor: backgroundColor }}>
-            <form className="foodModal">
-              <span>
-                <label>
-                  Name
-                  <input name="name" onChange={onInputChange}></input>
-                </label>
-              </span>
-              <span id="quantityInput">
-                <label>
-                  Quantity
-                  <input name="amount" onChange={onInputChange}></input>
-                  <select name="unit" onChange={onInputChange}>
-                    <option value="lb" selected>lb</option>
-                    <option value="kg">kg</option>
-                    <option value="oz">oz</option>
-                    <option value="fl oz">fl oz</option>
-                    <option value="tbsp">tbsp</option>
-                    <option value="tsp">tsp</option>
-                    <option value="each">each</option>
-                    <option value="cup">cup</option>
-                    <option value="gram">gram</option>
-                  </select>
-                </label>
-              </span>
-              <span>
-                <label>
-                  Expiration Date
-                  <input name="expiryDate" onChange={onInputChange}></input>
-                </label>
-              </span>
-              <div
-                className="pageActionContainer"
-                style={{ marginRight: "45px" }}
+  const handleClose = () => {
+    onClose();
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={addDialogOpen}>
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          fontFamily: '"Montserrat", sans-serif',
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        ADD FOOD
+      </DialogTitle>
+      <form className="foodModal" onSubmit={(event) => event.preventDefault()}>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Name
+              <input name="name" onChange={onInputChange}></input>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span id="quantityInput">
+            <label class="fieldLabel">
+              Quantity
+              <input name="amount" onChange={onInputChange}></input>
+              <select
+                name="unit"
+                onChange={onInputChange}
+                style={{ width: "68px" }}
               >
-                <button id="pageAction" onClick={addFood}>
-                  Add +
-                </button>
-              </div>
-            </form>
-          </ModalBody>
-        </ModalDialog>
-      </div>
-    );
-  }
+                <option value="lb">lb</option>
+                <option value="kg">kg</option>
+                <option value="oz">oz</option>
+                <option value="fl oz">fl oz</option>
+                <option value="tbsp">tbsp</option>
+                <option value="tsp">tsp</option>
+                <option value="each">each</option>
+                <option value="cup">cup</option>
+                <option value="gram">gram</option>
+              </select>
+            </label>
+          </span>
+        </div>
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel">
+              Expiration Date
+              <input name="expiryDate" onChange={onInputChange}></input>
+            </label>
+          </span>
+        </div>
+        <div
+          className="pageActionContainer"
+          style={{ marginRight: "18px", marginTop: "35px" }}
+        >
+          <button id="pageAction" onClick={addFood}>
+            Add +
+          </button>
+        </div>
+      </form>
+    </Dialog>
+  );
 };
 export default MyFoodModal;
