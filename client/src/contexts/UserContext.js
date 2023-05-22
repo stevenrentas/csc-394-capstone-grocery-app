@@ -7,6 +7,7 @@ export const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [food, setFood] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
   const handleEditClick = () => {};
   const columns = [
@@ -55,7 +56,9 @@ export const UserProvider = ({ children }) => {
         setShowModal,
         food,
         setFood,
-        columns
+        columns,
+        ingredients,
+        setIngredients
       }}
     >
       {children}

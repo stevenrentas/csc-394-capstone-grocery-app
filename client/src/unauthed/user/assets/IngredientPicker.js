@@ -8,7 +8,7 @@ import SnackbarContext from "../../../contexts/SnackbarContext";
 import FoodTable from "./FoodTable";
 
 const IngredientPicker = (props) => {
-  const food = props.food;
+  const foodData = props.food;
   const columns = props.columns;
 
   const api = axios.create({
@@ -16,22 +16,30 @@ const IngredientPicker = (props) => {
   });
 
   const [setConfirmChange] = useState(false);
-  const { setShowModal } = useUser();
+  const { setShowModal, ingredients, food } = useUser();
   const userID = localStorage.getItem("user-id");
   const [response, setResponse] = useState({});
   const { toggleSnackbar } = useContext(SnackbarContext);
 
   const promptBuilder = () => {
-    const fakeArray = ["4lb chicken breast", "2lb smoked meats"];
+    let selectedIngredients = [];
+    for (let i = 0; i < ingredients.length; i++){
+      for (let y = 0; y < food.length; y++){
+        if (food[y].id === ingredients[i]){
+          selectedIngredients.push(`${food[y].amount}${food[y].units} ${food[y].description}`);
+        }
+      }
+    }
+
     const fakePref = ["Asian", "low-fat"];
     let prompt = `I have `;
     // filter in ingredients with amounts/units
-    for (let i = 0; i < fakeArray.length; i++){
-      prompt += fakeArray[i];
-      if (i !== fakeArray.length - 1){
+    for (let i = 0; i < selectedIngredients.length; i++){
+      prompt += selectedIngredients[i];
+      if (i !== selectedIngredients.length - 1){
         prompt += ",";
       }
-      if (i === fakeArray.length - 1){
+      if (i === selectedIngredients.length - 1){
         prompt += ".";
       }
       prompt += " ";
@@ -79,8 +87,8 @@ const IngredientPicker = (props) => {
   };
 
   return (
-    <div class="ingredientModal">
-      <FoodTable food={food} columns={columns} />
+    <div className="ingredientModal">
+      <FoodTable food={foodData} columns={columns} />
       <div className="pageActionContainer" style={{ marginRight: "45px" }}>
         <button id="pageActionWider" onClick={generateRecipe}>
           Generate &gt;
