@@ -48,9 +48,10 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [ ] Delete food (should remove food with confirmation and update recipe "missing ingredients")
 
 #### MyRecipes
-- [ ] API calls to update user's recipes in DB - out of scope?
+- [ ] API calls to delete user's recipes in DB
 - [x] Restyle modal to mimic figma
 - [ ] Implementing the preferences into the prompt
+- [ ] Implement modal to see the recipe in full
 
 #### General
-- [ ] Navbar should show "My Food/Recipes" **after** signing in, not before
+- [x] Navbar should show "My Food/Recipes" **after** signing in, not before
