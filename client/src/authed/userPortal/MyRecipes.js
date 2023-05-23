@@ -36,19 +36,7 @@ const MyRecipes = () => {
   });
 
   const columns = [
-    { field: "title", headerName: "Title", width: 300 },
-    {
-      field: "edit",
-      headerName: "",
-      width: 60,
-      renderCell: (params) => (
-        <div onClick={() => handleEditClick(params.row.id)}>
-          <IconButton>
-            <Edit sx={{ height: "20px" }} />
-          </IconButton>
-        </div>
-      ),
-    },
+    { field: "title", headerName: "Title", width: 350 },
     {
       field: "missingIngredients",
       headerName: "Missing Ingredients",
@@ -99,7 +87,6 @@ const MyRecipes = () => {
             },
           }}
           pageSizeOptions={[10, 20, 30]}
-          checkboxSelection
           sx={{ width: "1000px", background: "#f0f0f0", color: "#000000" }}
         />
       </Box>

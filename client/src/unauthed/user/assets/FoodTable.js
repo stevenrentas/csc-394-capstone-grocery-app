@@ -8,10 +8,10 @@ import AddDialog from "../../../unauthed/user/modals/MyFoodModal";
 
 const FoodTable = (props) => {
   const food = props.food;
+  const isIngredientPicker = props.isIngredientPicker;
   const [editId, setEditId] = React.useState(null);
 
   const handleEditClick = (id) => {
-    // event.stopPropagation();
     setAddDialogOpen(true);
     setEditId(id);
   };
@@ -73,7 +73,7 @@ const FoodTable = (props) => {
           },
         }}
         pageSizeOptions={[10, 20, 30]}
-        checkboxSelection
+        checkboxSelection={isIngredientPicker}
         onRowSelectionModelChange={(item) => setIngredients(item)}
         sx={{
           width: "1000px",

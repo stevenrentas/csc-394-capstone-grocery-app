@@ -100,7 +100,7 @@ const IngredientPicker = (props) => {
 
   return (
     <div className="ingredientModal">
-      <FoodTable food={foodData} columns={columns} />
+      <FoodTable food={foodData} columns={columns} isIngredientPicker={true} />
       <div className="pageActionContainer" style={{ marginTop: "20px" }}>
         <button id="pageActionWider" onClick={generateRecipe}>
           Generate &gt;
