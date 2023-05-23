@@ -48,8 +48,8 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 - [ ] Delete food (should remove food with confirmation and update recipe "missing ingredients")
 
 #### MyRecipes
-- [ ] API calls to delete user's recipes in DB
 - [x] Restyle modal to mimic figma
+- [ ] API calls to delete user's recipes in DB
 - [ ] Implementing the preferences into the prompt
 - [ ] Implement modal to see the recipe in full
 
