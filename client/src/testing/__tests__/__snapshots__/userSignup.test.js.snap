@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User Signup Components <Signup.js> renders components and makes snapshot 1`] = `
+<div>
+  <div
+    id="login"
+  >
+    <input
+      id="credBox"
+      name="firstname"
+      placeholder="First Name"
+    />
+    <input
+      id="credBox"
+      name="lastname"
+      placeholder="Last Name"
+    />
+    <input
+      id="credBox"
+      name="username"
+      placeholder="Username"
+    />
+    <input
+      id="credBox"
+      name="emailAddress"
+      placeholder="Email Address"
+    />
+    <input
+      id="credBox"
+      name="password"
+      placeholder="Password"
+      type="password"
+    />
+    <input
+      id="credBox"
+      name="confirmPassword"
+      placeholder="Verify Password"
+      type="password"
+    />
+    <button
+      id="authenticate"
+    >
+      CREATE ACCOUNT
+    </button>
+    <p
+      id="otherAuthPage"
+    >
+      <a
+        href="/login"
+        id="otherAuthPage"
+      >
+        Already a member?
+      </a>
+    </p>
+  </div>
+</div>
+`;
