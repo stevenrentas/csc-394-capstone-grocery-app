@@ -530,35 +530,6 @@ const Home = () => {
           </Table>
         </TableContainer>
       </Box>
-      <Box
-        sx={{
-          ml: 4,
-          mr: 4,
-          mt: 2,
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Ask ChatGPT Bot
-        </Typography>
-        <input
-          placeholder="Ask anything!"
-          id="askGpt"
-          name="username"
-          onChange={onInputChange}
-        ></input>
-        <button id="pageAction" onClick={handleChatGptRequest}>
-          Ask
-        </button>
-        <Typography sx={{ mt: 2 }}>
-          {loading === "request"
-            ? "loading..."
-            : loading === "noRequest"
-            ? ""
-            : "Response logged to console!"}
-        </Typography>
-      </Box>
       <EditDialog
         open={editDialogOpen}
         selectedValue={editSelectedValue}

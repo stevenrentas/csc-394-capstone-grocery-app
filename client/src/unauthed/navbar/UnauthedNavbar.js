@@ -12,24 +12,6 @@ const AuthNavbar = () => {
       <AppBar position="static" id="navBar" sx={{ boxShadow: "none" }}>
         <Toolbar>
           <h1 id="appName">FOOD GPT</h1>
-          {currPage == "myfood" ? (
-            <h4 className="currPage">
-              <a href="/myfood">MY FOOD</a>
-            </h4>
-          ) : (
-            <h4 className="links">
-              <a href="/myfood">MY FOOD</a>
-            </h4>
-          )}
-          {currPage == "myrecipes" ? (
-            <h4 className="currPage">
-              <a href="/myrecipes">MY RECIPES</a>
-            </h4>
-          ) : (
-            <h4 className="links">
-              <a href="/myrecipes">MY RECIPES</a>
-            </h4>
-          )}
         </Toolbar>
       </AppBar>
     </Box>
