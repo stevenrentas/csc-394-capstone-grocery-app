@@ -43,13 +43,13 @@ OPENAI_SECRET_KEY={your-api-secret-key}
 
 #### MyFood
 - [x] API calls to update user's food in DB
-- [ ] Restyle modal to mimic figma
-- [ ] Edit food (should open in modal with fields populated with current state)
+- [x] Restyle modal to mimic figma
+- [x] Edit food (should open in modal with fields populated with current state)
 - [ ] Delete food (should remove food with confirmation and update recipe "missing ingredients")
 
 #### MyRecipes
-- [ ] API calls to update user's recipes in DB
-- [ ] Restyle modal to mimic figma
+- [ ] API calls to update user's recipes in DB - out of scope?
+- [x] Restyle modal to mimic figma
 - [ ] Implementing the preferences into the prompt
 
 #### General
