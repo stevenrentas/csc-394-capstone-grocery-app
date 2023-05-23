@@ -44,7 +44,7 @@ const MyFood = () => {
   return (
     <div id="table">
       <div className="pageActionContainer">
-        <button id="pageAction" onClick={handleOpenDialog}>
+        <button id="pageActionWider" onClick={handleOpenDialog}>
           Add Food
         </button>
       </div>
