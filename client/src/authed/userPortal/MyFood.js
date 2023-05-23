@@ -45,7 +45,7 @@ const MyFood = () => {
     <div id="table">
       <div className="pageActionContainer">
         <button id="pageAction" onClick={handleOpenDialog}>
-          Add +
+          Add Food
         </button>
       </div>
       <Box sx={{ pt: 3 }}>
