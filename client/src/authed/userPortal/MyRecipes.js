@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
 import MyRecipesModal from "../../unauthed/user/modals/MyRecipesModal";
 import { DataGrid } from "@mui/x-data-grid";
@@ -16,14 +16,27 @@ import {
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
+import MyFoodModal from "../../unauthed/user/modals/MyFoodModal";
+import config from "../../api/api";
+import axios from "axios";
+import FoodTable from "../../unauthed/user/assets/FoodTable";
+import AddDialog from "../../unauthed/user/modals/MyFoodModal";
 
 const MyRecipes = () => {
   const { setShowModal } = useUser();
-
+  const api = axios.create({
+    baseURL: config,
+  });
+  const { recipes, setRecipes, food, setFood } = useUser();
   const handleEditClick = () => {};
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [confirmChange, setConfirmChange] = useState(false);
+  recipes.map((item) => {
+    item.missingIngredients = item.missing_ingredients.join(", ");
+  });
 
   const columns = [
-    { field: "name", headerName: "Name", width: 300 },
+    { field: "title", headerName: "Title", width: 300 },
     {
       field: "edit",
       headerName: "",
@@ -39,53 +52,31 @@ const MyRecipes = () => {
     {
       field: "missingIngredients",
       headerName: "Missing Ingredients",
-      width: 200,
+      flex: 1,
     },
     {
-      field: "dateAdded",
+      field: "date_added",
       headerName: "Date Added",
       width: 160,
     },
-    {
-      field: "favoriteLevel",
-      headerName: "Favorite Level",
-      width: 160,
-    },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      name: "Chicken Orzo Soup",
-      missingIngredients: "0",
-      dateAdded: "4/28/2023",
-      favoriteLevel: "1",
-    },
-    {
-      id: 2,
-      name: "Chilaquiles",
-      missingIngredients: "1",
-      dateAdded: "4/21/2023",
-      favoriteLevel: "2",
-    },
-    {
-      id: 3,
-      name: "Banana Nutella French Toast",
-      missingIngredients: "3",
-      dateAdded: "3/14/2023",
-      favoriteLevel: "3",
-    },
-    {
-      id: 4,
-      name: "Stuffed Portabella w/ Quinoa",
-      missingIngredients: "4",
-      dateAdded: "4/28/2023",
-      favoriteLevel: "3",
-    },
-  ];
-
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [confirmChange, setConfirmChange] = useState(false);
+  useEffect(() => {
+    async function fetchRecipes() {
+      const userID = localStorage.getItem("user-id");
+      const allRecipes = await api
+        .get(`/getrecipes?userID=${userID}`)
+        .then((resp) => {
+          return resp.data.recipes;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      setRecipes(allRecipes);
+    }
+    setConfirmChange(false);
+    fetchRecipes();
+  }, [confirmChange]);
 
   const handleAddClose = () => {
     setAddDialogOpen(false);
@@ -100,7 +91,7 @@ const MyRecipes = () => {
       </div>
       <Box sx={{ height: 655, width: "100%", pt: 3 }}>
         <DataGrid
-          rows={rows}
+          rows={recipes}
           columns={columns}
           initialState={{
             pagination: {

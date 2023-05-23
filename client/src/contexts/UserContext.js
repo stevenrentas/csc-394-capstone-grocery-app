@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import {IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 
 export const UserContext = React.createContext();
@@ -8,22 +8,11 @@ export const UserProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [food, setFood] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [recipes, setRecipes] = useState([]);
 
-  const handleEditClick = () => {};
   const columns = [
     { field: "description", headerName: "Name", width: 300 },
-    {
-      field: "edit",
-      headerName: "",
-      width: 60,
-      renderCell: (params) => (
-        <div onClick={() => handleEditClick(params.row.id)}>
-          <IconButton>
-            <Edit sx={{ height: "20px" }} />
-          </IconButton>
-        </div>
-      ),
-    },
+
     {
       field: "amount",
       headerName: "Amount",
@@ -54,11 +43,13 @@ export const UserProvider = ({ children }) => {
       value={{
         showModal,
         setShowModal,
+        recipes,
+        setRecipes,
         food,
         setFood,
         columns,
         ingredients,
-        setIngredients
+        setIngredients,
       }}
     >
       {children}

@@ -13,7 +13,7 @@ const MyFood = () => {
     baseURL: config,
   });
   const [confirmChange, setConfirmChange] = useState(false);
-  const { food, setFood, columns } = useUser();
+  const { recipes, setRecipes, food, setFood, columns } = useUser();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   useEffect(() => {

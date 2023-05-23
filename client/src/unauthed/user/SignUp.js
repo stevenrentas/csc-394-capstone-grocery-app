@@ -63,6 +63,7 @@ const SignUp = () => {
         last_name: credentials.lastname,
         email: credentials.emailAddress,
         pword: credentials.password,
+        isAdmin: false,
       };
 
       await api

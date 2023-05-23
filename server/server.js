@@ -24,7 +24,7 @@ app.post("/api/v1/chat", async (req, res) => {
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       temperature: 0,
-      max_tokens: 1000,
+      max_tokens: 1500,
       top_p: 1,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
@@ -161,6 +161,92 @@ app.get("/api/v1/getfood", async (req, res) => {
     res.status(200).json({
       status: "success",
       food: allFood.rows,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/api/v1/getfood/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const foodItem = await db.query(
+      `SELECT user_id, product_id AS id, description, amount, date_added, expiry_date, units FROM inventory WHERE product_id = ${id};`
+    );
+    res.status(200).json({
+      status: "success",
+      food: foodItem.rows[0],
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.put("/api/v1/updatefood/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userID, name, amount, dateAdded, expiryDate } = req.body;
+    const intAmount = amount.substring(0, amount.indexOf("/"));
+    const units = amount.substring(amount.indexOf("/") + 1);
+    await db.query(
+      `UPDATE inventory 
+      SET user_id = '${userID}', 
+          description = '${name}', 
+          date_added = '${dateAdded}', 
+          expiry_date = '${expiryDate}', 
+          amount = '${intAmount}', 
+          units = '${units}'
+      WHERE product_id = ${id};`
+    );
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/api/v1/getrecipes", async (req, res) => {
+  try {
+    const { userID } = req.query;
+    const allRecipes = await db.query(
+      `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID};`
+    );
+    res.status(200).json({
+      status: "success",
+      recipes: allRecipes.rows,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.post("/api/v1/addrecipe", async (req, res) => {
+  try {
+    const {
+      user_id,
+      title,
+      ingredients,
+      instructions,
+      date_added,
+      missing_ingredients,
+    } = req.body;
+
+    await db.query(
+      `INSERT INTO recipe_book (user_id, title, ingredients, instructions, date_added, missing_ingredients)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [
+        user_id,
+        title,
+        JSON.stringify(ingredients),
+        JSON.stringify(instructions),
+        date_added,
+        missing_ingredients,
+      ]
+    );
+
+    res.status(200).json({
+      status: "success",
     });
   } catch (err) {
     console.error(err);

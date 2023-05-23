@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useUser } from "../../../contexts/UserContext";
+import React, { useState, useEffect } from "react";
 import config from "../../../api/api";
 import axios from "axios";
 import {
@@ -19,14 +18,15 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { useUser } from "../../../contexts/UserContext";
 
 const MyFoodModal = (props) => {
-  const { addDialogOpen, setConfirmChange, onClose } = props;
+  const { addDialogOpen, setConfirmChange, onClose, editId } = props;
   const api = axios.create({
     baseURL: config,
   });
+  const { food, setFood, columns } = useUser();
   const userID = localStorage.getItem("user-id");
-
   const [foodToAdd, setFoodToAdd] = useState({
     name: "",
     amount: "",
@@ -55,10 +55,10 @@ const MyFoodModal = (props) => {
       });
     }
   };
-
+  const [selectValue, setSelectValue] = React.useState("");
   const addFood = async () => {
     let db_columns = { ...foodToAdd };
-    if (db_columns.amount.split("/" === 0)) {
+    if (db_columns.amount.split("/")[1] === undefined) {
       db_columns.amount = db_columns.amount + "/" + "lb";
     }
     db_columns.userID = userID;
@@ -67,6 +67,50 @@ const MyFoodModal = (props) => {
       .then((resp) => {
         setConfirmChange(true);
         handleClose();
+        setFoodToAdd({
+          name: "",
+          amount: "",
+          dateAdded: "",
+          expiryDate: "",
+        });
+        setSelectValue("");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const editFood = async () => {
+    let db_columns = { ...foodToAdd };
+    if (db_columns.amount.split("/")[1] === undefined) {
+      db_columns.amount = db_columns.amount + "/" + selectValue;
+    }
+    db_columns.userID = userID;
+    api
+      .put(`/updatefood/${editId}`, db_columns)
+      .then((resp) => {
+        setConfirmChange(true);
+        handleClose();
+        setFoodToAdd({
+          name: "",
+          amount: "",
+          dateAdded: "",
+          expiryDate: "",
+        });
+        setSelectValue("");
+        async function fetchInventory() {
+          const userID = localStorage.getItem("user-id");
+          const allFood = await api
+            .get(`/getfood?userID=${userID}`)
+            .then((resp) => {
+              return resp.data.food;
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+          setFood(allFood);
+        }
+        fetchInventory();
       })
       .catch((error) => {
         console.error(error);
@@ -75,6 +119,33 @@ const MyFoodModal = (props) => {
 
   const handleClose = () => {
     onClose();
+  };
+
+  useEffect(() => {
+    async function fetchFoodItem() {
+      try {
+        const response = await api.get(`/getfood/${editId}`);
+        const foodItem = response.data.food;
+        setFoodToAdd({
+          name: foodItem.description,
+          amount: foodItem.amount + "/" + foodItem.units,
+          dateAdded: foodItem.date_added,
+          expiryDate: foodItem.expiry_date,
+        });
+        setSelectValue(foodItem.units);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (editId) {
+      fetchFoodItem();
+    }
+  }, [addDialogOpen]);
+
+  const handleSelectChange = (e) => {
+    var { name, value } = e.target;
+    setSelectValue(value);
+    onInputChange(e);
   };
 
   return (
@@ -93,7 +164,11 @@ const MyFoodModal = (props) => {
           <span>
             <label class="fieldLabel">
               Name
-              <input name="name" onChange={onInputChange}></input>
+              <input
+                name="name"
+                value={foodToAdd.name}
+                onChange={onInputChange}
+              ></input>
             </label>
           </span>
         </div>
@@ -101,11 +176,16 @@ const MyFoodModal = (props) => {
           <span id="quantityInput">
             <label class="fieldLabel">
               Quantity
-              <input name="amount" onChange={onInputChange}></input>
+              <input
+                name="amount"
+                value={foodToAdd.amount.split("/")[0]}
+                onChange={onInputChange}
+              ></input>
               <select
                 name="unit"
-                onChange={onInputChange}
+                onChange={handleSelectChange}
                 style={{ width: "68px" }}
+                value={foodToAdd.amount.split("/")[1]}
               >
                 <option value="lb">lb</option>
                 <option value="kg">kg</option>
@@ -124,7 +204,11 @@ const MyFoodModal = (props) => {
           <span>
             <label class="fieldLabel">
               Expiration Date
-              <input name="expiryDate" onChange={onInputChange}></input>
+              <input
+                name="expiryDate"
+                value={foodToAdd.expiryDate}
+                onChange={onInputChange}
+              ></input>
             </label>
           </span>
         </div>
@@ -132,9 +216,16 @@ const MyFoodModal = (props) => {
           className="pageActionContainer"
           style={{ marginRight: "18px", marginTop: "35px" }}
         >
-          <button id="pageAction" onClick={addFood}>
-            Add +
-          </button>
+          {(editId === undefined || editId === null) && (
+            <button id="pageAction" onClick={addFood}>
+              Add +
+            </button>
+          )}
+          {editId !== undefined && editId !== null && (
+            <button id="pageAction" onClick={editFood}>
+              Edit +
+            </button>
+          )}
         </div>
       </form>
     </Dialog>

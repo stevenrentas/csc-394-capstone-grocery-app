@@ -32,7 +32,9 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.isadmin !== true) {
-          alert("Unable to login. Please try after some time.");
+          setError({
+            message: "User does not have required access",
+          });
           return;
         } else {
           localStorage.clear();
@@ -127,11 +129,6 @@ const Login = () => {
       <button id="authenticate" onClick={submitLoginForm}>
         LOG IN
       </button>
-      <p id="otherAuthPage">
-        <a id="otherAuthPage" href={"/signup"}>
-          Create an account
-        </a>
-      </p>
     </div>
   );
 };
