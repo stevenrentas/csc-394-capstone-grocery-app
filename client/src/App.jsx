@@ -87,14 +87,17 @@ function App() {
 
   const handleClick = () => {
     toggleSnackbar();
+    removeSnackbarData();
   };
 
-  const { snackbarOpen, snackbarData } = useContext(SnackbarContext);
+  const { snackbarOpen, snackbarData, removeSnackbarData } =
+    useContext(SnackbarContext);
   const [missingIngredients, setMissingIngredients] = React.useState({
     recipe1: 0,
     recipe2: 0,
     recipe3: 0,
   });
+
   const calculateMissingIngredients = (snackbarData) => {
     // snackbarData[0].map
   };
@@ -170,6 +173,7 @@ function App() {
       setRecipes(allRecipes);
     }
     fetchRecipes();
+    removeSnackbarData();
   };
 
   useEffect(() => {
@@ -195,17 +199,10 @@ function App() {
               height: "300px",
             }}
           >
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleClick}
-              sx={{ mt: "5px", ml: "5px" }}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
             <Stack direction="row" sx={{ justifyContent: "center" }}>
-              <Typography sx={{ fontWeight: 700 }}>ChatGPT Response</Typography>
+              <Typography sx={{ fontWeight: 700, mt: "20px" }}>
+                ChatGPT Response
+              </Typography>
             </Stack>
             {snackbarData.length === 0 ? (
               <Stack
@@ -230,7 +227,7 @@ function App() {
                       <Stack>
                         <Typography>{snackbarData[0][0].title}</Typography>
                         <Typography>
-                          Missing ingredients: {missingIngredients.recipe1}
+                          {/* Missing ingredients: {missingIngredients.recipe1} */}
                         </Typography>
                       </Stack>
                     }
@@ -247,7 +244,7 @@ function App() {
                       <Stack>
                         <Typography>{snackbarData[0][1].title}</Typography>
                         <Typography>
-                          Missing ingredients: {missingIngredients.recipe2}
+                          {/* Missing ingredients: {missingIngredients.recipe2} */}
                         </Typography>
                       </Stack>
                     }
@@ -264,7 +261,7 @@ function App() {
                       <Stack>
                         <Typography>{snackbarData[0][2].title}</Typography>
                         <Typography>
-                          Missing ingredients: {missingIngredients.recipe3}
+                          {/* Missing ingredients: {missingIngredients.recipe3} */}
                         </Typography>
                       </Stack>
                     } //snackbarData[0][2].title
