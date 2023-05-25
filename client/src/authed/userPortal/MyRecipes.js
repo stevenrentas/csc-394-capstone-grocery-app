@@ -103,7 +103,7 @@ const MyRecipes = () => {
     <div id="table">
       <div className="pageActionContainer">
       <button id="pageActionRecipe" className="filterRecipes" onClick={noMissingIngredients}>
-          Show Complete Recipes
+          {toggleCompleteRecipes ? "Show All Recipes" : "Show Complete Recipes"}
         </button>
         <button id="pageActionRecipe" onClick={(e) => setAddDialogOpen(true)}>
           Generate Recipe
