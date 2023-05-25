@@ -22,6 +22,8 @@ import config from "../../api/api";
 import axios from "axios";
 import FoodTable from "../../unauthed/user/assets/FoodTable";
 import AddDialog from "../../unauthed/user/modals/MyFoodModal";
+import Link from "@mui/material";
+import ViewRecipes from "../../unauthed/user/modals/ViewRecipes";
 
 const MyRecipes = () => {
   const { setShowModal } = useUser();
@@ -32,8 +34,10 @@ const MyRecipes = () => {
   const userID = localStorage.getItem("user-id");
 
   const { recipes, setRecipes, food, setFood } = useUser();
+  const [selectedRecipe, setSelectedRecipe] = useState({});
   const handleEditClick = () => {};
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [confirmChange, setConfirmChange] = useState(false);
   recipes.map((item) => {
     item.missingIngredients = item.missing_ingredients.join(", ");
@@ -48,12 +52,25 @@ const MyRecipes = () => {
     );
   };
 
+  const handleViewRecipe = (recipe) =>{
+    setSelectedRecipe(recipe);
+    setViewDialogOpen(true);
+  };
+
   const noMissingIngredients = () => {
     setToggleCompleteRecipes(!toggleCompleteRecipes);
   };
 
   const columns = [
-    { field: "title", headerName: "Title", width: 350 },
+    { 
+      field: "title", 
+      headerName: "Title", 
+      renderCell: (params) =>(
+        <div onClick={() => handleViewRecipe(params.row)}>
+          {params.row.title}
+        </div>
+      ),
+      width: 350 },
     {
       field: "missingIngredients",
       headerName: "Missing Ingredients",
@@ -99,6 +116,11 @@ const MyRecipes = () => {
     setAddDialogOpen(false);
   };
 
+  const handleViewClose = () => {
+    setSelectedRecipe({});
+    setViewDialogOpen(false);
+  };
+
   return (
     <div id="table">
       <div className="pageActionContainer">
@@ -127,6 +149,7 @@ const MyRecipes = () => {
         setConfirmChange={setConfirmChange}
         onClose={handleAddClose}
       />
+      <ViewRecipes recipe={selectedRecipe} isDialogOpen={viewDialogOpen} onClose={handleViewClose}/>
     </div>
   );
 };
