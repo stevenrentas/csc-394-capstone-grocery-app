@@ -238,14 +238,29 @@ app.put("/api/v1/updatefood/:id", async (req, res) => {
 
 app.get("/api/v1/getrecipes", async (req, res) => {
   try {
-    const { userID } = req.query;
-    const allRecipes = await db.query(
-      `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID};`
-    );
-    res.status(200).json({
-      status: "success",
-      recipes: allRecipes.rows,
-    });
+    const { userID, onlyComplete } = req.query;
+
+    // gets all recipes
+    if (onlyComplete === "false"){
+      const allRecipes = await db.query(
+        `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID};`
+      );
+      res.status(200).json({
+        status: "success",
+        recipes: allRecipes.rows,
+      });
+    }
+
+    // gets only complete recipes (those without missing ingredients)
+    else{
+      const allRecipes = await db.query(
+        `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID} AND missing_ingredients = '{}';`
+      );
+      res.status(200).json({
+        status: "success",
+        recipes: allRecipes.rows,
+      });
+    }
   } catch (err) {
     console.error(err);
   }

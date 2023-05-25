@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
 import MyRecipesModal from "../../unauthed/user/modals/MyRecipesModal";
 import { DataGrid } from "@mui/x-data-grid";
-import { Delete} from "@mui/icons-material";
+import { CheckBox, CheckCircle, Delete} from "@mui/icons-material";
 import {
   Typography,
   Box,
@@ -39,11 +39,17 @@ const MyRecipes = () => {
     item.missingIngredients = item.missing_ingredients.join(", ");
   });
 
+  const [toggleCompleteRecipes, setToggleCompleteRecipes] = useState(false);
+
   const deleteRecipe = (id) => {
     api.delete(`/deletefood/${userID}/${id}`)
       .then()
       .catch((error) => console.error(error)
     );
+  };
+
+  const noMissingIngredients = () => {
+    setToggleCompleteRecipes(!toggleCompleteRecipes);
   };
 
   const columns = [
@@ -76,7 +82,7 @@ const MyRecipes = () => {
     async function fetchRecipes() {
       const userID = localStorage.getItem("user-id");
       const allRecipes = await api
-        .get(`/getrecipes?userID=${userID}`)
+        .get(`/getrecipes?userID=${userID}&onlyComplete=${toggleCompleteRecipes}`)
         .then((resp) => {
           return resp.data.recipes;
         })
@@ -87,7 +93,7 @@ const MyRecipes = () => {
     }
     setConfirmChange(false);
     fetchRecipes();
-  }, [confirmChange]);
+  }, [confirmChange, toggleCompleteRecipes]);
 
   const handleAddClose = () => {
     setAddDialogOpen(false);
@@ -96,6 +102,9 @@ const MyRecipes = () => {
   return (
     <div id="table">
       <div className="pageActionContainer">
+      <button id="pageActionRecipe" className="filterRecipes" onClick={noMissingIngredients}>
+          Show Complete Recipes
+        </button>
         <button id="pageActionRecipe" onClick={(e) => setAddDialogOpen(true)}>
           Generate Recipe
         </button>
