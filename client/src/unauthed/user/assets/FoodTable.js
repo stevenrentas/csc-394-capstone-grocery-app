@@ -3,19 +3,37 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { useUser } from "../../../contexts/UserContext";
 import { IconButton } from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import AddDialog from "../../../unauthed/user/modals/MyFoodModal";
+import config from "../../../api/api";
+import axios from 'axios';
 
 const FoodTable = (props) => {
+  const api = axios.create({
+    baseURL: config,
+  });
+  const userID = localStorage.getItem("user-id");
+
   const food = props.food;
   const isIngredientPicker = props.isIngredientPicker;
   const [editId, setEditId] = React.useState(null);
+  const [deleteId, setDeleteId] = React.useState(null);
 
   const handleEditClick = (id) => {
     setAddDialogOpen(true);
     setEditId(id);
   };
-  console.log(editId);
+
+  const deleteFood = (id) => {
+    let data = { 
+      product_id: deleteId 
+    };
+    api.delete(`/deletefood/${userID}/${id}`)
+      .then()
+      .catch((error) => console.error(error)
+    );
+  };
+
   const columns = [
     { field: "description", headerName: "Name", width: 300 },
     {
@@ -53,6 +71,18 @@ const FoodTable = (props) => {
       headerName: "Expiry Date",
       width: 160,
     },
+    {
+      field: "delete",
+      headerName: "",
+      width: 60,
+      renderCell: (params) => (
+        <div onClick={() => deleteFood(params.row.id)}>
+          <IconButton>
+            <Delete sx={{ height: "20px" }} />
+          </IconButton>
+        </div>
+      ),
+    }
   ];
 
   const { setIngredients } = useUser();

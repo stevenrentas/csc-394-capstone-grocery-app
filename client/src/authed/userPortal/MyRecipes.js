@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
 import MyRecipesModal from "../../unauthed/user/modals/MyRecipesModal";
 import { DataGrid } from "@mui/x-data-grid";
+import { Delete} from "@mui/icons-material";
 import {
   Typography,
   Box,
@@ -27,6 +28,9 @@ const MyRecipes = () => {
   const api = axios.create({
     baseURL: config,
   });
+
+  const userID = localStorage.getItem("user-id");
+
   const { recipes, setRecipes, food, setFood } = useUser();
   const handleEditClick = () => {};
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -34,6 +38,13 @@ const MyRecipes = () => {
   recipes.map((item) => {
     item.missingIngredients = item.missing_ingredients.join(", ");
   });
+
+  const deleteRecipe = (id) => {
+    api.delete(`/deletefood/${userID}/${id}`)
+      .then()
+      .catch((error) => console.error(error)
+    );
+  };
 
   const columns = [
     { field: "title", headerName: "Title", width: 350 },
@@ -47,6 +58,18 @@ const MyRecipes = () => {
       headerName: "Date Added",
       width: 160,
     },
+    {
+      field: "delete",
+      headerName: "",
+      width: 60,
+      renderCell: (params) => (
+        <div onClick={() => deleteRecipe(params.row.id)}>
+          <IconButton>
+            <Delete sx={{ height: "20px" }} />
+          </IconButton>
+        </div>
+      ),
+    }
   ];
 
   useEffect(() => {

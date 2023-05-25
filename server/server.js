@@ -182,6 +182,36 @@ app.get("/api/v1/getfood/:id", async (req, res) => {
   }
 });
 
+app.delete("/api/v1/deletefood/:user_id/:product_id", async (req, res) => {
+    try {
+      const { user_id, product_id } = req.params;
+      await db.query(
+        `DELETE FROM inventory
+        WHERE user_id = ${user_id} and product_id = '${product_id}';`
+      );
+      res.status(200).json({
+        status: "success",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  app.delete("/api/v1/deleterecipe/:user_id/:recipe_id", async (req, res) => {
+    try {
+      const { user_id, recipe_id } = req.params;
+      await db.query(
+        `DELETE FROM recipe_book
+        WHERE user_id = ${user_id} and id = '${recipe_id}';`
+      );
+      res.status(200).json({
+        status: "success",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
 app.put("/api/v1/updatefood/:id", async (req, res) => {
   try {
     const { id } = req.params;
