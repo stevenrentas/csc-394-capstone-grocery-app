@@ -320,3 +320,23 @@ body {
 .filterRecipes{
   float:left;
 }
+
+.viewRecipe{
+  cursor: pointer;
+}
+
+.viewRecipe:hover{
+  text-decoration: underline;
+}
+
+.recipeText{
+  background-color: #f0f0f0;
+}
+
+.ingredients, .instructions{
+  margin: 5%;
+}
+
+.recipeDetails{
+  margin-bottom:3%;
+}

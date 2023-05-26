@@ -16,10 +16,25 @@ const ViewRecipes = (props) => {
           textAlign: "center",
           fontFamily: '"Montserrat", sans-serif',
           backgroundColor: "#f0f0f0",
+          fontSize: "2em"
         }}
       >
         {recipe.title}
       </DialogTitle>
+      <div className="recipeText">
+        <div className="ingredients">
+          <h4>Ingredients</h4>
+            <ul>
+              {recipe !== undefined ? recipe.ingredients.map(ing => <li key="none" className="recipeDetails">{ing.amount} {ing.denomination} {ing.preparation} {ing.name}</li>): null}
+            </ul>
+        </div>
+        <div className="instructions">
+        <h4>Instructions</h4>
+          <ol>
+              {recipe !== undefined ? recipe.instructions.map(inst => <li key="none" className="recipeDetails">{inst}</li>): null}
+            </ol>
+        </div>
+      </div>
     </Dialog>
     );
 }

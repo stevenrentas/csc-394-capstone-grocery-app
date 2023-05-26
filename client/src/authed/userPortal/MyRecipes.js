@@ -34,7 +34,11 @@ const MyRecipes = () => {
   const userID = localStorage.getItem("user-id");
 
   const { recipes, setRecipes, food, setFood } = useUser();
-  const [selectedRecipe, setSelectedRecipe] = useState({});
+  const [selectedRecipe, setSelectedRecipe] = useState({
+    title: "",
+    ingredients:[],
+    instructions:[]
+  });
   const handleEditClick = () => {};
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
@@ -66,7 +70,7 @@ const MyRecipes = () => {
       field: "title", 
       headerName: "Title", 
       renderCell: (params) =>(
-        <div onClick={() => handleViewRecipe(params.row)}>
+        <div className="viewRecipe" onClick={() => handleViewRecipe(params.row)}>
           {params.row.title}
         </div>
       ),
@@ -117,7 +121,11 @@ const MyRecipes = () => {
   };
 
   const handleViewClose = () => {
-    setSelectedRecipe({});
+    setSelectedRecipe({
+      title: "",
+      ingredients:[],
+      instructions:[]
+    });
     setViewDialogOpen(false);
   };
 
