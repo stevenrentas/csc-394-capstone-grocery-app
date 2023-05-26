@@ -67,11 +67,11 @@ const IngredientPicker = (props) => {
     prompt +=
       "This is very important that you combine all the recipes and output the title, ingredients, and instructions in JSON format only. ";
     prompt +=
-      "Inside the JSON format, there is a specific format inside the ingredients.";
+      "Inside the JSON format, there is a specific format inside the ingredients. ";
     prompt +=
-      "For example, [amount: 1, denomination: lb, name: Chicken Breast, preparation: Sliced]. When structuring this piece, make sure to keep the same 'name' that was provided in the original list even if the spelling is incorrect, I need the names to match for my application. I.e. if something is spelled 'chickn brest' in the list, it must appear in the ingredient name as 'chickn brest'.";
+      "For example, [amount: 1, denomination: lb, name: Chicken Breast, preparation: Sliced]. When structuring this piece, make sure to keep the same 'name' that was provided in the original list even if the spelling is incorrect, I need the names to match for my application. I.e. if something is spelled 'chickn brest' in the list, it must appear in the ingredient name as 'chickn brest'. ";
     prompt +=
-      "Again, I don't want other texts and be sure to include something for all fields, even if it is an empty string.";
+      "Again, I don't want other texts and be sure to include something for all fields, even if it is an empty string. ";
     prompt +=
       "Also, be sure that the instructions are formatted into an array with each element being a separate step.";
 
