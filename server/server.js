@@ -243,7 +243,7 @@ app.get("/api/v1/getrecipes", async (req, res) => {
     // gets all recipes
     if (onlyComplete === "false") {
       const allRecipes = await db.query(
-        `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID};`
+        `SELECT id, user_id, title, ingredients, instructions, date_added FROM recipe_book WHERE user_id = ${userID};`
       );
       res.status(200).json({
         status: "success",
@@ -254,7 +254,7 @@ app.get("/api/v1/getrecipes", async (req, res) => {
     // gets only complete recipes (those without missing ingredients)
     else {
       const allRecipes = await db.query(
-        `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID} AND missing_ingredients = '{}';`
+        `SELECT id, user_id, title, ingredients, instructions, date_added FROM recipe_book WHERE user_id = ${userID}`
       );
       res.status(200).json({
         status: "success",
@@ -268,25 +268,17 @@ app.get("/api/v1/getrecipes", async (req, res) => {
 
 app.post("/api/v1/addrecipe", async (req, res) => {
   try {
-    const {
-      user_id,
-      title,
-      ingredients,
-      instructions,
-      date_added,
-      missing_ingredients,
-    } = req.body;
+    const { user_id, title, ingredients, instructions, date_added } = req.body;
 
     await db.query(
-      `INSERT INTO recipe_book (user_id, title, ingredients, instructions, date_added, missing_ingredients)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
+      `INSERT INTO recipe_book (user_id, title, ingredients, instructions, date_added)
+       VALUES ($1, $2, $3, $4, $5)`,
       [
         user_id,
         title,
         JSON.stringify(ingredients),
         JSON.stringify(instructions),
         date_added,
-        missing_ingredients,
       ]
     );
 

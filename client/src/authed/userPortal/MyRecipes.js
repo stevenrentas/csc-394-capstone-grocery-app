@@ -8,6 +8,22 @@ import config from "../../api/api";
 import axios from "axios";
 import ViewRecipes from "../../unauthed/user/modals/ViewRecipes";
 import SnackbarContext from "../../contexts/SnackbarContext";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+
+const MissingIngredientsDialog = ({
+  missingIngredients,
+  openDialog,
+  onClose,
+}) => (
+  <Dialog open={openDialog} onClose={onClose}>
+    <DialogTitle>Missing Ingredients</DialogTitle>
+    <DialogContent>
+      {missingIngredients.map((ingredient) => (
+        <li className="recipeDetails">{ingredient.name}</li>
+      ))}
+    </DialogContent>
+  </Dialog>
+);
 
 const MyRecipes = () => {
   const api = axios.create({
@@ -22,11 +38,10 @@ const MyRecipes = () => {
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [toggleCompleteRecipes, setToggleCompleteRecipes] = useState(false);
   const [deleteUsed, setDeleteUsed] = useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [missingIngredients, setMissingIngredients] = useState([]);
   const { food, recipes, setRecipes } = useUser();
   const userID = localStorage.getItem("user-id");
-  recipes.map((item) => {
-    item.missingIngredients = item.missing_ingredients.join(", ");
-  });
   const { snackbarOpen } = useContext(SnackbarContext);
 
   const deleteRecipe = (id) => {
@@ -42,26 +57,40 @@ const MyRecipes = () => {
     setViewDialogOpen(true);
   };
 
-  const noMissingIngredients = () => {
-    setToggleCompleteRecipes(!toggleCompleteRecipes);
+  const handleOpenDialog = (missingIngredients) => {
+    setMissingIngredients(missingIngredients);
+    setOpenDialog(true);
+  };
+
+  const onClose = () => {
+    setOpenDialog(false);
   };
 
   const handleMissingIngredients = (ingredients) => {
     if (ingredients !== undefined) {
-      let missingIngredients = "";
-      ingredients.forEach((ingredient) => {
-        if (!food.some((item) => item.description === ingredient.name)) {
-          if (missingIngredients !== "") {
-            missingIngredients += ", ";
-          }
-          missingIngredients += ingredient.name;
-        }
-      });
-      return missingIngredients;
+      const missingIngredients = ingredients.filter(
+        (ingredient) =>
+          !food.some((item) => item.description === ingredient.name)
+      );
+      if (missingIngredients.length > 0) {
+        return (
+          <>
+            <div style={{ marginRight: "5px" }}>
+              {missingIngredients.length + " -"}
+            </div>
+            <div
+              className="viewRecipe"
+              onClick={() => handleOpenDialog(missingIngredients)}
+            >
+              View missing ingredients
+            </div>
+          </>
+        );
+      }
     }
-    return "";
-  };
 
+    return "None";
+  };
   const columns = [
     {
       field: "title",
@@ -137,13 +166,6 @@ const MyRecipes = () => {
   return (
     <div id="table">
       <div className="pageActionContainer">
-        <button
-          id="pageActionRecipe"
-          className="filterRecipes"
-          onClick={noMissingIngredients}
-        >
-          {toggleCompleteRecipes ? "Show All Recipes" : "Show Complete Recipes"}
-        </button>
         <button id="pageActionRecipe" onClick={(e) => setAddDialogOpen(true)}>
           Generate Recipe
         </button>
@@ -166,6 +188,11 @@ const MyRecipes = () => {
         recipe={selectedRecipe}
         isDialogOpen={viewDialogOpen}
         onClose={handleViewClose}
+      />
+      <MissingIngredientsDialog
+        missingIngredients={missingIngredients}
+        openDialog={openDialog}
+        onClose={onClose}
       />
     </div>
   );

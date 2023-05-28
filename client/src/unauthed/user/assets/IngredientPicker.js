@@ -57,7 +57,7 @@ const IngredientPicker = (props) => {
     }
 
     prompt +=
-      "Provide three recipes in an array and in the meantime, you don't need to use up all the ingredients in the list provided. ";
+      "Provide three recipes in an array and in the meantime, you don't need to use up all the ingredients in the list provided ";
     prompt +=
       "This is very important that you combine all the recipes and output the title, ingredients, and instructions in JSON format only. ";
     prompt +=
@@ -97,7 +97,11 @@ const IngredientPicker = (props) => {
     <div className="ingredientModal">
       <FoodTable food={foodData} columns={columns} isIngredientPicker={true} />
       <div className="pageActionContainer" style={{ marginTop: "20px" }}>
-        <button id="pageActionWider" onClick={generateRecipe}>
+        <button
+          id="pageActionWider"
+          onClick={generateRecipe}
+          style={{ marginLeft: "10px" }}
+        >
           Generate &gt;
         </button>
       </div>

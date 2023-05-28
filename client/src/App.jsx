@@ -151,7 +151,6 @@ function App() {
           ingredients: snackbarData[0][recipeId].ingredients,
           instructions: snackbarData[0][recipeId].instructions,
           date_added: new Date().toLocaleDateString("en-US"),
-          missing_ingredients: ["Broccoli", "Carrot"],
         };
 
         await api.post("/addrecipe", recipeData);
@@ -241,9 +240,6 @@ function App() {
                     label={
                       <Stack>
                         <Typography>{snackbarData[0][0].title}</Typography>
-                        <Typography>
-                          {/* Missing ingredients: {missingIngredients.recipe1} */}
-                        </Typography>
                       </Stack>
                     }
                   />
@@ -258,9 +254,6 @@ function App() {
                     label={
                       <Stack>
                         <Typography>{snackbarData[0][1].title}</Typography>
-                        <Typography>
-                          {/* Missing ingredients: {missingIngredients.recipe2} */}
-                        </Typography>
                       </Stack>
                     }
                   />
@@ -275,9 +268,6 @@ function App() {
                     label={
                       <Stack>
                         <Typography>{snackbarData[0][2].title}</Typography>
-                        <Typography>
-                          {/* Missing ingredients: {missingIngredients.recipe3} */}
-                        </Typography>
                       </Stack>
                     } //snackbarData[0][2].title
                   />
