@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import MyFoodModal from "../../unauthed/user/modals/MyFoodModal";
 import { useUser } from "../../contexts/UserContext";
 import { useEffect } from "react";
 import config from "../../api/api";
@@ -12,9 +11,9 @@ const MyFood = () => {
   const api = axios.create({
     baseURL: config,
   });
-  const [confirmChange, setConfirmChange] = useState(false);
-  const { recipes, setRecipes, food, setFood, columns } = useUser();
+  const { food, setFood, columns } = useUser();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [deleteUsed, setDeleteUsed] = useState(false);
 
   useEffect(() => {
     async function fetchInventory() {
@@ -29,9 +28,8 @@ const MyFood = () => {
         });
       setFood(allFood);
     }
-    setConfirmChange(false);
     fetchInventory();
-  }, [confirmChange]);
+  }, [addDialogOpen, deleteUsed]);
 
   const handleAddClose = () => {
     setAddDialogOpen(false);
@@ -49,13 +47,14 @@ const MyFood = () => {
         </button>
       </div>
       <Box sx={{ pt: 3 }}>
-        <FoodTable food={food} columns={columns} />
+        <FoodTable
+          food={food}
+          columns={columns}
+          setDeleteUsed={setDeleteUsed}
+          deleteUsed={deleteUsed}
+        />
       </Box>
-      <AddDialog
-        addDialogOpen={addDialogOpen}
-        setConfirmChange={setConfirmChange}
-        onClose={handleAddClose}
-      />
+      <AddDialog addDialogOpen={addDialogOpen} onClose={handleAddClose} />
     </div>
   );
 };

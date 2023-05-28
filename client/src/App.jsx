@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Outlet } from "react-router-dom";
 import PortalNavbar from "./authed/adminPortal/navbar/PortalNavbar";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,6 @@ import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import SnackbarContext from "./contexts/SnackbarContext";
 import { useLocation } from "react-router-dom";
 import FormGroup from "@mui/material/FormGroup";
@@ -18,6 +16,8 @@ import Checkbox from "@mui/material/Checkbox";
 import config from "./api/api";
 import axios from "axios";
 import { useUser } from "./contexts/UserContext";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 function App() {
   const { toggleSnackbar } = useContext(SnackbarContext);
@@ -47,11 +47,11 @@ function App() {
     const adminToken = localStorage.getItem("admin-token");
     if (
       (!adminToken || adminToken === "undefined") &&
-      adminPortalPage == "admin/portal"
+      adminPortalPage === "admin/portal"
     ) {
       setIsAdminLoggedIn(false);
       window.location.href = "/admin";
-    } else if (adminToken == "isAuthed") {
+    } else if (adminToken === "isAuthed") {
       setIsAdminLoggedIn(true);
       if (
         (adminPortalPage !== "admin/portal" ||
@@ -85,13 +85,9 @@ function App() {
     },
   });
 
-  const handleClick = () => {
-    toggleSnackbar();
-    removeSnackbarData();
-  };
-
   const { snackbarOpen, snackbarData, removeSnackbarData } =
     useContext(SnackbarContext);
+
   const [missingIngredients, setMissingIngredients] = React.useState({
     recipe1: 0,
     recipe2: 0,
@@ -103,8 +99,13 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(snackbarData);
     calculateMissingIngredients(snackbarData);
+    console.log(snackbarData);
+    console.log(snackbarData.length);
+    if (snackbarData[0] !== undefined) {
+      console.log(snackbarData[0]);
+      console.log(snackbarData[0].length);
+    }
   }, [snackbarData]);
 
   const [dots, setDots] = useState(".");
@@ -128,7 +129,7 @@ function App() {
   }, []);
 
   const userID = localStorage.getItem("user-id");
-  const { recipes, setRecipes, food, setFood, columns } = useUser();
+  const { setRecipes } = useUser();
 
   const handleAddRecipes = async () => {
     const checkedRecipes = Object.keys(checkedItems).filter(
@@ -150,7 +151,6 @@ function App() {
           ingredients: snackbarData[0][recipeId].ingredients,
           instructions: snackbarData[0][recipeId].instructions,
           date_added: new Date().toLocaleDateString("en-US"),
-          missing_ingredients: ["Broccoli", "Carrot"],
         };
 
         await api.post("/addrecipe", recipeData);
@@ -181,9 +181,12 @@ function App() {
   }, [checkedItems]);
 
   const handleRetrieveCheckedItems = () => {
-    const checkedBoxes = Object.keys(checkedItems).filter(
-      (item) => checkedItems[item]
-    );
+    Object.keys(checkedItems).filter((item) => checkedItems[item]);
+  };
+
+  const handleClick = () => {
+    toggleSnackbar();
+    removeSnackbarData();
   };
 
   return (
@@ -199,6 +202,17 @@ function App() {
               height: "300px",
             }}
           >
+            {snackbarData.length[0] !== 3 ||
+              (snackbarData.length !== 0 && (
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleClick}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              ))}
             <Stack direction="row" sx={{ justifyContent: "center" }}>
               <Typography sx={{ fontWeight: 700, mt: "20px" }}>
                 ChatGPT Response
@@ -212,7 +226,7 @@ function App() {
                 <Typography>Loading response</Typography>
                 <Typography sx={{ width: "5px" }}>{dots}</Typography>
               </Stack>
-            ) : (
+            ) : snackbarData[0].length === 3 ? (
               <Box sx={{ ml: 3, mt: 2 }}>
                 <FormGroup>
                   <FormControlLabel
@@ -226,9 +240,6 @@ function App() {
                     label={
                       <Stack>
                         <Typography>{snackbarData[0][0].title}</Typography>
-                        <Typography>
-                          {/* Missing ingredients: {missingIngredients.recipe1} */}
-                        </Typography>
                       </Stack>
                     }
                   />
@@ -243,9 +254,6 @@ function App() {
                     label={
                       <Stack>
                         <Typography>{snackbarData[0][1].title}</Typography>
-                        <Typography>
-                          {/* Missing ingredients: {missingIngredients.recipe2} */}
-                        </Typography>
                       </Stack>
                     }
                   />
@@ -260,9 +268,6 @@ function App() {
                     label={
                       <Stack>
                         <Typography>{snackbarData[0][2].title}</Typography>
-                        <Typography>
-                          {/* Missing ingredients: {missingIngredients.recipe3} */}
-                        </Typography>
                       </Stack>
                     } //snackbarData[0][2].title
                   />
@@ -275,6 +280,18 @@ function App() {
                   </div>
                 </Box>
               </Box>
+            ) : (
+              <Stack
+                direction="column"
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: "60px",
+                }}
+              >
+                <Typography>There was a ChatGPT response error!</Typography>
+                <Typography>Please try again!</Typography>
+              </Stack>
             )}
           </Card>
         </Snackbar>

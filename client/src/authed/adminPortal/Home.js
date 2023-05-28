@@ -13,7 +13,6 @@ import {
   Dialog,
   Button,
   Stack,
-  TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import config from "../../api/api";
@@ -22,20 +21,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 
 const axios = require("axios");
 const api = axios.create({
   baseURL: config,
-});
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#698669",
-      hover: "#283593", // Custom hover color for the primary button
-    },
-  },
 });
 
 function DeleteDialog(props) {
@@ -391,13 +381,6 @@ const Home = () => {
   const [addSelectedValue, setAddSelectedValue] = React.useState(null);
   const [editSelectedValue, setEditSelectedValue] = React.useState(null);
   const [deleteSelectedValue, setDeleteSelectedValue] = React.useState(null);
-  const [prompt, setPrompt] = useState("");
-  const [response, setResponse] = useState("");
-  const [loading, setLoading] = useState("noRequest");
-
-  useEffect(() => {
-    console.log(response);
-  }, [response]);
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -441,22 +424,6 @@ const Home = () => {
   const handleEditClose = (value) => {
     setEditDialogOpen(false);
     setEditSelectedValue(value);
-  };
-
-  const handleChatGptRequest = async () => {
-    setLoading("request");
-    await api
-      .post("/chat", { prompt })
-      .then((res) => {
-        setResponse(res.data);
-      })
-      .catch((err) => console.log(err));
-    setLoading("logged");
-    setPrompt("");
-  };
-
-  const onInputChange = (e) => {
-    setPrompt(e.target.value);
   };
 
   return (
