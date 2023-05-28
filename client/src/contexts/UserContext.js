@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
   const [food, setFood] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
+  const [foodPref, setFoodPref] = useState([]);
 
   const columns = [
     { field: "description", headerName: "Name", width: 300 },
@@ -50,6 +51,8 @@ export const UserProvider = ({ children }) => {
         columns,
         ingredients,
         setIngredients,
+        foodPref,
+        setFoodPref
       }}
     >
       {children}

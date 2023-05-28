@@ -40,6 +40,16 @@ const AuthNavbar = () => {
                 <Link to="/myrecipes">MY RECIPES</Link>
               </h4>
             ))}
+            {currPage !== "admin" &&
+            (currPage == "profile" ? (
+              <h4 className="currPage">
+                <Link to="/profile">PROFILE</Link>
+              </h4>
+            ) : (
+              <h4 className="links">
+                <Link to="/profile">PROFILE</Link>
+              </h4>
+            ))}
         </Toolbar>
       </AppBar>
     </Box>

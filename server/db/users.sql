@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users
     email VARCHAR(50) NOT NULL,
     pword VARCHAR(50) NOT NULL,
     isAdmin BOOLEAN NOT NULL,
-    foodPref VARCHAR(25),
+    foodPref TEXT[],
 
     CONSTRAINT users_pkey 
         PRIMARY KEY(id)
