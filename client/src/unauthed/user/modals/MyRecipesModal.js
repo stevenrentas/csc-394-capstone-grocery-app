@@ -1,40 +1,17 @@
 import React from "react";
 import config from "../../../api/api";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import {
-  ModalBody,
-  ModalDialog,
-  ModalHeader,
-  ModalTitle,
-} from "react-bootstrap";
+import { useEffect } from "react";
 import { useUser } from "../../../contexts/UserContext";
 import IngredientPicker from "../assets/IngredientPicker";
-import {
-  Typography,
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  DialogTitle,
-  Dialog,
-  Button,
-  Stack,
-  TextField,
-} from "@mui/material";
-import FoodTable from "../../user/assets/FoodTable";
+import { DialogTitle, Dialog } from "@mui/material";
 
 const MyRecipesModal = (props) => {
-  const { addDialogOpen, setConfirmChange, onClose } = props;
   const api = axios.create({
     baseURL: config,
   });
-  const { showModal, setShowModal, food, setFood, columns } = useUser();
+  const { addDialogOpen, onClose } = props;
+  const { food, setFood, columns } = useUser();
 
   useEffect(() => {
     async function fetchInventory() {
@@ -49,7 +26,6 @@ const MyRecipesModal = (props) => {
         });
       setFood(allFood);
     }
-    setConfirmChange(false);
     fetchInventory();
   }, [addDialogOpen]);
 

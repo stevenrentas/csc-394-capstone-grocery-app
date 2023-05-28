@@ -1,84 +1,122 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useUser } from "../../contexts/UserContext";
 import MyRecipesModal from "../../unauthed/user/modals/MyRecipesModal";
 import { DataGrid } from "@mui/x-data-grid";
-import { CheckBox, CheckCircle, Delete} from "@mui/icons-material";
-import {
-  Typography,
-  Box,
-  TextField,
-  Stack,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-  Button,
-} from "@mui/material";
-import { Edit } from "@mui/icons-material";
-import { Checkbox } from "@mui/material";
-import MyFoodModal from "../../unauthed/user/modals/MyFoodModal";
+import { Delete } from "@mui/icons-material";
+import { Box, IconButton, Typography } from "@mui/material";
 import config from "../../api/api";
 import axios from "axios";
-import FoodTable from "../../unauthed/user/assets/FoodTable";
-import AddDialog from "../../unauthed/user/modals/MyFoodModal";
-import Link from "@mui/material";
 import ViewRecipes from "../../unauthed/user/modals/ViewRecipes";
+import SnackbarContext from "../../contexts/SnackbarContext";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+
+const MissingIngredientsDialog = ({
+  missingIngredients,
+  openDialog,
+  onClose,
+}) => (
+  <Dialog open={openDialog} onClose={onClose}>
+    <DialogTitle>Missing Ingredients</DialogTitle>
+    <DialogContent>
+      {missingIngredients.map((ingredient) => (
+        <li className="recipeDetails">{ingredient.name}</li>
+      ))}
+    </DialogContent>
+  </Dialog>
+);
 
 const MyRecipes = () => {
-  const { setShowModal } = useUser();
   const api = axios.create({
     baseURL: config,
   });
-
-  const userID = localStorage.getItem("user-id");
-
-  const { recipes, setRecipes, food, setFood } = useUser();
   const [selectedRecipe, setSelectedRecipe] = useState({
     title: "",
-    ingredients:[],
-    instructions:[]
+    ingredients: [],
+    instructions: [],
   });
-  const handleEditClick = () => {};
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
-  const [confirmChange, setConfirmChange] = useState(false);
-  recipes.map((item) => {
-    item.missingIngredients = item.missing_ingredients.join(", ");
-  });
-
   const [toggleCompleteRecipes, setToggleCompleteRecipes] = useState(false);
+  const [deleteUsed, setDeleteUsed] = useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [missingIngredients, setMissingIngredients] = useState([]);
+  const { food, recipes, setRecipes } = useUser();
+  const userID = localStorage.getItem("user-id");
+  const { snackbarOpen } = useContext(SnackbarContext);
 
   const deleteRecipe = (id) => {
-    api.delete(`/deletefood/${userID}/${id}`)
+    api
+      .delete(`/deleterecipe/${userID}/${id}`)
       .then()
-      .catch((error) => console.error(error)
-    );
+      .catch((error) => console.error(error));
+    setDeleteUsed(!deleteUsed);
   };
 
-  const handleViewRecipe = (recipe) =>{
+  const handleViewRecipe = (recipe) => {
     setSelectedRecipe(recipe);
     setViewDialogOpen(true);
   };
 
-  const noMissingIngredients = () => {
-    setToggleCompleteRecipes(!toggleCompleteRecipes);
+  const handleOpenDialog = (missingIngredients) => {
+    setMissingIngredients(missingIngredients);
+    setOpenDialog(true);
+  };
+
+  const onClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleMissingIngredients = (ingredients) => {
+    if (ingredients !== undefined) {
+      const missingIngredients = ingredients.filter(
+        (ingredient) =>
+          !food.some((item) => item.description === ingredient.name)
+      );
+      if (missingIngredients.length > 0) {
+        return (
+          <>
+            <div style={{ marginRight: "5px" }}>
+              {missingIngredients.length + " -"}
+            </div>
+            <div
+              className="viewRecipe"
+              onClick={() => handleOpenDialog(missingIngredients)}
+            >
+              View missing ingredients
+            </div>
+          </>
+        );
+      }
+    }
+
+    return "None";
   };
 
   const columns = [
-    { 
-      field: "title", 
-      headerName: "Title", 
-      renderCell: (params) =>(
-        <div className="viewRecipe" onClick={() => handleViewRecipe(params.row)}>
+    {
+      field: "title",
+      headerName: "Title",
+      renderCell: (params) => (
+        <div
+          className="viewRecipe"
+          onClick={() => handleViewRecipe(params.row)}
+        >
           {params.row.title}
         </div>
       ),
-      width: 350 },
+      width: 350,
+    },
     {
-      field: "missingIngredients",
+      field: "missingIngredient",
       headerName: "Missing Ingredients",
       flex: 1,
+      renderCell: (params) => {
+        const missingIngredients = handleMissingIngredients(
+          params.row.ingredients
+        );
+        return missingIngredients;
+      },
+      sortable: false,
     },
     {
       field: "date_added",
@@ -96,14 +134,16 @@ const MyRecipes = () => {
           </IconButton>
         </div>
       ),
-    }
+    },
   ];
 
   useEffect(() => {
     async function fetchRecipes() {
       const userID = localStorage.getItem("user-id");
       const allRecipes = await api
-        .get(`/getrecipes?userID=${userID}&onlyComplete=${toggleCompleteRecipes}`)
+        .get(
+          `/getrecipes?userID=${userID}&onlyComplete=${toggleCompleteRecipes}`
+        )
         .then((resp) => {
           return resp.data.recipes;
         })
@@ -112,9 +152,8 @@ const MyRecipes = () => {
         });
       setRecipes(allRecipes);
     }
-    setConfirmChange(false);
     fetchRecipes();
-  }, [confirmChange, toggleCompleteRecipes]);
+  }, [deleteUsed, snackbarOpen, toggleCompleteRecipes]);
 
   const handleAddClose = () => {
     setAddDialogOpen(false);
@@ -123,8 +162,8 @@ const MyRecipes = () => {
   const handleViewClose = () => {
     setSelectedRecipe({
       title: "",
-      ingredients:[],
-      instructions:[]
+      ingredients: [],
+      instructions: [],
     });
     setViewDialogOpen(false);
   };
@@ -132,9 +171,6 @@ const MyRecipes = () => {
   return (
     <div id="table">
       <div className="pageActionContainer">
-      <button id="pageActionRecipe" className="filterRecipes" onClick={noMissingIngredients}>
-          {toggleCompleteRecipes ? "Show All Recipes" : "Show Complete Recipes"}
-        </button>
         <button id="pageActionRecipe" onClick={(e) => setAddDialogOpen(true)}>
           Generate Recipe
         </button>
@@ -152,12 +188,17 @@ const MyRecipes = () => {
           sx={{ width: "1000px", background: "#f0f0f0", color: "#000000" }}
         />
       </Box>
-      <MyRecipesModal
-        addDialogOpen={addDialogOpen}
-        setConfirmChange={setConfirmChange}
-        onClose={handleAddClose}
+      <MyRecipesModal addDialogOpen={addDialogOpen} onClose={handleAddClose} />
+      <ViewRecipes
+        recipe={selectedRecipe}
+        isDialogOpen={viewDialogOpen}
+        onClose={handleViewClose}
       />
-      <ViewRecipes recipe={selectedRecipe} isDialogOpen={viewDialogOpen} onClose={handleViewClose}/>
+      <MissingIngredientsDialog
+        missingIngredients={missingIngredients}
+        openDialog={openDialog}
+        onClose={onClose}
+      />
     </div>
   );
 };

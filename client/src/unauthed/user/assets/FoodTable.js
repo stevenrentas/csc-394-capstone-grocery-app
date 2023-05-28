@@ -6,18 +6,24 @@ import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import AddDialog from "../../../unauthed/user/modals/MyFoodModal";
 import config from "../../../api/api";
-import axios from 'axios';
+import axios from "axios";
 
 const FoodTable = (props) => {
   const api = axios.create({
     baseURL: config,
   });
+  const [editId, setEditId] = React.useState(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const { setIngredients } = useUser();
   const userID = localStorage.getItem("user-id");
-
   const food = props.food;
   const isIngredientPicker = props.isIngredientPicker;
-  const [editId, setEditId] = React.useState(null);
-  const [deleteId, setDeleteId] = React.useState(null);
+  const setDeleteUsed = props.setDeleteUsed;
+  const deleteUsed = props.deleteUsed;
+
+  const handleAddClose = () => {
+    setAddDialogOpen(false);
+  };
 
   const handleEditClick = (id) => {
     setAddDialogOpen(true);
@@ -25,13 +31,11 @@ const FoodTable = (props) => {
   };
 
   const deleteFood = (id) => {
-    let data = { 
-      product_id: deleteId 
-    };
-    api.delete(`/deletefood/${userID}/${id}`)
+    api
+      .delete(`/deletefood/${userID}/${id}`)
       .then()
-      .catch((error) => console.error(error)
-    );
+      .catch((error) => console.error(error));
+    setDeleteUsed(!deleteUsed);
   };
 
   const columns = [
@@ -82,15 +86,8 @@ const FoodTable = (props) => {
           </IconButton>
         </div>
       ),
-    }
+    },
   ];
-
-  const { setIngredients } = useUser();
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const handleAddClose = () => {
-    setAddDialogOpen(false);
-  };
-  const [confirmChange, setConfirmChange] = useState(false);
 
   return (
     <Box sx={{ height: 655, width: "100%" }}>
@@ -113,7 +110,6 @@ const FoodTable = (props) => {
       />
       <AddDialog
         addDialogOpen={addDialogOpen}
-        setConfirmChange={setConfirmChange}
         onClose={handleAddClose}
         editId={editId}
       />
