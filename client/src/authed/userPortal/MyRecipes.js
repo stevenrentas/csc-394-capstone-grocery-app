@@ -70,6 +70,7 @@ const MyRecipes = () => {
     if (ingredients !== undefined) {
       const missingIngredients = ingredients.filter(
         (ingredient) =>
+          food !== undefined &&
           !food.some((item) => item.description === ingredient.name)
       );
       if (missingIngredients.length > 0) {
@@ -89,7 +90,7 @@ const MyRecipes = () => {
       }
     }
 
-    return "None";
+    return <div>None</div>;
   };
 
   const columns = [
