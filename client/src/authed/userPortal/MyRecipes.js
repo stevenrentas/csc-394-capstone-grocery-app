@@ -91,6 +91,7 @@ const MyRecipes = () => {
 
     return "None";
   };
+
   const columns = [
     {
       field: "title",
@@ -106,12 +107,16 @@ const MyRecipes = () => {
       width: 350,
     },
     {
-      field: "missingaIngredients",
+      field: "missingIngredient",
       headerName: "Missing Ingredients",
       flex: 1,
       renderCell: (params) => {
-        return handleMissingIngredients(params.row.ingredients);
+        const missingIngredients = handleMissingIngredients(
+          params.row.ingredients
+        );
+        return missingIngredients;
       },
+      sortable: false,
     },
     {
       field: "date_added",
