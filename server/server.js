@@ -24,7 +24,7 @@ app.post("/api/v1/chat", async (req, res) => {
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       temperature: 0,
-      max_tokens: 1500,
+      max_tokens: 2000,
       top_p: 1,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
@@ -183,34 +183,34 @@ app.get("/api/v1/getfood/:id", async (req, res) => {
 });
 
 app.delete("/api/v1/deletefood/:user_id/:product_id", async (req, res) => {
-    try {
-      const { user_id, product_id } = req.params;
-      await db.query(
-        `DELETE FROM inventory
+  try {
+    const { user_id, product_id } = req.params;
+    await db.query(
+      `DELETE FROM inventory
         WHERE user_id = ${user_id} and product_id = '${product_id}';`
-      );
-      res.status(200).json({
-        status: "success",
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  });
+    );
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
 
-  app.delete("/api/v1/deleterecipe/:user_id/:recipe_id", async (req, res) => {
-    try {
-      const { user_id, recipe_id } = req.params;
-      await db.query(
-        `DELETE FROM recipe_book
+app.delete("/api/v1/deleterecipe/:user_id/:recipe_id", async (req, res) => {
+  try {
+    const { user_id, recipe_id } = req.params;
+    await db.query(
+      `DELETE FROM recipe_book
         WHERE user_id = ${user_id} and id = '${recipe_id}';`
-      );
-      res.status(200).json({
-        status: "success",
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  });
+    );
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 app.put("/api/v1/updatefood/:id", async (req, res) => {
   try {
@@ -241,7 +241,7 @@ app.get("/api/v1/getrecipes", async (req, res) => {
     const { userID, onlyComplete } = req.query;
 
     // gets all recipes
-    if (onlyComplete === "false"){
+    if (onlyComplete === "false") {
       const allRecipes = await db.query(
         `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID};`
       );
@@ -252,7 +252,7 @@ app.get("/api/v1/getrecipes", async (req, res) => {
     }
 
     // gets only complete recipes (those without missing ingredients)
-    else{
+    else {
       const allRecipes = await db.query(
         `SELECT id, user_id, title, ingredients, instructions, date_added, missing_ingredients FROM recipe_book WHERE user_id = ${userID} AND missing_ingredients = '{}';`
       );

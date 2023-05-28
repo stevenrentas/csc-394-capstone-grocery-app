@@ -1,6 +1,4 @@
-import React, { useState, useContext } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box } from "@mui/material";
+import React, { useContext } from "react";
 import config from "../../../api/api";
 import axios from "axios";
 import { useUser } from "../../../contexts/UserContext";
@@ -8,19 +6,15 @@ import SnackbarContext from "../../../contexts/SnackbarContext";
 import FoodTable from "./FoodTable";
 
 const IngredientPicker = (props) => {
-  const foodData = props.food;
-  const columns = props.columns;
-  const { onClose } = props;
-
   const api = axios.create({
     baseURL: config,
   });
-
-  const [confirmChange, setConfirmChange] = useState(false);
-  const { setShowModal, ingredients, food } = useUser();
-  const userID = localStorage.getItem("user-id");
-  const [response, setResponse] = useState({});
-  const { toggleSnackbar, addSnackbarData } = useContext(SnackbarContext);
+  const { onClose } = props;
+  const { ingredients, food } = useUser();
+  const { snackbarOpen, toggleSnackbar, addSnackbarData, removeSnackbarData } =
+    useContext(SnackbarContext);
+  const foodData = props.food;
+  const columns = props.columns;
 
   const promptBuilder = async () => {
     let selectedIngredients = [];
@@ -82,13 +76,14 @@ const IngredientPicker = (props) => {
     let db_columns = {
       prompt: await promptBuilder(),
     };
-    toggleSnackbar();
+    removeSnackbarData();
+    if (snackbarOpen !== true) {
+      toggleSnackbar();
+    }
     onClose();
     await api
       .post("/chat", db_columns)
       .then((resp) => {
-        setConfirmChange(true);
-        setResponse(resp.data);
         const tmp = resp.data;
         addSnackbarData(tmp);
       })

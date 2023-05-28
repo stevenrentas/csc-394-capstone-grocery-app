@@ -5,8 +5,6 @@ import Toolbar from "@mui/material/Toolbar";
 import "../../styles/style.css";
 
 const AuthNavbar = () => {
-  const currPage = window.location.href.split("/")[3];
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" id="navBar" sx={{ boxShadow: "none" }}>
