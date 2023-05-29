@@ -19,26 +19,29 @@ const AddPrefModal = (props) => {
   };
 
   const addPref = async () => {
-    if (foodPref !== null) {
-      setFoodPref([...foodPref, newFoodPref]);
-    } else {
-      setFoodPref([newFoodPref]);
+    if (newFoodPref !== "") {
+      console.log(foodPref);
+      if (foodPref !== null) {
+        setFoodPref([...foodPref, newFoodPref]);
+      } else {
+        setFoodPref([newFoodPref]);
+      }
+      let tmp;
+      if (foodPref !== null) {
+        tmp = { totalFoodPref: [...foodPref, newFoodPref] };
+      } else {
+        tmp = { totalFoodPref: [newFoodPref] };
+      }
+      await api
+        .post(`/addfoodpref/${userID}`, tmp)
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      handleClose();
     }
-    let tmp;
-    if (foodPref !== null) {
-      tmp = { totalFoodPref: [...foodPref, newFoodPref] };
-    } else {
-      tmp = { totalFoodPref: [newFoodPref] };
-    }
-    await api
-      .post(`/addfoodpref/${userID}`, tmp)
-      .then((resp) => {
-        return resp.data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    handleClose();
   };
 
   const onInputChange = (e) => {

@@ -42,68 +42,82 @@ const MyFoodModal = (props) => {
 
   const addFood = async () => {
     let db_columns = { ...foodToAdd };
-    if (db_columns.amount.split("/")[1] === undefined) {
-      db_columns.amount = db_columns.amount + "/" + "lb";
+    if (
+      db_columns.name !== "" &&
+      db_columns.dateAdded !== "" &&
+      db_columns.amount !== "" &&
+      db_columns.expiryDate !== ""
+    ) {
+      if (db_columns.amount.split("/")[1] === undefined) {
+        db_columns.amount = db_columns.amount + "/" + "lb";
+      }
+      db_columns.userID = userID;
+      api
+        .post("/addfood", db_columns)
+        .then((resp) => {
+          handleClose();
+          setFoodToAdd({
+            name: "",
+            amount: "",
+            dateAdded: "",
+            expiryDate: "",
+          });
+          setSelectValue("");
+        })
+        .catch((error) => {
+          console.error(error);
+          setFoodToAdd({
+            name: "",
+            amount: "",
+            dateAdded: "",
+            expiryDate: "",
+          });
+          setSelectValue("");
+        });
     }
-    db_columns.userID = userID;
-    api
-      .post("/addfood", db_columns)
-      .then((resp) => {
-        handleClose();
-        setFoodToAdd({
-          name: "",
-          amount: "",
-          dateAdded: "",
-          expiryDate: "",
-        });
-        setSelectValue("");
-      })
-      .catch((error) => {
-        console.error(error);
-        setFoodToAdd({
-          name: "",
-          amount: "",
-          dateAdded: "",
-          expiryDate: "",
-        });
-        setSelectValue("");
-      });
   };
 
   const editFood = async () => {
     let db_columns = { ...foodToAdd };
-    if (db_columns.amount.split("/")[1] === undefined) {
-      db_columns.amount = db_columns.amount + "/" + selectValue;
-    }
-    db_columns.userID = userID;
-    api
-      .put(`/updatefood/${editId}`, db_columns)
-      .then((resp) => {
-        handleClose();
-        setFoodToAdd({
-          name: "",
-          amount: "",
-          dateAdded: "",
-          expiryDate: "",
+    if (
+      db_columns.name !== "" &&
+      db_columns.dateAdded !== "" &&
+      db_columns.amount !== "" &&
+      db_columns.expiryDate !== ""
+    ) {
+      if (db_columns.amount.split("/")[1] === undefined) {
+        db_columns.amount = db_columns.amount + "/" + selectValue;
+      }
+      db_columns.userID = userID;
+      api
+        .put(`/updatefood/${editId}`, db_columns)
+        .then((resp) => {
+          handleClose();
+          setFoodToAdd({
+            name: "",
+            amount: "",
+            dateAdded: "",
+            expiryDate: "",
+          });
+          setSelectValue("");
+          async function fetchInventory() {
+            const userID = localStorage.getItem("user-id");
+            const allFood = await api
+              .get(`/getfood?userID=${userID}`)
+              .then((resp) => {
+                return resp.data.food;
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            setFood(allFood);
+          }
+          fetchInventory();
+        })
+        .catch((error) => {
+          console.error(error);
         });
-        setSelectValue("");
-        async function fetchInventory() {
-          const userID = localStorage.getItem("user-id");
-          const allFood = await api
-            .get(`/getfood?userID=${userID}`)
-            .then((resp) => {
-              return resp.data.food;
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-          setFood(allFood);
-        }
-        fetchInventory();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    }
   };
 
   const handleClose = () => {

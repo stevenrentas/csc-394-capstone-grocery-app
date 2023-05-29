@@ -76,24 +76,26 @@ const IngredientPicker = (props) => {
   };
 
   const generateRecipe = async () => {
-    let db_columns = {
-      prompt: await promptBuilder(),
-    };
-    removeSnackbarData();
-    if (snackbarOpen !== true) {
-      toggleSnackbar();
-    }
-    onClose();
-    await api
-      .post("/chat", db_columns)
-      .then((resp) => {
-        const tmp = resp.data;
-        addSnackbarData(tmp);
-      })
-      .catch((error) => {
-        console.error(error);
+    if (ingredients.length !== 0) {
+      let db_columns = {
+        prompt: await promptBuilder(),
+      };
+      removeSnackbarData();
+      if (snackbarOpen !== true) {
         toggleSnackbar();
-      });
+      }
+      onClose();
+      await api
+        .post("/chat", db_columns)
+        .then((resp) => {
+          const tmp = resp.data;
+          addSnackbarData(tmp);
+        })
+        .catch((error) => {
+          console.error(error);
+          toggleSnackbar();
+        });
+    }
   };
 
   const onPrefSelection = (event) => {
