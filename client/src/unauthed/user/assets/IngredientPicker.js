@@ -1,20 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import config from "../../../api/api";
 import axios from "axios";
 import { useUser } from "../../../contexts/UserContext";
 import SnackbarContext from "../../../contexts/SnackbarContext";
 import FoodTable from "./FoodTable";
+import { Select, Checkbox, ListItemText, MenuItem, Input} from "@mui/material";
 
 const IngredientPicker = (props) => {
   const api = axios.create({
     baseURL: config,
   });
   const { onClose } = props;
-  const { ingredients, food } = useUser();
+  const { ingredients, food, foodPref, setFoodPref } = useUser();
   const { snackbarOpen, toggleSnackbar, addSnackbarData, removeSnackbarData } =
     useContext(SnackbarContext);
   const foodData = props.food;
   const columns = props.columns;
+
+  const [selectedPref, setSelectedPref] = useState([]);
+  const userID = localStorage.getItem("user-id");
 
   const promptBuilder = async () => {
     let selectedIngredients = [];
@@ -27,8 +31,7 @@ const IngredientPicker = (props) => {
         }
       }
     }
-
-    const fakePref = ["Asian", "low-fat"];
+    
     let prompt = `I have `;
     // filter in ingredients with amounts/units
     for (let i = 0; i < selectedIngredients.length; i++) {
@@ -45,12 +48,12 @@ const IngredientPicker = (props) => {
     prompt +=
       "What are some possible recipes I can make in that list if I want to make a ";
     // filter in preferences
-    for (let i = 0; i < fakePref.length; i++) {
-      prompt += fakePref[i];
-      if (i !== fakePref.length - 1) {
+    for (let i = 0; i < selectedPref.length; i++) {
+      prompt += selectedPref[i];
+      if (i !== selectedPref.length - 1) {
         prompt += ",";
       }
-      if (i === fakePref.length - 1) {
+      if (i === selectedPref.length - 1) {
         prompt += " meal?";
       }
       prompt += " ";
@@ -93,8 +96,47 @@ const IngredientPicker = (props) => {
       });
   };
 
+  const onPrefSelection = (event) => {
+    setSelectedPref(event.target.value);
+  }
+
+  useEffect(() => {
+    async function fetchPreferences() {
+      const allFoodPref = await api
+        .get(`/getfoodpref/${userID}`)
+        .then((resp) => {
+          return resp.data.data.foodpref;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      setFoodPref(allFoodPref);
+    }
+    fetchPreferences();
+  }, []);
+
   return (
     <div className="ingredientModal">
+      <div id="generate-preferences">
+        <h3>Your Preferences</h3>
+          <Select
+            labelId="demo-mutiple-checkbox-label"
+            id="demo-mutiple-checkbox"
+            multiple
+            value={selectedPref}
+            onChange={onPrefSelection}
+            input={<Input />}
+            renderValue={(selected) => selected.join(", ")}
+            style={{width:"max-content", minWidth: "25%"}}
+          >
+            {foodPref.map((pref, x) => (
+              <MenuItem key={x} value={pref}>
+                <Checkbox checked={selectedPref.indexOf(pref) > -1} />
+                <ListItemText primary={pref} />
+              </MenuItem>
+            ))}
+          </Select>
+      </div>
       <FoodTable food={foodData} columns={columns} isIngredientPicker={true} />
       <div className="pageActionContainer" style={{ marginTop: "20px" }}>
         <button
