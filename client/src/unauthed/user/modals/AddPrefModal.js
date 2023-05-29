@@ -24,11 +24,9 @@ const AddPrefModal = (props) => {
   const addPref = async () => {
     setFoodPref([...foodPref, newFoodPref ]);
     const tmp = {totalFoodPref: [...foodPref, newFoodPref]};
-    console.log(foodPref);
     await api
         .post(`/addfoodpref/${userID}`, tmp)
         .then((resp) => {
-          console.log(resp);
           return resp.data;
         })
         .catch((error) => {

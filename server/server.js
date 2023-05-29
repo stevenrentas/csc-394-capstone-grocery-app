@@ -228,6 +228,20 @@ app.post("/api/v1/addfoodpref/:id", async (req, res) => {
   }
 });
 
+app.delete("/api/v1/deletefoodpref/:id/:pref", async (req, res) => {
+  try {
+    const { id, pref } = req.params;
+    await db.query(
+      `UPDATE users SET foodpref = (SELECT ARRAY_REMOVE(foodpref, '${pref}') FROM users WHERE id = ${id}) WHERE id = ${id};`
+    );
+    res.status(200).json({
+      status: "success"
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.delete("/api/v1/deletefood/:user_id/:product_id", async (req, res) => {
   try {
     const { user_id, product_id } = req.params;

@@ -10,7 +10,31 @@ import { Delete } from "@mui/icons-material";
 import AddPrefModal from "./modals/AddPrefModal";
 
 const Profile = () => {
-const { foodPref, setFoodPref } = useUser();
+  const { foodPref, setFoodPref } = useUser();
+  const [prefDeleted, setPrefDeleted] = useState(false);
+
+  const prefWithID = foodPref.map((row, x) => {
+    return {
+      id: x,
+      description: foodPref[x]
+    };
+  });
+
+  const columns = [
+    { field: "description", headerName: "Name", width: 300 },
+    {
+      field: "delete",
+      headerName: "",
+      width: 60,
+      renderCell: (params) => (
+        <div onClick={() => deletePref(params.row.description)}>
+          <IconButton>
+            <Delete sx={{ height: "20px" }} />
+          </IconButton>
+        </div>
+      ),
+    }
+  ];
 
   const api = axios.create({
     baseURL: config,
@@ -27,62 +51,55 @@ const { foodPref, setFoodPref } = useUser();
     setAddDialogOpen(true);
   };
 
-//   const deleteFoodPref = (id) => {
-//     let data = { 
-      
-//     };
-//     api.delete(`/deletefoodPref/${userID}/${id}`)
-//       .then()
-//       .catch((error) => console.error(error)
-//     );
-//   };
-
-//   const columns = [
-//     { field: "foodPref", headerName: "Preference", width: 300 },
-//     {
-//       field: "delete",
-//       headerName: "",
-//       width: 60,
-//       renderCell: (params) => (
-//         <div onClick={() => deleteFoodPref(params.row.id)}>
-//           <IconButton>
-//             <Delete sx={{ height: "20px" }} />
-//           </IconButton>
-//         </div>
-//       ),
-//     }
-//   ];
+  const deletePref = (pref) => {
+    api.delete(`/deletefoodPref/${userID}/${pref}`)
+      .then(()=> setPrefDeleted(true))
+      .catch((error) => console.error(error)
+    );
+  };
 
   useEffect(() => {
     async function fetchPreferences() {
       const allFoodPref = await api
         .get(`/getfoodpref/${userID}`)
         .then((resp) => {
-          console.log(resp.data.data.foodPref);
           return resp.data.data.foodpref;
         })
         .catch((error) => {
           console.error(error);
         });
       setFoodPref(allFoodPref);
-      console.log(foodPref);
+      setPrefDeleted(false);
     }
     fetchPreferences();
-  }, []);
+  }, [prefDeleted]);
 
   return (
     <div className="profilePage">
         <h1>Manage Profile</h1>
         <span className="userInfoGroup">
             <h4>Preferences</h4>
-            <br></br>
             <button id="pageActionWider" onClick={handleOpenDialog}>
                 Add Preference
             </button>
         </span>
-        <ul>
-              {foodPref.length > 0 ? foodPref.map(pref => <li className="">{pref}</li>) : <p>Your food preferences will appear here!</p>}
-            </ul>
+            <Box sx={{ height: 655, width: "50%" }}>
+              <DataGrid
+                rows={prefWithID}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                  },
+                }}
+                pageSizeOptions={[10, 20, 30]}
+                sx={{
+                  width: "500px",
+                  background: "#f0f0f0",
+                  color: "#000000",
+                }}
+              />
+            </Box>
     <AddPrefModal 
         addDialogOpen={addDialogOpen}
         onClose={handleAddClose}
