@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import config from "../../../api/api";
 import axios from "axios";
-import {
-  DialogTitle,
-  Dialog,
-} from "@mui/material";
+import { DialogTitle, Dialog } from "@mui/material";
 import { useUser } from "../../../contexts/UserContext";
 
 const AddPrefModal = (props) => {
   const { addDialogOpen, onClose } = props;
   const foodPref = props.foodPref;
-  const { setFoodPref} = useUser();
+  const { setFoodPref } = useUser();
   const [newFoodPref, setNewFoodPref] = useState("");
   const api = axios.create({
     baseURL: config,
@@ -22,16 +19,25 @@ const AddPrefModal = (props) => {
   };
 
   const addPref = async () => {
-    setFoodPref([...foodPref, newFoodPref ]);
-    const tmp = {totalFoodPref: [...foodPref, newFoodPref]};
+    if (foodPref !== null) {
+      setFoodPref([...foodPref, newFoodPref]);
+    } else {
+      setFoodPref([newFoodPref]);
+    }
+    let tmp;
+    if (foodPref !== null) {
+      tmp = { totalFoodPref: [...foodPref, newFoodPref] };
+    } else {
+      tmp = { totalFoodPref: [newFoodPref] };
+    }
     await api
-        .post(`/addfoodpref/${userID}`, tmp)
-        .then((resp) => {
-          return resp.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      .post(`/addfoodpref/${userID}`, tmp)
+      .then((resp) => {
+        return resp.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     handleClose();
   };
 
@@ -51,13 +57,15 @@ const AddPrefModal = (props) => {
         ADD FOOD PREFERENCE
       </DialogTitle>
       <div className="ingredientModal preferencesModal">
-        <label>Preference Name</label>
+        <label style={{ marginRight: "10px" }}>Preference Name</label>
         <input name="newPreference" onChange={onInputChange}></input>
         <br></br>
         <br></br>
-        <button id="pageAction" onClick={addPref}>
-              Add +
-        </button>
+        <div style={{ textAlign: "end" }}>
+          <button id="pageAction" onClick={addPref}>
+            Add +
+          </button>
+        </div>
       </div>
     </Dialog>
   );

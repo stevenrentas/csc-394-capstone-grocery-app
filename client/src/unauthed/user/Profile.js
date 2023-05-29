@@ -12,7 +12,6 @@ import AddPrefModal from "./modals/AddPrefModal";
 const Profile = () => {
   const { foodPref, setFoodPref } = useUser();
   const [prefDeleted, setPrefDeleted] = useState(false);
-
   let prefWithID;
   if (foodPref !== null) {
     prefWithID = foodPref.map((row, x) => {
@@ -22,11 +21,11 @@ const Profile = () => {
       };
     });
   } else {
-    prefWithID = { id: "", description: "" };
+    prefWithID = [];
   }
 
   const columns = [
-    { field: "description", headerName: "Name", width: 300 },
+    { field: "description", headerName: "Name", flex: 1 },
     {
       field: "delete",
       headerName: "",
