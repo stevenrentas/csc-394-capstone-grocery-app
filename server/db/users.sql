@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS users
         PRIMARY KEY(id)
 );
 -----TEST SAMPLES------
-INSERT INTO users (username, first_name, last_name, email, pword,isAdmin,foodPref) 
-    values ('admin', 'Admin', 'Admin', 'admin@depaul.edu', 'supersecretpassword',false,'Vegan');
+INSERT INTO users (username, first_name, last_name, email, pword, isAdmin, foodPref)
+    values ('admin', 'Admin', 'Admin', 'admin@depaul.edu', 'supersecretpassword', false, ARRAY['Vegan']);
 
 INSERT INTO users (username, first_name, last_name, email, pword,isAdmin) 
     values ('eaguir13', 'Eric', 'Aguirre', 'eaguir13@depaul.edu', 'password',true);

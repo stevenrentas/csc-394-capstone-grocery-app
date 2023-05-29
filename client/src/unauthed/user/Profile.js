@@ -13,12 +13,17 @@ const Profile = () => {
   const { foodPref, setFoodPref } = useUser();
   const [prefDeleted, setPrefDeleted] = useState(false);
 
-  const prefWithID = foodPref.map((row, x) => {
-    return {
-      id: x,
-      description: foodPref[x]
-    };
-  });
+  let prefWithID;
+  if (foodPref !== null) {
+    prefWithID = foodPref.map((row, x) => {
+      return {
+        id: x,
+        description: foodPref[x],
+      };
+    });
+  } else {
+    prefWithID = { id: "", description: "" };
+  }
 
   const columns = [
     { field: "description", headerName: "Name", width: 300 },
@@ -33,7 +38,7 @@ const Profile = () => {
           </IconButton>
         </div>
       ),
-    }
+    },
   ];
 
   const api = axios.create({
@@ -52,10 +57,10 @@ const Profile = () => {
   };
 
   const deletePref = (pref) => {
-    api.delete(`/deletefoodPref/${userID}/${pref}`)
-      .then(()=> setPrefDeleted(true))
-      .catch((error) => console.error(error)
-    );
+    api
+      .delete(`/deletefoodPref/${userID}/${pref}`)
+      .then(() => setPrefDeleted(true))
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
@@ -76,35 +81,35 @@ const Profile = () => {
 
   return (
     <div className="profilePage">
-        <h1>Manage Profile</h1>
-        <span className="userInfoGroup">
-            <h4>Preferences</h4>
-            <button id="pageActionWider" onClick={handleOpenDialog}>
-                Add Preference
-            </button>
-        </span>
-            <Box sx={{ height: 655, width: "50%" }}>
-              <DataGrid
-                rows={prefWithID}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: { page: 0, pageSize: 10 },
-                  },
-                }}
-                pageSizeOptions={[10, 20, 30]}
-                sx={{
-                  width: "500px",
-                  background: "#f0f0f0",
-                  color: "#000000",
-                }}
-              />
-            </Box>
-    <AddPrefModal 
+      <h1>Manage Profile</h1>
+      <span className="userInfoGroup">
+        <h4>Preferences</h4>
+        <button id="pageActionWider" onClick={handleOpenDialog}>
+          Add Preference
+        </button>
+      </span>
+      <Box sx={{ height: 400, width: "50%" }}>
+        <DataGrid
+          rows={prefWithID}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[10, 20, 30]}
+          sx={{
+            width: "500px",
+            background: "#f0f0f0",
+            color: "#000000",
+          }}
+        />
+      </Box>
+      <AddPrefModal
         addDialogOpen={addDialogOpen}
         onClose={handleAddClose}
         foodPref={foodPref}
-        />
+      />
     </div>
   );
 };
