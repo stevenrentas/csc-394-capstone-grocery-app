@@ -1,42 +1,26 @@
 import React, { useState, useEffect } from "react";
 import config from "../../../api/api";
 import axios from "axios";
-import {
-  Typography,
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  DialogTitle,
-  Dialog,
-  Button,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { DialogTitle, Dialog } from "@mui/material";
 import { useUser } from "../../../contexts/UserContext";
 
 const MyFoodModal = (props) => {
-  const { addDialogOpen, setConfirmChange, onClose, editId } = props;
   const api = axios.create({
     baseURL: config,
   });
-  const { food, setFood, columns } = useUser();
-  const userID = localStorage.getItem("user-id");
   const [foodToAdd, setFoodToAdd] = useState({
     name: "",
     amount: "",
     dateAdded: "",
     expiryDate: "",
   });
+  const [selectValue, setSelectValue] = React.useState("");
+  const { addDialogOpen, onClose, editId } = props;
+  const { setFood } = useUser();
+  const userID = localStorage.getItem("user-id");
 
   const onInputChange = (e) => {
     var { name, value } = e.target;
-
     if (name === "unit") {
       const amount =
         foodToAdd.amount.indexOf("/") > -1
@@ -55,7 +39,7 @@ const MyFoodModal = (props) => {
       });
     }
   };
-  const [selectValue, setSelectValue] = React.useState("");
+
   const addFood = async () => {
     let db_columns = { ...foodToAdd };
     if (db_columns.amount.split("/")[1] === undefined) {
@@ -65,7 +49,6 @@ const MyFoodModal = (props) => {
     api
       .post("/addfood", db_columns)
       .then((resp) => {
-        setConfirmChange(true);
         handleClose();
         setFoodToAdd({
           name: "",
@@ -77,6 +60,13 @@ const MyFoodModal = (props) => {
       })
       .catch((error) => {
         console.error(error);
+        setFoodToAdd({
+          name: "",
+          amount: "",
+          dateAdded: "",
+          expiryDate: "",
+        });
+        setSelectValue("");
       });
   };
 
@@ -89,7 +79,6 @@ const MyFoodModal = (props) => {
     api
       .put(`/updatefood/${editId}`, db_columns)
       .then((resp) => {
-        setConfirmChange(true);
         handleClose();
         setFoodToAdd({
           name: "",
@@ -143,7 +132,7 @@ const MyFoodModal = (props) => {
   }, [addDialogOpen]);
 
   const handleSelectChange = (e) => {
-    var { name, value } = e.target;
+    var { value } = e.target;
     setSelectValue(value);
     onInputChange(e);
   };
@@ -184,18 +173,19 @@ const MyFoodModal = (props) => {
               <select
                 name="unit"
                 onChange={handleSelectChange}
-                style={{ width: "68px" }}
+                style={{ width: "fit-content" }}
                 value={foodToAdd.amount.split("/")[1]}
               >
-                <option value="lb">lb</option>
-                <option value="kg">kg</option>
-                <option value="oz">oz</option>
-                <option value="fl oz">fl oz</option>
-                <option value="tbsp">tbsp</option>
-                <option value="tsp">tsp</option>
-                <option value="each">each</option>
-                <option value="cup">cup</option>
-                <option value="gram">gram</option>
+                <option value="lb">pound (lb)</option>
+                <option value="oz">ounce (oz)</option>
+                <option value="kg">kilogram (kg)</option>
+                <option value="g">gram (g)</option>
+                <option value="L">liter (L)</option>
+                <option value="ml">milliliter (ml)</option>
+                <option value="fl oz">fluid ounce (fl oz)</option>
+                <option value="gal">gallon</option>
+                <option value="pt">pint (pt)</option>
+                <option value="qt">quart (qt)</option>
               </select>
             </label>
           </span>

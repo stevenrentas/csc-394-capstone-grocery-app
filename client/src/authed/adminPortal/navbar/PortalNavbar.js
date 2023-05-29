@@ -2,17 +2,9 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
 const AuthNavbar = () => {
-  const logout = () => {
-    localStorage.removeItem("user-token");
-    localStorage.removeItem("user-id");
-    window.location.reload(false);
-  };
-
   const currPage = window.location.href.split("/")[3];
 
   return (
@@ -21,7 +13,7 @@ const AuthNavbar = () => {
         <Toolbar>
           <h1 id="appName">FOOD GPT</h1>
           {currPage !== "admin" &&
-            (currPage == "myfood" ? (
+            (currPage === "myfood" ? (
               <h4 className="currPage">
                 <Link to="/myfood">MY FOOD</Link>
               </h4>
@@ -31,7 +23,7 @@ const AuthNavbar = () => {
               </h4>
             ))}
           {currPage !== "admin" &&
-            (currPage == "myrecipes" ? (
+            (currPage === "myrecipes" ? (
               <h4 className="currPage">
                 <Link to="/myrecipes">MY RECIPES</Link>
               </h4>

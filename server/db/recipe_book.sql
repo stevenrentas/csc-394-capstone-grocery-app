@@ -4,11 +4,9 @@ CREATE TABLE IF NOT EXISTS recipe_book (
     title TEXT NOT NULL,
     ingredients JSONB NOT NULL,
     instructions JSONB NOT NULL,
-	date_added VARCHAR(50) NOT NULL,
-	missing_ingredients TEXT[]
-);
+	date_added VARCHAR(50) NOT NULL);
 
-INSERT INTO recipe_book (user_id, title, ingredients, instructions, date_added, missing_ingredients)
+INSERT INTO recipe_book (user_id, title, ingredients, instructions, date_added)
 VALUES (
 	1,
     'Asian Chicken Stir-Fry',
@@ -28,6 +26,5 @@ VALUES (
         "Cook for an additional 1-2 minutes, until everything is heated through.",
         "Serve the Asian chicken stir-fry hot with steamed rice or noodles."
     ]',
-	'5/23/2023',
-	array['Broccoli Rabe', 'Beef']
+	'5/23/2023'
 );
