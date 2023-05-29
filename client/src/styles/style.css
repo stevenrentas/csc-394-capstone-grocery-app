@@ -172,7 +172,7 @@ body {
 #pageActionWider {
   background-color: #698669;
   border-color: #698669;
-  width: 130px;
+  width: fit-content;
   color: ivory;
   text-align: center;
   padding: 7px 18px;
@@ -339,4 +339,30 @@ body {
 
 .recipeDetails{
   margin-bottom:3%;
+}
+
+.profilePage{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: static;
+}
+
+.userInfoGroup{
+  /* display: inline-block; */
+  padding-bottom: 2%;
+}
+
+.userInfoGroup button{
+  float:right;
+}
+
+.preferencesModal {
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+#generate-preferences{
+  margin-bottom:70px;
 }

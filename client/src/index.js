@@ -12,6 +12,7 @@ import ProtectedRoute from "./util/ProtectedRoute";
 import Home from "./authed/adminPortal/Home";
 import { UserProvider } from "./contexts/UserContext";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
+import Profile from "./unauthed/user/Profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -48,6 +49,14 @@ root.render(
                 element={
                   <ProtectedRoute>
                     <MyRecipes />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />
