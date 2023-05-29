@@ -60,6 +60,13 @@ const MyFoodModal = (props) => {
       })
       .catch((error) => {
         console.error(error);
+        setFoodToAdd({
+          name: "",
+          amount: "",
+          dateAdded: "",
+          expiryDate: "",
+        });
+        setSelectValue("");
       });
   };
 
@@ -166,18 +173,19 @@ const MyFoodModal = (props) => {
               <select
                 name="unit"
                 onChange={handleSelectChange}
-                style={{ width: "68px" }}
+                style={{ width: "fit-content" }}
                 value={foodToAdd.amount.split("/")[1]}
               >
-                <option value="lb">lb</option>
-                <option value="kg">kg</option>
-                <option value="oz">oz</option>
-                <option value="fl oz">fl oz</option>
-                <option value="tbsp">tbsp</option>
-                <option value="tsp">tsp</option>
-                <option value="each">each</option>
-                <option value="cup">cup</option>
-                <option value="gram">gram</option>
+                <option value="lb">pound (lb)</option>
+                <option value="oz">ounce (oz)</option>
+                <option value="kg">kilogram (kg)</option>
+                <option value="g">gram (g)</option>
+                <option value="L">liter (L)</option>
+                <option value="ml">milliliter (ml)</option>
+                <option value="fl oz">fluid ounce (fl oz)</option>
+                <option value="gal">gallon</option>
+                <option value="pt">pint (pt)</option>
+                <option value="qt">quart (qt)</option>
               </select>
             </label>
           </span>
