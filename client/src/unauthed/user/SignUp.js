@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import config from "../../api/api";
 import axios from "axios";
 import "../../styles/style.css";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const api = axios.create({
     baseURL: config,
   });
+  const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
     emailAddress: "",
@@ -79,10 +81,14 @@ const SignUp = () => {
 
   const navigatePage = (response) => {
     if (response.statusText === "OK") {
-      window.location = "/login";
+      navigate("/login");
     } else {
       setError({ exist: "Username or email already exist" });
     }
+  };
+
+  const handleRedirectLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -133,7 +139,7 @@ const SignUp = () => {
         CREATE ACCOUNT
       </button>
       <p id="otherAuthPage">
-        <a id="otherAuthPage" href={"/login"}>
+        <a id="signupLink" onClick={handleRedirectLogin}>
           Already a member?
         </a>
       </p>

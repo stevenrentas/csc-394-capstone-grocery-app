@@ -4,7 +4,7 @@ import axios from "axios";
 import { useUser } from "../../../contexts/UserContext";
 import SnackbarContext from "../../../contexts/SnackbarContext";
 import FoodTable from "./FoodTable";
-import { Select, Checkbox, ListItemText, MenuItem, Input} from "@mui/material";
+import { Select, Checkbox, ListItemText, MenuItem, Input } from "@mui/material";
 
 const IngredientPicker = (props) => {
   const api = axios.create({
@@ -31,7 +31,7 @@ const IngredientPicker = (props) => {
         }
       }
     }
-    
+
     let prompt = `I have `;
     // filter in ingredients with amounts/units
     for (let i = 0; i < selectedIngredients.length; i++) {
@@ -98,7 +98,7 @@ const IngredientPicker = (props) => {
 
   const onPrefSelection = (event) => {
     setSelectedPref(event.target.value);
-  }
+  };
 
   useEffect(() => {
     async function fetchPreferences() {
@@ -119,23 +119,24 @@ const IngredientPicker = (props) => {
     <div className="ingredientModal">
       <div id="generate-preferences">
         <h3>Your Preferences</h3>
-          <Select
-            labelId="demo-mutiple-checkbox-label"
-            id="demo-mutiple-checkbox"
-            multiple
-            value={selectedPref}
-            onChange={onPrefSelection}
-            input={<Input />}
-            renderValue={(selected) => selected.join(", ")}
-            style={{width:"max-content", minWidth: "25%"}}
-          >
-            {foodPref.map((pref, x) => (
+        <Select
+          labelId="demo-mutiple-checkbox-label"
+          id="demo-mutiple-checkbox"
+          multiple
+          value={selectedPref}
+          onChange={onPrefSelection}
+          input={<Input />}
+          renderValue={(selected) => selected.join(", ")}
+          style={{ width: "max-content", minWidth: "25%" }}
+        >
+          {foodPref !== null &&
+            foodPref.map((pref, x) => (
               <MenuItem key={x} value={pref}>
                 <Checkbox checked={selectedPref.indexOf(pref) > -1} />
                 <ListItemText primary={pref} />
               </MenuItem>
             ))}
-          </Select>
+        </Select>
       </div>
       <FoodTable food={foodData} columns={columns} isIngredientPicker={true} />
       <div className="pageActionContainer" style={{ marginTop: "20px" }}>

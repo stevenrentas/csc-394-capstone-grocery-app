@@ -139,6 +139,17 @@ body {
   justify-content: right;
 }
 
+#signupLink {
+  color: ivory;
+  margin: 5% 0 0 0;
+  justify-content: right;
+}
+
+#signupLink:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 #table {
   margin-top: 6%;
   margin-bottom: 6%;

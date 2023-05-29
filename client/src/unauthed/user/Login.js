@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import config from "../../api/api";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../styles/style.css";
 
 const UserLogin = () => {
   const api = axios.create({
     baseURL: config,
   });
+  const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
     username: "",
@@ -53,10 +55,14 @@ const UserLogin = () => {
       localStorage.clear();
       localStorage.setItem("user-token", response.data.token);
       localStorage.setItem("user-id", response.data.uid);
-      window.location = "/myfood";
+      navigate("/myfood");
     } else {
       setError({ message: "Invalid username or password" });
     }
+  };
+
+  const navigateSignup = () => {
+    navigate("/signup");
   };
 
   return (
@@ -79,7 +85,7 @@ const UserLogin = () => {
         LOG IN
       </button>
       <p id="otherAuthPage">
-        <a id="otherAuthPage" href={"/signup"}>
+        <a id="signupLink" onClick={navigateSignup}>
           Create an account
         </a>
       </p>
