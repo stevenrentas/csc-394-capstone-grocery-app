@@ -1,4 +1,4 @@
-:root{
+:root {
   --button-roundness: 15px;
 }
 
@@ -187,6 +187,42 @@ body {
   color: rgba(255, 255, 240, 0.89);
 }
 
+#deletePageAction {
+  margin-left: 0;
+  background-color: #d97070;
+  border-color: #d97070;
+  width: 165px;
+  color: ivory;
+  text-align: center;
+  padding: 7px 18px;
+  box-shadow: none;
+  border-radius: var(--button-roundness);
+}
+
+#deletePageAction:hover {
+  margin-left: 0;
+  background-color: #b95c5c;
+  border-color: #b95c5c;
+}
+
+#logoutPageAction {
+  margin-left: 0;
+  background-color: #8f8f8f;
+  border-color: #8f8f8f;
+  width: 165px;
+  color: ivory;
+  text-align: center;
+  padding: 7px 18px;
+  box-shadow: none;
+  border-radius: var(--button-roundness);
+}
+
+#logoutPageAction:hover {
+  margin-left: 0;
+  background-color: #7e7e7e;
+  border-color: #7e7e7e;
+}
+
 #pageActionRecipe {
   background-color: #698669;
   border-color: #698669;
@@ -317,31 +353,32 @@ body {
   background-color: #f0f0f0;
 }
 
-.filterRecipes{
-  float:left;
+.filterRecipes {
+  float: left;
 }
 
-.viewRecipe{
+.viewRecipe {
   cursor: pointer;
 }
 
-.viewRecipe:hover{
+.viewRecipe:hover {
   text-decoration: underline;
 }
 
-.recipeText{
+.recipeText {
   background-color: #f0f0f0;
 }
 
-.ingredients, .instructions{
+.ingredients,
+.instructions {
   margin: 5%;
 }
 
-.recipeDetails{
-  margin-bottom:3%;
+.recipeDetails {
+  margin-bottom: 3%;
 }
 
-.profilePage{
+.profilePage {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -349,13 +386,13 @@ body {
   position: static;
 }
 
-.userInfoGroup{
+.userInfoGroup {
   /* display: inline-block; */
   padding-bottom: 2%;
 }
 
-.userInfoGroup button{
-  float:right;
+.userInfoGroup button {
+  float: right;
 }
 
 .preferencesModal {
@@ -363,6 +400,6 @@ body {
   background-color: #f0f0f0;
 }
 
-#generate-preferences{
-  margin-bottom:70px;
+#generate-preferences {
+  margin-bottom: 70px;
 }

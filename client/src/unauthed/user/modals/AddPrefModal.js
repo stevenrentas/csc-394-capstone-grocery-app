@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import config from "../../../api/api";
 import axios from "axios";
-import { DialogTitle, Dialog } from "@mui/material";
 import { useUser } from "../../../contexts/UserContext";
+import { DialogTitle, Dialog, DialogContent } from "@mui/material";
 
 const AddPrefModal = (props) => {
   const { addDialogOpen, onClose } = props;
@@ -56,17 +56,29 @@ const AddPrefModal = (props) => {
       >
         ADD FOOD PREFERENCE
       </DialogTitle>
-      <div className="ingredientModal preferencesModal">
-        <label style={{ marginRight: "10px" }}>Preference Name</label>
-        <input name="newPreference" onChange={onInputChange}></input>
-        <br></br>
-        <br></br>
-        <div style={{ textAlign: "end" }}>
-          <button id="pageAction" onClick={addPref}>
-            Add +
-          </button>
+      <DialogContent
+        sx={{
+          textAlign: "center",
+          fontFamily: '"Montserrat", sans-serif',
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        <div class="inputField">
+          <span>
+            <label class="fieldLabel" style={{ textAlign: "left" }}>
+              Preference Name
+              <input name="newPreference" onChange={onInputChange}></input>
+            </label>
+          </span>
+          <br></br>
+          <br></br>
+          <div style={{ textAlign: "end" }}>
+            <button id="pageAction" onClick={addPref}>
+              Add +
+            </button>
+          </div>
         </div>
-      </div>
+      </DialogContent>
     </Dialog>
   );
 };

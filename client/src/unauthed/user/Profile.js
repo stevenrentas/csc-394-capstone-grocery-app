@@ -8,10 +8,13 @@ import { Box } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import AddPrefModal from "./modals/AddPrefModal";
+import DeleteAccountModal from "./modals/DeleteAccountModal";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { foodPref, setFoodPref } = useUser();
   const [prefDeleted, setPrefDeleted] = useState(false);
+  const navigate = useNavigate();
   let prefWithID;
   if (foodPref !== null) {
     prefWithID = foodPref.map((row, x) => {
@@ -46,6 +49,7 @@ const Profile = () => {
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const userID = localStorage.getItem("user-id");
+  const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 
   const handleAddClose = () => {
     setAddDialogOpen(false);
@@ -78,6 +82,19 @@ const Profile = () => {
     fetchPreferences();
   }, [prefDeleted]);
 
+  const handleConfirmDeleteOpen = () => {
+    setConfirmDeleteDialogOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setConfirmDeleteDialogOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <div className="profilePage">
       <h1>Manage Profile</h1>
@@ -104,10 +121,28 @@ const Profile = () => {
           }}
         />
       </Box>
+      <Box
+        sx={{
+          marginTop: "50px",
+          justifyContent: "space-between",
+          display: "flex",
+        }}
+      >
+        <button id="deletePageAction" onClick={handleConfirmDeleteOpen}>
+          Delete Account
+        </button>
+        <button id="logoutPageAction" onClick={handleLogout}>
+          Logout
+        </button>
+      </Box>
       <AddPrefModal
         addDialogOpen={addDialogOpen}
         onClose={handleAddClose}
         foodPref={foodPref}
+      />
+      <DeleteAccountModal
+        confirmDeleteDialogOpen={confirmDeleteDialogOpen}
+        onClose={handleDeleteClose}
       />
     </div>
   );

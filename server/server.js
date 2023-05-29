@@ -182,16 +182,13 @@ app.get("/api/v1/getfood/:id", async (req, res) => {
   }
 });
 
-
 app.get("/api/v1/getfoodpref/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const foodPref = await db.query(
-      `SELECT * FROM users WHERE id = ${id};`
-    );
+    const foodPref = await db.query(`SELECT * FROM users WHERE id = ${id};`);
     res.status(200).json({
       status: "success",
-      data: foodPref.rows[0] === undefined ? [] : foodPref.rows[0]
+      data: foodPref.rows[0] === undefined ? [] : foodPref.rows[0],
     });
   } catch (err) {
     console.error(err);
@@ -201,27 +198,26 @@ app.get("/api/v1/getfoodpref/:id", async (req, res) => {
 const convertToSQLArray = (array) => {
   let stringBuilder = "{";
 
-  for (let i = 0; i < array.length; i++){
+  for (let i = 0; i < array.length; i++) {
     stringBuilder += array[i];
-    if (i < array.length - 1){
+    if (i < array.length - 1) {
       stringBuilder += ",";
     }
   }
   stringBuilder += "}";
   return stringBuilder;
-}
+};
 
 app.post("/api/v1/addfoodpref/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const {totalFoodPref} = req.body;
+    const { totalFoodPref } = req.body;
     const convertedFoodPref = convertToSQLArray(totalFoodPref);
-    console.log(totalFoodPref);
     await db.query(
       `UPDATE users SET foodPref = '${convertedFoodPref}' WHERE id = ${id};`
     );
     res.status(200).json({
-      status: "success"
+      status: "success",
     });
   } catch (err) {
     console.error(err);
@@ -235,7 +231,7 @@ app.delete("/api/v1/deletefoodpref/:id/:pref", async (req, res) => {
       `UPDATE users SET foodpref = (SELECT ARRAY_REMOVE(foodpref, '${pref}') FROM users WHERE id = ${id}) WHERE id = ${id};`
     );
     res.status(200).json({
-      status: "success"
+      status: "success",
     });
   } catch (err) {
     console.error(err);
@@ -342,6 +338,36 @@ app.post("/api/v1/addrecipe", async (req, res) => {
       ]
     );
 
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.delete("/api/v1/deleteallinventory/:user_id", async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    await db.query(
+      `DELETE FROM inventory
+        WHERE user_id = ${user_id};`
+    );
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.delete("/api/v1/deleteallrecipes/:user_id", async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    await db.query(
+      `DELETE FROM recipe_book
+        WHERE user_id = ${user_id};`
+    );
     res.status(200).json({
       status: "success",
     });
