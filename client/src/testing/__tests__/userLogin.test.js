@@ -2,6 +2,12 @@ import React from 'react';
 import {render, fireEvent, screen} from '@testing-library/react';
 import UserLogin from '../../unauthed/user/Login';
 
+const mockedUsedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+   ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUsedNavigate,
+}));
+
 describe('User Login Components <Login.js>', () => {
     
     test('renders components and makes snapshot', () =>{
@@ -19,6 +25,15 @@ describe('User Login Components <Login.js>', () => {
         const { container } = render(<UserLogin/>);
         const passwordInput = container.querySelector('input[name="password"]');
         expect(passwordInput).toBeInDocument;
+    });
+
+    test('input boxes should be empty', ()=> {
+        render(<UserLogin/>);
+        const usernameInput = screen.getByRole("textbox");
+        const passwordInput = screen.getByPlaceholderText("Password");
+        expect(usernameInput.value).toBe("");
+        expect(passwordInput.value).toBe("");
+
     });
 
     test('Should render a "LOG IN" button', () => {
@@ -44,14 +59,4 @@ describe('User Login Components <Login.js>', () => {
         expect(createUserButton).toBeInDocument;
 
     });
-    //NOT SURE IF WORKING PROPERLY??//
-    //Still need to finish this one.
-    // test('"Create an account" button that has an href attribute', () => {
-    //     const href = "/signup";
-    //     const {getByText} = render(<a href={href}>Create an account</a>);
-    //     const link = getByText('Create an account');
-    //     fireEvent.click(link);
-    //     expect(screen.getByRole('link',{name: 'Create an account'}));
-    // });
-
 });

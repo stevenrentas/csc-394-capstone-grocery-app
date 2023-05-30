@@ -26,16 +26,6 @@ exports[`Admin Login Components <unauthed/admin/Login.js> renders components and
     >
       LOG IN
     </button>
-    <p
-      id="otherAuthPage"
-    >
-      <a
-        href="/signup"
-        id="otherAuthPage"
-      >
-        Create an account
-      </a>
-    </p>
   </div>
 </div>
 `;

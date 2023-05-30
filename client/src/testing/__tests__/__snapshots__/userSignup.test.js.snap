@@ -46,8 +46,7 @@ exports[`User Signup Components <Signup.js> renders components and makes snapsho
       id="otherAuthPage"
     >
       <a
-        href="/login"
-        id="otherAuthPage"
+        id="signupLink"
       >
         Already a member?
       </a>
