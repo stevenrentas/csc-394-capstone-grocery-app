@@ -17,6 +17,8 @@ describe('Admin Login Components <unauthed/admin/Login.js>', () => {
     });
 
     test('Should render admin title,"Admin Login"', () => {
+        render(<Login />);
+        expect(screen.getByText(/admin login/i)).toBeInDocument;
 
     });
 
@@ -32,6 +34,15 @@ describe('Admin Login Components <unauthed/admin/Login.js>', () => {
         expect(passwordInput).toBeInDocument;
     });
 
+    test('input boxes should be empty', ()=> {
+        render(<Login/>);
+        const usernameInput = screen.getByRole("textbox");
+        const passwordInput = screen.getByPlaceholderText("Password");
+        expect(usernameInput.value).toBe("");
+        expect(passwordInput.value).toBe("");
+
+    });
+
     test('Should render a "LOG IN" button', () => {
         const {getByText} = render( <Login /> );
         const loginButton = getByText( "LOG IN" );
@@ -41,18 +52,14 @@ describe('Admin Login Components <unauthed/admin/Login.js>', () => {
      test('onClick function called for "LOG IN" button', () => {
         const onClickMock = jest.fn();
         const {getByText} = render( 
-            <button onClick={onClickMock}>LOG IN</button>
+            <button onClick={onClickMock}>
+                LOG IN
+            </button>
         );
         const button = getByText('LOG IN');
         fireEvent.click(button);
         expect(onClickMock).toHaveBeenCalled();
-    });
-
-    test ('Should render a "Create an account" button',() =>{
-        const {getByText} = render(<Login/>);
-        const createUserButton = getByText("Create an account");
-        expect(createUserButton).toBeInDocument;
-
+        
     });
 });
 

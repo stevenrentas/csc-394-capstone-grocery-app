@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Unauthorized Navbar Components <unauthed/navbar/UnauthedNavbar.js> renders components and makes snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-i9gxme"
+  >
+    <header
+      class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionStatic css-6t7t6l-MuiPaper-root-MuiAppBar-root"
+      id="navBar"
+    >
+      <div
+        class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-hyum1k-MuiToolbar-root"
+      >
+        <h1
+          id="appName"
+        >
+          FOOD GPT
+        </h1>
+      </div>
+    </header>
+  </div>
+</div>
+`;
