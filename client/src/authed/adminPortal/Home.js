@@ -471,11 +471,6 @@ const Home = () => {
                     <TableCell>{"********"}</TableCell>
                     <TableCell>{row.isadmin ? "Admin" : "User"}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => openEditDialog(row.id)}>
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>
                       <IconButton onClick={() => openDeleteDialog(row.id)}>
                         <DeleteIcon />
                       </IconButton>
